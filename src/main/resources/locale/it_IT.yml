@@ -1,0 +1,7 @@
+
+message:
+  exit: "&cEsci"
+  previous_page: "&aPagina precedente"
+  next_page: "&aPagina successiva"
+  player_list_title: "&6Giocatori Online" # Titolo configurabile della GUI principale
+

@@ -1,0 +1,6 @@
+# Configurazione principale di AdminManager
+
+language: it_IT # Imposta la lingua predefinita (ad esempio, it_IT o en_EN)
+
+permissions:
+  use: adminmanager.use
