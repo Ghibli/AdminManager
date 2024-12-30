@@ -38,7 +38,6 @@ public class PlayerListGui extends BaseGui {
     private void setupPlayerHeads() {
         int startSlot = 0; // Slot iniziale
         int itemsPerPage = 45; // Escludendo l'ultima riga per i pulsanti di navigazione
-
         int startIndex = (getPage() - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, onlinePlayers.size());
 

@@ -1,6 +1,5 @@
 package it.alessiogta.adminmanager.listeners;
 
-import it.alessiogta.adminmanager.utils.MuteManager;
 import it.alessiogta.adminmanager.utils.TranslationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

@@ -3,7 +3,6 @@ package it.alessiogta.adminmanager;
 import it.alessiogta.adminmanager.commands.AdminManagerCommand;
 import it.alessiogta.adminmanager.commands.AdminManagerTabCompleter;
 import it.alessiogta.adminmanager.listeners.ChatListener;
-import it.alessiogta.adminmanager.utils.MuteManager;
 import it.alessiogta.adminmanager.utils.PlayerLogger;
 import it.alessiogta.adminmanager.utils.TranslationManager;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -11,9 +10,14 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class AdminManager extends JavaPlugin {
+    private static AdminManager instance;
+
 
     @Override
     public void onEnable() {
+        int muteCheckCounter = 0; // Resetta il contatore all'avvio
+        instance = this;
+
         // Messaggio di avvio
         getLogger().info("AdminManager è stato abilitato!");
 
@@ -27,9 +31,6 @@ public class AdminManager extends JavaPlugin {
 
         // Inizializzazione del sistema di log
         PlayerLogger.initialize(config);
-
-        // Inizializzazione del mute manager
-        MuteManager.initialize();
 
         // Registrazione dei comandi
         registerCommands();
@@ -58,5 +59,8 @@ public class AdminManager extends JavaPlugin {
     private void initializeGui() {
         // Inizializzazione di eventuali GUI prefabbricate o statiche
         // GuiManager.registerGui("example", new ExampleGui(...));
+    }
+    public static AdminManager getInstance() {
+        return instance;
     }
 }

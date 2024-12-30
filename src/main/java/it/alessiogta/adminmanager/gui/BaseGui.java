@@ -23,6 +23,7 @@ public abstract class BaseGui implements Listener {
     private final Map<Integer, ItemStack> items = new HashMap<>();
     private final int page;
     private final Player player;
+    protected Inventory inventory;
 
     public BaseGui(Player player, String title, int page) {
         this.player = player;
@@ -75,9 +76,13 @@ public abstract class BaseGui implements Listener {
         player.openInventory(build());
     }
 
-    protected void setItem(int slot, ItemStack itemStack) {
-        items.put(slot, itemStack);
+    protected void setItem(int slot, ItemStack item) {
+        if (slot < 0 || slot >= size) {
+            throw new IllegalArgumentException("Slot fuori dai limiti: " + slot);
+        }
+        items.put(slot, item); // Aggiunge o aggiorna l'item nella mappa
     }
+
 
     protected ItemStack createItem(Material material, String name) {
         ItemStack item = new ItemStack(material);
