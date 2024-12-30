@@ -2,5 +2,17 @@
 
 language: it_IT # Imposta la lingua predefinita (ad esempio, it_IT o en_EN)
 
+fill_empty_slots: false
+fill_last_row_only: true
+panel_color: BLACK
+panel_color_last_row: WHITE
+
+log_timezone: "Europe/Rome"
+log_messages:
+  kick: "[%s] [%s] ha espulso %s dal server"
+  ban: "[%s] [%s] ha bannato %s dal server"
+
+
 permissions:
   use: adminmanager.use
+  reload: adminmanager.reload

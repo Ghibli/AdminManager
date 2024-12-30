@@ -1,0 +1,16 @@
+
+
+exit: "&cExit"
+previous_page: "&aPrevious Page"
+next_page: "&aNext Page"
+player_list_title: "&6Players Online"
+uuid: "&7UUID: &f%uuid%"
+ping: "&7Ping: &f%ping% ms"
+world: "&7World: &f%world%"
+ip: "&7IP: &f%ip%"
+coordinates: "&7Coordinates: &f%coordinates%"
+action: "&7Click to manage"
+
+
+
+

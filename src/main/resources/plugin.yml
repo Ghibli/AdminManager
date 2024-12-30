@@ -1,0 +1,20 @@
+name: AdminManager
+version: '${project.version}'
+main: it.alessiogta.adminmanager.AdminManager
+api-version: '1.18'
+prefix: AdminM
+authors: [AlessioGTA]
+description: Plugin for managing players on your server
+website: https://www.mclegacy.it
+
+commands:
+  adminm:
+    description: Open the main admin GUI
+    usage: /<command>
+    permission: adminmanager.use
+
+permissions:
+  adminmanager.use:
+    description: Permission to use the AdminManager plugin
+    default: false
+

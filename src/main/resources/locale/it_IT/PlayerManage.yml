@@ -1,0 +1,41 @@
+
+
+#Stringhe generali
+back_button_title: "&cIndietro"
+back_button_lore: "&aRitorna alla lista giocatori"
+
+#Stringhe Teletrasporto
+teleport_title: "&aTeletrasporto"
+teleport_lore: "&fTeletrasportati da &e{player}"
+teleport_message: "&aTi sei teletrasportato da &e{player}"
+tp_to_me_title: "&aTP da me"
+tp_to_me_lore: "&fTeletrasporta &e{player} &fda te"
+tp_to_me_success: "&e{player} &aè stato teletrasportato da te"
+tp_to_me_failure: "&e{player} &cnon è online!"
+
+#Messaggi Kick dal server
+kick_title: "&cEspelli dal server"
+kick_lore: "&fEspelli dal server &e{player}"
+kick_message: "&e{player} &cè stato espulso dal server"
+kick_reason: "&cSei stato espulso dal server per violazione del regolamento"
+kick_failure: "&e{player} &cnon è online!"
+
+#Messaggi Ban dal server
+ban_title: "&4Ban dal server"
+ban_lore: "&fBanna &e{player} &fdal server"
+ban_message: "&4{player} è stato bannato dal server"
+ban_reason: "&cSei stato bannato dal server per aver &lGRAVEMENTE &cviolato il regolamento!"
+ban_failure: "&e{player} &cnon è online!"
+source: "Bannato da {player} tramite Admin Manager"
+
+#Messaggi Mute
+mute_title: "&aMuta giocatore"
+mute_lore: "&7Muta {player}"
+mute_unmute_title: "&cRimuovi mute"
+mute_unmute_lore: "&7Rimuovi il mute da {player}"
+mute_message: "&c{player} è stato mutato"
+unmute_message: "&a{player} non è più mutato"
+mute_chat_message: "&cSei mutato e non puoi parlare!"
+mute_notify_message: "&e{player} ha tentato di parlare ma è mutato!"
+
+
