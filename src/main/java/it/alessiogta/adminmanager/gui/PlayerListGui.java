@@ -78,18 +78,55 @@ public class PlayerListGui extends BaseGui {
         if (slot >= 0 && slot < 45) {
             ItemStack clickedItem = event.getCurrentItem();
             if (clickedItem != null && clickedItem.getType() == Material.PLAYER_HEAD) {
-                Player target = Bukkit.getPlayerExact(clickedItem.getItemMeta().getDisplayName().substring(2));
-                if (target != null) {
+                try {
+                    // Controlli null safety
+                    if (clickedItem.getItemMeta() == null) {
+                        Bukkit.getLogger().warning("[AdminManager] ItemMeta è null per player head");
+                        return;
+                    }
+
+                    String displayName = clickedItem.getItemMeta().getDisplayName();
+                    if (displayName == null || displayName.length() < 3) {
+                        Bukkit.getLogger().warning("[AdminManager] DisplayName invalido: " + displayName);
+                        return;
+                    }
+
+                    // Rimuove il color code "§a"
+                    String playerName = displayName.substring(2);
+                    Player target = Bukkit.getPlayerExact(playerName);
+
+                    if (target == null || !target.isOnline()) {
+                        Player clicker = (Player) event.getWhoClicked();
+                        clicker.sendMessage(ChatColor.RED + "Giocatore non trovato o offline!");
+                        Bukkit.getLogger().warning("[AdminManager] Player non trovato: " + playerName);
+                        return;
+                    }
+
                     Player clicker = (Player) event.getWhoClicked();
-                    // Chiudi prima l'inventario, poi apri il nuovo con un delay
                     clicker.closeInventory();
-                    Bukkit.getScheduler().runTaskLater(
+
+                    // Usa runTask invece di runTaskLater per eseguire immediatamente nel tick successivo
+                    Bukkit.getScheduler().runTask(
                         Bukkit.getPluginManager().getPlugin("AdminManager"),
-                        () -> new PlayerManage(clicker, target).open(),
-                        1L
+                        () -> {
+                            try {
+                                PlayerManage gui = new PlayerManage(clicker, target);
+                                gui.open();
+                            } catch (Exception e) {
+                                Bukkit.getLogger().severe("[AdminManager] Errore critico nell'apertura PlayerManage:");
+                                e.printStackTrace();
+                                clicker.sendMessage(ChatColor.RED + "Errore nell'apertura della GUI! Controlla i log del server.");
+                            }
+                        }
                     );
-                    return;
+
+                } catch (Exception e) {
+                    Bukkit.getLogger().severe("[AdminManager] Errore nel click su player head:");
+                    e.printStackTrace();
+                    Player clicker = (Player) event.getWhoClicked();
+                    clicker.sendMessage(ChatColor.RED + "Errore! Controlla i log del server.");
                 }
+                return;
             }
         }
 
