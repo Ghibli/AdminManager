@@ -74,13 +74,21 @@ public class PlayerListGui extends BaseGui {
     @Override
     public void handleClick(InventoryClickEvent event) {
         int slot = event.getRawSlot();
+
         if (slot >= 0 && slot < 45) {
             ItemStack clickedItem = event.getCurrentItem();
             if (clickedItem != null && clickedItem.getType() == Material.PLAYER_HEAD) {
                 Player target = Bukkit.getPlayerExact(clickedItem.getItemMeta().getDisplayName().substring(2));
                 if (target != null) {
-                    // Azioni da eseguire sul giocatore selezionato
-                    new PlayerManage((Player) event.getWhoClicked(), target).open();
+                    Player clicker = (Player) event.getWhoClicked();
+                    // Chiudi prima l'inventario, poi apri il nuovo con un delay
+                    clicker.closeInventory();
+                    Bukkit.getScheduler().runTaskLater(
+                        Bukkit.getPluginManager().getPlugin("AdminManager"),
+                        () -> new PlayerManage(clicker, target).open(),
+                        1L
+                    );
+                    return;
                 }
             }
         }
@@ -96,9 +104,7 @@ public class PlayerListGui extends BaseGui {
             isClosing = true;
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().sendMessage(TranslationManager.translate("PlayerListGui", "exit_message", "&a Hai chiuso &6&lAdmin Manager :-)"));
-            return;
         }
-        event.setCancelled(true);
     }
 
     private String getPing(String playerName) {
