@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -69,7 +70,7 @@ public class MuteManager {
             for (UUID uuid : mutedPlayers) {
                 uuidStrings.add(uuid.toString());
             }
-            muteConfig.set("muted-players", uuidStrings.stream().toList());
+            muteConfig.set("muted-players", new ArrayList<>(uuidStrings));
             muteConfig.save(MUTE_FILE);
         } catch (IOException e) {
             System.err.println("[AdminManager] Errore durante il salvataggio del file mute:");
