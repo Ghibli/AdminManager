@@ -12,27 +12,99 @@ tp_to_me_lore: "&fTeleport &e{player} &fto you"
 tp_to_me_success: "&e{player} &ahas been teleported to you"
 tp_to_me_failure: "&e{player} &cis not online!"
 
+#Freeze
+freeze_title: "&bFreeze"
+freeze_lore: "&7Freeze {player}"
+unfreeze_title: "&aUnfreeze"
+unfreeze_lore: "&7Unfreeze {player}"
+freeze_message: "&c{player} has been frozen"
+unfreeze_message: "&a{player} has been unfrozen"
+freeze_notification: "&cYou have been frozen!"
+unfreeze_notification: "&aYou have been unfrozen!"
+freeze_cannot_move: "&cYou are frozen and cannot move!"
+
+#Fly
+fly_enable_title: "&aEnable Fly"
+fly_enable_lore: "&7Enable fly for {player}"
+fly_disable_title: "&cDisable Fly"
+fly_disable_lore: "&7Disable fly for {player}"
+fly_enabled_message: "&aFly enabled for {player}"
+fly_disabled_message: "&cFly disabled for {player}"
+
+#Heal & Feed
+heal_title: "&cHeal"
+heal_lore: "&7Restore health and food for {player}"
+heal_message: "&a{player} has been healed"
+feed_title: "&6Feed"
+feed_lore: "&7Restore food for {player}"
+feed_message: "&a{player} has been fed"
+
+#Kill
+kill_title: "&4Kill"
+kill_lore: "&7Kill {player}"
+kill_message: "&c{player} has been killed"
+
+#Clear Effects
+clear_effects_title: "&eClear Effects"
+clear_effects_lore: "&7Remove all potion effects from {player}"
+clear_effects_message: "&aCleared all effects from {player}"
+
+#God Mode
+godmode_enable_title: "&6Enable God Mode"
+godmode_enable_lore: "&7Make {player} invincible"
+godmode_disable_title: "&cDisable God Mode"
+godmode_disable_lore: "&7Disable invincibility for {player}"
+godmode_enabled_message: "&6God mode enabled for {player}"
+godmode_disabled_message: "&cGod mode disabled for {player}"
+godmode_notification_on: "&6You are now invincible!"
+godmode_notification_off: "&cYou are no longer invincible!"
+
 #Kick messages
-kick_title: "&cKick from server"
-kick_lore: "&fKick &e{player} &ffrom the server"
+kick_title: "&cKick"
+kick_lore: "&7Kick {player} from server"
 kick_message: "&e{player} &chas been kicked from the server"
 kick_reason: "&cYou have been kicked from the server for violating the rules"
 kick_failure: "&e{player} &cis not online!"
 
 #Ban messages
-ban_title: "&4Ban from server"
-ban_lore: "&fBan &e{player} &ffrom the server"
+ban_title: "&4Ban"
+ban_lore: "&7Ban {player} from server"
 ban_message: "&4{player} has been banned from the server"
 ban_reason: "&cYou have been banned from the server for &lSERIOUSLY &cviolating the rules!"
 ban_failure: "&e{player} &cis not online!"
 source: "Banned by {player} via Admin Manager"
 
 #Mute messages
-mute_title: "&aMute player"
+mute_title: "&aMute"
 mute_lore: "&7Mute {player}"
 mute_unmute_title: "&cUnmute"
 mute_unmute_lore: "&7Unmute {player}"
 mute_message: "&c{player} has been muted"
 unmute_message: "&a{player} is no longer muted"
+mute_notification: "&cYou have been muted!"
+unmute_notification: "&aYou have been unmuted!"
 mute_chat_message: "&cYou are muted and cannot talk!"
 mute_notify_message: "&e{player} tried to talk but is muted!"
+
+#Inventory
+inventory_title: "&9View Inventory"
+inventory_lore: "&7View {player}'s inventory"
+enderchest_title: "&5View EnderChest"
+enderchest_lore: "&7View {player}'s enderchest"
+clear_inventory_title: "&cClear Inventory"
+clear_inventory_lore: "&7Clear {player}'s inventory"
+clear_enderchest_title: "&5Clear EnderChest"
+clear_enderchest_lore: "&7Clear {player}'s enderchest"
+clear_inventory_message: "&cCleared inventory of {player}"
+clear_enderchest_message: "&5Cleared enderchest of {player}"
+inventory_cleared_notification: "&cYour inventory has been cleared!"
+enderchest_cleared_notification: "&5Your enderchest has been cleared!"
+
+#Gamemode
+gamemode_survival_title: "&eSurvival"
+gamemode_creative_title: "&eCreative"
+gamemode_adventure_title: "&eAdventure"
+gamemode_spectator_title: "&eSpectator"
+gamemode_lore: "&7Set gamemode"
+gamemode_changed_message: "&eSet {player}'s gamemode"
+gamemode_notification: "&eYour gamemode has been changed"
