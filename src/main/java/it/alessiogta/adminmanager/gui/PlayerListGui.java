@@ -60,7 +60,7 @@ public class PlayerListGui extends BaseGui {
             lore.add("");
             lore.add(ChatColor.translateAlternateColorCodes('&',TranslationManager.translate("PlayerListGui", "uuid", "UUID: %uuid%").replace("%uuid%", uuid.toString())));
             lore.add(ChatColor.translateAlternateColorCodes('&',TranslationManager.translate("PlayerListGui", "ping", "Ping: %ping% ms").replace("%ping%" , getPing(name))));
-            lore.add(ChatColor.translateAlternateColorCodes('&',TranslationManager.translate("PlayerListGui", "world","Mondo: %world%").replace("%world%", Bukkit.getWorlds().get(0).getName())));
+            lore.add(ChatColor.translateAlternateColorCodes('&',TranslationManager.translate("PlayerListGui", "world","Mondo: %world%").replace("%world%", getPlayerWorld(name))));
             lore.add(ChatColor.translateAlternateColorCodes('&',TranslationManager.translate("PlayerListGui","ip","IP: %ip%").replace("%ip%",getPlayerIP(name))));
             lore.add(ChatColor.translateAlternateColorCodes('&',TranslationManager.translate("PlayerListGui","coordinates" , "Coordinate: %coordinates%").replace("%coordinates%" , getPlayerCoordinates(name))));
             lore.add(ChatColor.translateAlternateColorCodes('&',TranslationManager.translate("PlayerListGui" , "action" , "Clicca per Gestire")));
@@ -74,14 +74,59 @@ public class PlayerListGui extends BaseGui {
     @Override
     public void handleClick(InventoryClickEvent event) {
         int slot = event.getRawSlot();
+
         if (slot >= 0 && slot < 45) {
             ItemStack clickedItem = event.getCurrentItem();
             if (clickedItem != null && clickedItem.getType() == Material.PLAYER_HEAD) {
-                Player target = Bukkit.getPlayerExact(clickedItem.getItemMeta().getDisplayName().substring(2));
-                if (target != null) {
-                    // Azioni da eseguire sul giocatore selezionato
-                    new PlayerManage((Player) event.getWhoClicked(), target).open();
+                try {
+                    // Controlli null safety
+                    if (clickedItem.getItemMeta() == null) {
+                        Bukkit.getLogger().warning("[AdminManager] ItemMeta è null per player head");
+                        return;
+                    }
+
+                    String displayName = clickedItem.getItemMeta().getDisplayName();
+                    if (displayName == null || displayName.length() < 3) {
+                        Bukkit.getLogger().warning("[AdminManager] DisplayName invalido: " + displayName);
+                        return;
+                    }
+
+                    // Rimuove il color code "§a"
+                    String playerName = displayName.substring(2);
+                    Player target = Bukkit.getPlayerExact(playerName);
+
+                    if (target == null || !target.isOnline()) {
+                        Player clicker = (Player) event.getWhoClicked();
+                        clicker.sendMessage(ChatColor.RED + "Giocatore non trovato o offline!");
+                        Bukkit.getLogger().warning("[AdminManager] Player non trovato: " + playerName);
+                        return;
+                    }
+
+                    Player clicker = (Player) event.getWhoClicked();
+                    clicker.closeInventory();
+
+                    // Usa runTask invece di runTaskLater per eseguire immediatamente nel tick successivo
+                    Bukkit.getScheduler().runTask(
+                        Bukkit.getPluginManager().getPlugin("AdminManager"),
+                        () -> {
+                            try {
+                                PlayerManage gui = new PlayerManage(clicker, target);
+                                gui.open();
+                            } catch (Exception e) {
+                                Bukkit.getLogger().severe("[AdminManager] Errore critico nell'apertura PlayerManage:");
+                                e.printStackTrace();
+                                clicker.sendMessage(ChatColor.RED + "Errore nell'apertura della GUI! Controlla i log del server.");
+                            }
+                        }
+                    );
+
+                } catch (Exception e) {
+                    Bukkit.getLogger().severe("[AdminManager] Errore nel click su player head:");
+                    e.printStackTrace();
+                    Player clicker = (Player) event.getWhoClicked();
+                    clicker.sendMessage(ChatColor.RED + "Errore! Controlla i log del server.");
                 }
+                return;
             }
         }
 
@@ -96,9 +141,7 @@ public class PlayerListGui extends BaseGui {
             isClosing = true;
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().sendMessage(TranslationManager.translate("PlayerListGui", "exit_message", "&a Hai chiuso &6&lAdmin Manager :-)"));
-            return;
         }
-        event.setCancelled(true);
     }
 
     private String getPing(String playerName) {

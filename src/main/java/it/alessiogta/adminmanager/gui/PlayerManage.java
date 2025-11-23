@@ -1,157 +1,534 @@
 package it.alessiogta.adminmanager.gui;
 
+import it.alessiogta.adminmanager.utils.FreezeManager;
+import it.alessiogta.adminmanager.utils.GodModeManager;
+import it.alessiogta.adminmanager.utils.MuteManager;
 import it.alessiogta.adminmanager.utils.PlayerLogger;
 import it.alessiogta.adminmanager.utils.TranslationManager;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 
 public class PlayerManage extends BaseGui {
 
     private final Player targetPlayer;
 
     public PlayerManage(Player player, Player targetPlayer) {
-        super(player, formatTitle(targetPlayer), 1); // GUI con una sola pagina
+        super(player, formatTitle(targetPlayer), 1);
         this.targetPlayer = targetPlayer;
         setupGuiItems();
     }
 
     private static String formatTitle(Player targetPlayer) {
-        return String.format("§a[§6%s§a] §7+ details", targetPlayer.getName()); // Hard-coded titolo
+        return String.format("§a[§6%s§a] §7Manage", targetPlayer.getName());
     }
 
     private void setupGuiItems() {
-        setItem(10, createTeleportButton());
-        setItem(11, createTpToMeButton());
-        setItem(13, createKickButton());
-        setItem(14, createBanButton());
+        // Row 1: Teleport & Movement
+        setItem(0, createTeleportButton());
+        setItem(1, createTpToMeButton());
+        setItem(2, createFreezeButton());
+        setItem(3, createFlyButton());
+
+        // Row 2: Player State
+        setItem(9, createHealButton());
+        setItem(10, createFeedButton());
+        setItem(11, createKillButton());
+        setItem(12, createClearEffectsButton());
+        setItem(13, createGodModeButton());
+
+        // Row 3: Punishments
+        setItem(18, createKickButton());
+        setItem(19, createBanButton());
+        setItem(20, createMuteButton());
+
+        // Row 4: Inventory
+        setItem(27, createInventoryButton());
+        setItem(28, createEnderChestButton());
+        setItem(29, createClearInventoryButton());
+        setItem(30, createClearEnderChestButton());
+
+        // Row 5: Gamemode
+        setItem(36, createGamemodeButton(GameMode.SURVIVAL));
+        setItem(37, createGamemodeButton(GameMode.CREATIVE));
+        setItem(38, createGamemodeButton(GameMode.ADVENTURE));
+        setItem(39, createGamemodeButton(GameMode.SPECTATOR));
+
+        // Exit button
         setItem(49, createExitButton());
     }
 
+    // ========== TELEPORT BUTTONS ==========
+
     private ItemStack createTeleportButton() {
-        String title = TranslationManager.translate("PlayerManage", "teleport_title", "&aTeletrasporto");
-        String lore = TranslationManager.translate("PlayerManage", "teleport_lore", "&7Teletrasportati da {player}")
+        String title = TranslationManager.translate("PlayerManage", "teleport_title", "&aTeleport");
+        String lore = TranslationManager.translate("PlayerManage", "teleport_lore", "&7Teleport to {player}")
                 .replace("{player}", targetPlayer.getName());
         return createItem(Material.ENDER_PEARL, title, lore);
     }
 
     private ItemStack createTpToMeButton() {
-        String title = TranslationManager.translate("PlayerManage", "tp_to_me_title", "&bTP da me");
-        String lore = TranslationManager.translate("PlayerManage", "tp_to_me_lore", "&7Teletrasporta {player} da te")
+        String title = TranslationManager.translate("PlayerManage", "tp_to_me_title", "&aTP to me");
+        String lore = TranslationManager.translate("PlayerManage", "tp_to_me_lore", "&7Teleport {player} to you")
                 .replace("{player}", targetPlayer.getName());
         return createItem(Material.COMPASS, title, lore);
     }
 
+    private ItemStack createFreezeButton() {
+        boolean isFrozen = FreezeManager.isFrozen(targetPlayer);
+        String title = TranslationManager.translate("PlayerManage",
+                isFrozen ? "unfreeze_title" : "freeze_title",
+                isFrozen ? "&aUnfreeze" : "&bFreeze");
+        String lore = TranslationManager.translate("PlayerManage",
+                isFrozen ? "unfreeze_lore" : "freeze_lore",
+                isFrozen ? "&7Unfreeze {player}" : "&7Freeze {player}")
+                .replace("{player}", targetPlayer.getName());
+        return createItem(isFrozen ? Material.LIGHT_BLUE_DYE : Material.BLUE_ICE, title, lore);
+    }
+
+    private ItemStack createFlyButton() {
+        boolean canFly = targetPlayer.getAllowFlight();
+        String title = TranslationManager.translate("PlayerManage",
+                canFly ? "fly_disable_title" : "fly_enable_title",
+                canFly ? "&cDisable Fly" : "&aEnable Fly");
+        String lore = TranslationManager.translate("PlayerManage",
+                canFly ? "fly_disable_lore" : "fly_enable_lore",
+                canFly ? "&7Disable fly for {player}" : "&7Enable fly for {player}")
+                .replace("{player}", targetPlayer.getName());
+        return createItem(canFly ? Material.FEATHER : Material.ELYTRA, title, lore);
+    }
+
+    // ========== PLAYER STATE BUTTONS ==========
+
+    private ItemStack createHealButton() {
+        String title = TranslationManager.translate("PlayerManage", "heal_title", "&cHeal");
+        String lore = TranslationManager.translate("PlayerManage", "heal_lore", "&7Restore health and food for {player}")
+                .replace("{player}", targetPlayer.getName());
+        return createItem(Material.GOLDEN_APPLE, title, lore);
+    }
+
+    private ItemStack createFeedButton() {
+        String title = TranslationManager.translate("PlayerManage", "feed_title", "&6Feed");
+        String lore = TranslationManager.translate("PlayerManage", "feed_lore", "&7Restore food for {player}")
+                .replace("{player}", targetPlayer.getName());
+        return createItem(Material.COOKED_BEEF, title, lore);
+    }
+
+    private ItemStack createKillButton() {
+        String title = TranslationManager.translate("PlayerManage", "kill_title", "&4Kill");
+        String lore = TranslationManager.translate("PlayerManage", "kill_lore", "&7Kill {player}")
+                .replace("{player}", targetPlayer.getName());
+        return createItem(Material.SKELETON_SKULL, title, lore);
+    }
+
+    private ItemStack createClearEffectsButton() {
+        String title = TranslationManager.translate("PlayerManage", "clear_effects_title", "&eClear Effects");
+        String lore = TranslationManager.translate("PlayerManage", "clear_effects_lore", "&7Remove all potion effects from {player}")
+                .replace("{player}", targetPlayer.getName());
+        return createItem(Material.MILK_BUCKET, title, lore);
+    }
+
+    private ItemStack createGodModeButton() {
+        boolean hasGodMode = GodModeManager.hasGodMode(targetPlayer);
+        String title = TranslationManager.translate("PlayerManage",
+                hasGodMode ? "godmode_disable_title" : "godmode_enable_title",
+                hasGodMode ? "&cDisable God Mode" : "&6Enable God Mode");
+        String lore = TranslationManager.translate("PlayerManage",
+                hasGodMode ? "godmode_disable_lore" : "godmode_enable_lore",
+                hasGodMode ? "&7Disable invincibility for {player}" : "&7Make {player} invincible")
+                .replace("{player}", targetPlayer.getName());
+        return createItem(hasGodMode ? Material.DIAMOND_CHESTPLATE : Material.GOLDEN_CHESTPLATE, title, lore);
+    }
+
+    // ========== PUNISHMENT BUTTONS ==========
+
     private ItemStack createKickButton() {
-        String title = TranslationManager.translate("PlayerManage", "kick_title", "&cEspelli dal server");
-        String lore = TranslationManager.translate("PlayerManage", "kick_lore", "&7Espelli dal server {player}")
+        String title = TranslationManager.translate("PlayerManage", "kick_title", "&cKick");
+        String lore = TranslationManager.translate("PlayerManage", "kick_lore", "&7Kick {player} from server")
                 .replace("{player}", targetPlayer.getName());
         return createItem(Material.IRON_DOOR, title, lore);
     }
 
     private ItemStack createBanButton() {
-        String title = TranslationManager.translate("PlayerManage", "ban_title", "&4Ban dal server");
-        String lore = TranslationManager.translate("PlayerManage", "ban_lore", "&7Banna {player} dal server")
+        String title = TranslationManager.translate("PlayerManage", "ban_title", "&4Ban");
+        String lore = TranslationManager.translate("PlayerManage", "ban_lore", "&7Ban {player} from server")
                 .replace("{player}", targetPlayer.getName());
         return createItem(Material.RED_BANNER, title, lore);
     }
 
+    private ItemStack createMuteButton() {
+        boolean isMuted = MuteManager.isMuted(targetPlayer.getUniqueId());
+        String title = TranslationManager.translate("PlayerManage",
+                isMuted ? "mute_unmute_title" : "mute_title",
+                isMuted ? "&cUnmute" : "&aMute");
+        String lore = TranslationManager.translate("PlayerManage",
+                isMuted ? "mute_unmute_lore" : "mute_lore",
+                isMuted ? "&7Unmute {player}" : "&7Mute {player}")
+                .replace("{player}", targetPlayer.getName());
+        return createItem(isMuted ? Material.LIME_DYE : Material.GRAY_DYE, title, lore);
+    }
+
+    // ========== INVENTORY BUTTONS ==========
+
+    private ItemStack createInventoryButton() {
+        String title = TranslationManager.translate("PlayerManage", "inventory_title", "&9View Inventory");
+        String lore = TranslationManager.translate("PlayerManage", "inventory_lore", "&7View {player}'s inventory")
+                .replace("{player}", targetPlayer.getName());
+        return createItem(Material.CHEST, title, lore);
+    }
+
+    private ItemStack createEnderChestButton() {
+        String title = TranslationManager.translate("PlayerManage", "enderchest_title", "&5View EnderChest");
+        String lore = TranslationManager.translate("PlayerManage", "enderchest_lore", "&7View {player}'s enderchest")
+                .replace("{player}", targetPlayer.getName());
+        return createItem(Material.ENDER_CHEST, title, lore);
+    }
+
+    private ItemStack createClearInventoryButton() {
+        String title = TranslationManager.translate("PlayerManage", "clear_inventory_title", "&cClear Inventory");
+        String lore = TranslationManager.translate("PlayerManage", "clear_inventory_lore", "&7Clear {player}'s inventory")
+                .replace("{player}", targetPlayer.getName());
+        return createItem(Material.BARRIER, title, lore);
+    }
+
+    private ItemStack createClearEnderChestButton() {
+        String title = TranslationManager.translate("PlayerManage", "clear_enderchest_title", "&5Clear EnderChest");
+        String lore = TranslationManager.translate("PlayerManage", "clear_enderchest_lore", "&7Clear {player}'s enderchest")
+                .replace("{player}", targetPlayer.getName());
+        return createItem(Material.PURPLE_DYE, title, lore);
+    }
+
+    // ========== GAMEMODE BUTTONS ==========
+
+    private ItemStack createGamemodeButton(GameMode gameMode) {
+        String modeName = gameMode.name().substring(0, 1) + gameMode.name().substring(1).toLowerCase();
+        String title = TranslationManager.translate("PlayerManage", "gamemode_" + gameMode.name().toLowerCase() + "_title",
+                "&e" + modeName);
+        String lore = TranslationManager.translate("PlayerManage", "gamemode_lore", "&7Set gamemode to " + modeName)
+                .replace("{player}", targetPlayer.getName());
+
+        Material material;
+        switch (gameMode) {
+            case SURVIVAL: material = Material.IRON_SWORD; break;
+            case CREATIVE: material = Material.GRASS_BLOCK; break;
+            case ADVENTURE: material = Material.MAP; break;
+            case SPECTATOR: material = Material.GLASS; break;
+            default: material = Material.PAPER;
+        }
+
+        return createItem(material, title, lore);
+    }
+
+    // ========== EXIT BUTTON ==========
+
     private ItemStack createExitButton() {
-        String title = TranslationManager.translate("PlayerManage", "back_button_title", "&cIndietro");
-        String lore = TranslationManager.translate("PlayerManage", "back_button_lore", "&aRitorna alla lista giocatori");
+        String title = TranslationManager.translate("PlayerManage", "back_button_title", "&cBack");
+        String lore = TranslationManager.translate("PlayerManage", "back_button_lore", "&aReturn to player list");
         return createItem(Material.DARK_OAK_DOOR, title, lore);
     }
+
+    // ========== CLICK HANDLERS ==========
 
     @Override
     public void handleClick(InventoryClickEvent event) {
         int slot = event.getRawSlot();
 
         switch (slot) {
-            case 10:
-                handleTeleportClick(event);
-                break;
-            case 11:
-                handleTpToMeClick(event);
-                break;
-            case 13:
-                handleKickClick(event);
-                break;
-            case 14:
-                handleBanClick(event);
-                break;
-            case 49:
-                handleExitClick(event);
-                break;
-            default:
-                event.setCancelled(true);
-                break;
+            // Row 1
+            case 0: handleTeleportClick(event); break;
+            case 1: handleTpToMeClick(event); break;
+            case 2: handleFreezeClick(event); break;
+            case 3: handleFlyClick(event); break;
+
+            // Row 2
+            case 9: handleHealClick(event); break;
+            case 10: handleFeedClick(event); break;
+            case 11: handleKillClick(event); break;
+            case 12: handleClearEffectsClick(event); break;
+            case 13: handleGodModeClick(event); break;
+
+            // Row 3
+            case 18: handleKickClick(event); break;
+            case 19: handleBanClick(event); break;
+            case 20: handleMuteClick(event); break;
+
+            // Row 4
+            case 27: handleInventoryClick(event); break;
+            case 28: handleEnderChestClick(event); break;
+            case 29: handleClearInventoryClick(event); break;
+            case 30: handleClearEnderChestClick(event); break;
+
+            // Row 5
+            case 36: handleGamemodeClick(event, GameMode.SURVIVAL); break;
+            case 37: handleGamemodeClick(event, GameMode.CREATIVE); break;
+            case 38: handleGamemodeClick(event, GameMode.ADVENTURE); break;
+            case 39: handleGamemodeClick(event, GameMode.SPECTATOR); break;
+
+            // Exit
+            case 49: handleExitClick(event); break;
+
+            default: event.setCancelled(true); break;
         }
     }
 
+    // ========== TELEPORT HANDLERS ==========
+
     private void handleTeleportClick(InventoryClickEvent event) {
         event.getWhoClicked().teleport(targetPlayer.getLocation());
-        String teleportMessage = TranslationManager.translate("PlayerManage", "teleport_message", "&aTi sei teletrasportato da &e{player}")
+        String message = TranslationManager.translate("PlayerManage", "teleport_message", "&aYou teleported to &e{player}")
                 .replace("{player}", targetPlayer.getName());
-        event.getWhoClicked().sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', teleportMessage));
+        event.getWhoClicked().sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
     }
 
     private void handleTpToMeClick(InventoryClickEvent event) {
         Player sender = (Player) event.getWhoClicked();
         if (targetPlayer.isOnline()) {
             targetPlayer.teleport(sender.getLocation());
-            String successMessage = TranslationManager.translate("PlayerManage", "tp_to_me_success", "&a{player} è stato teletrasportato da te")
+            String message = TranslationManager.translate("PlayerManage", "tp_to_me_success", "&e{player} &ahas been teleported to you")
                     .replace("{player}", targetPlayer.getName());
-            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', successMessage));
+            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
         } else {
-            String failureMessage = TranslationManager.translate("PlayerManage", "tp_to_me_failure", "&c{player} non è online!")
+            String message = TranslationManager.translate("PlayerManage", "tp_to_me_failure", "&e{player} &cis not online!")
                     .replace("{player}", targetPlayer.getName());
-            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', failureMessage));
+            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
         }
     }
+
+    private void handleFreezeClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        boolean isFrozen = FreezeManager.toggleFreeze(targetPlayer);
+
+        String message = TranslationManager.translate("PlayerManage",
+                isFrozen ? "freeze_message" : "unfreeze_message",
+                isFrozen ? "&c{player} has been frozen" : "&a{player} has been unfrozen")
+                .replace("{player}", targetPlayer.getName());
+        sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+
+        if (targetPlayer.isOnline()) {
+            String playerMessage = TranslationManager.translate("PlayerManage",
+                    isFrozen ? "freeze_notification" : "unfreeze_notification",
+                    isFrozen ? "&cYou have been frozen!" : "&aYou have been unfrozen!");
+            targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
+        }
+
+        // Refresh GUI
+        event.getWhoClicked().closeInventory();
+        new PlayerManage(sender, targetPlayer).open();
+    }
+
+    private void handleFlyClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        boolean newFlyState = !targetPlayer.getAllowFlight();
+
+        targetPlayer.setAllowFlight(newFlyState);
+        if (!newFlyState && targetPlayer.isFlying()) {
+            targetPlayer.setFlying(false);
+        }
+
+        String message = TranslationManager.translate("PlayerManage",
+                newFlyState ? "fly_enabled_message" : "fly_disabled_message",
+                newFlyState ? "&aFly enabled for {player}" : "&cFly disabled for {player}")
+                .replace("{player}", targetPlayer.getName());
+        sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+
+        // Refresh GUI
+        event.getWhoClicked().closeInventory();
+        new PlayerManage(sender, targetPlayer).open();
+    }
+
+    // ========== PLAYER STATE HANDLERS ==========
+
+    private void handleHealClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        targetPlayer.setHealth(targetPlayer.getMaxHealth());
+        targetPlayer.setFoodLevel(20);
+        targetPlayer.setSaturation(20);
+
+        String message = TranslationManager.translate("PlayerManage", "heal_message", "&a{player} has been healed")
+                .replace("{player}", targetPlayer.getName());
+        sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+    }
+
+    private void handleFeedClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        targetPlayer.setFoodLevel(20);
+        targetPlayer.setSaturation(20);
+
+        String message = TranslationManager.translate("PlayerManage", "feed_message", "&a{player} has been fed")
+                .replace("{player}", targetPlayer.getName());
+        sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+    }
+
+    private void handleKillClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        targetPlayer.setHealth(0);
+
+        String message = TranslationManager.translate("PlayerManage", "kill_message", "&c{player} has been killed")
+                .replace("{player}", targetPlayer.getName());
+        sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+    }
+
+    private void handleClearEffectsClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        for (PotionEffect effect : targetPlayer.getActivePotionEffects()) {
+            targetPlayer.removePotionEffect(effect.getType());
+        }
+
+        String message = TranslationManager.translate("PlayerManage", "clear_effects_message", "&aCleared all effects from {player}")
+                .replace("{player}", targetPlayer.getName());
+        sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+    }
+
+    private void handleGodModeClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        boolean hasGodMode = GodModeManager.toggleGodMode(targetPlayer);
+
+        String message = TranslationManager.translate("PlayerManage",
+                hasGodMode ? "godmode_enabled_message" : "godmode_disabled_message",
+                hasGodMode ? "&6God mode enabled for {player}" : "&cGod mode disabled for {player}")
+                .replace("{player}", targetPlayer.getName());
+        sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+
+        if (targetPlayer.isOnline()) {
+            String playerMessage = TranslationManager.translate("PlayerManage",
+                    hasGodMode ? "godmode_notification_on" : "godmode_notification_off",
+                    hasGodMode ? "&6You are now invincible!" : "&cYou are no longer invincible!");
+            targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
+        }
+
+        // Refresh GUI
+        event.getWhoClicked().closeInventory();
+        new PlayerManage(sender, targetPlayer).open();
+    }
+
+    // ========== PUNISHMENT HANDLERS ==========
 
     private void handleKickClick(InventoryClickEvent event) {
         Player sender = (Player) event.getWhoClicked();
         if (targetPlayer.isOnline()) {
-            String kickMessage = TranslationManager.translate("PlayerManage", "kick_message", "&c{player} è stato espulso dal server")
-                    .replace("{player}", targetPlayer.getName());
-            String kickReason = TranslationManager.translate("PlayerManage", "kick_reason", "&cSei stato espulso dal server!");
+            String kickReason = TranslationManager.translate("PlayerManage", "kick_reason", "&cYou have been kicked from the server!");
             targetPlayer.kickPlayer(org.bukkit.ChatColor.translateAlternateColorCodes('&', kickReason));
-            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', kickMessage));
+
+            String message = TranslationManager.translate("PlayerManage", "kick_message", "&e{player} &chas been kicked")
+                    .replace("{player}", targetPlayer.getName());
+            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+
             PlayerLogger.logKick(sender.getName(), targetPlayer.getName());
         } else {
-            String failureMessage = TranslationManager.translate("PlayerManage", "kick_failure", "&c{player} non è online!")
+            String message = TranslationManager.translate("PlayerManage", "kick_failure", "&e{player} &cis not online!")
                     .replace("{player}", targetPlayer.getName());
-            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', failureMessage));
+            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
         }
     }
 
     private void handleBanClick(InventoryClickEvent event) {
         Player sender = (Player) event.getWhoClicked();
         if (targetPlayer.isOnline()) {
-            String banMessage = TranslationManager.translate("PlayerManage", "ban_message", "&4{player} è stato bannato dal server")
-                    .replace("{player}", targetPlayer.getName());
-            String banReason = TranslationManager.translate("PlayerManage", "ban_reason", "&cSei stato bannato dal server!");
-            String source = TranslationManager.translate("PlayerManage", "source", "Bannato da {player} tramite Admin Manager")
+            String banReason = TranslationManager.translate("PlayerManage", "ban_reason", "&cYou have been banned!");
+            String source = TranslationManager.translate("PlayerManage", "source", "Banned by {player} via Admin Manager")
                     .replace("{player}", sender.getName());
-            // Utilizza il sistema di ban ufficiale
+
             Bukkit.getBanList(org.bukkit.BanList.Type.NAME).addBan(targetPlayer.getName(),
-                    org.bukkit.ChatColor.translateAlternateColorCodes('&', banReason),
-                    null, // Durata: null per ban permanente
-                    source);
-            // Espelle immediatamente il giocatore
+                    org.bukkit.ChatColor.translateAlternateColorCodes('&', banReason), null, source);
             targetPlayer.kickPlayer(org.bukkit.ChatColor.translateAlternateColorCodes('&', banReason));
-            // Invia messaggio di conferma al mittente
-            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', banMessage));
-            // Registra il ban nel log
+
+            String message = TranslationManager.translate("PlayerManage", "ban_message", "&4{player} has been banned")
+                    .replace("{player}", targetPlayer.getName());
+            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+
             PlayerLogger.logBan(sender.getName(), targetPlayer.getName());
         } else {
-            String failureMessage = TranslationManager.translate("PlayerManage", "ban_failure", "&c{player} non è online!")
+            String message = TranslationManager.translate("PlayerManage", "ban_failure", "&e{player} &cis not online!")
                     .replace("{player}", targetPlayer.getName());
-            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', failureMessage));
+            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
         }
     }
+
+    private void handleMuteClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        boolean isMuted = MuteManager.toggleMute(targetPlayer.getUniqueId());
+
+        String message = TranslationManager.translate("PlayerManage",
+                isMuted ? "mute_message" : "unmute_message",
+                isMuted ? "&c{player} has been muted" : "&a{player} has been unmuted")
+                .replace("{player}", targetPlayer.getName());
+        sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+
+        if (targetPlayer.isOnline()) {
+            String playerMessage = TranslationManager.translate("PlayerManage",
+                    isMuted ? "mute_notification" : "unmute_notification",
+                    isMuted ? "&cYou have been muted!" : "&aYou have been unmuted!");
+            targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
+        }
+
+        // Refresh GUI
+        event.getWhoClicked().closeInventory();
+        new PlayerManage(sender, targetPlayer).open();
+    }
+
+    // ========== INVENTORY HANDLERS ==========
+
+    private void handleInventoryClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        sender.openInventory(targetPlayer.getInventory());
+    }
+
+    private void handleEnderChestClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        sender.openInventory(targetPlayer.getEnderChest());
+    }
+
+    private void handleClearInventoryClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        targetPlayer.getInventory().clear();
+
+        String message = TranslationManager.translate("PlayerManage", "clear_inventory_message", "&cCleared inventory of {player}")
+                .replace("{player}", targetPlayer.getName());
+        sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+
+        if (targetPlayer.isOnline()) {
+            String playerMessage = TranslationManager.translate("PlayerManage", "inventory_cleared_notification", "&cYour inventory has been cleared!");
+            targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
+        }
+    }
+
+    private void handleClearEnderChestClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        targetPlayer.getEnderChest().clear();
+
+        String message = TranslationManager.translate("PlayerManage", "clear_enderchest_message", "&5Cleared enderchest of {player}")
+                .replace("{player}", targetPlayer.getName());
+        sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+
+        if (targetPlayer.isOnline()) {
+            String playerMessage = TranslationManager.translate("PlayerManage", "enderchest_cleared_notification", "&5Your enderchest has been cleared!");
+            targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
+        }
+    }
+
+    // ========== GAMEMODE HANDLERS ==========
+
+    private void handleGamemodeClick(InventoryClickEvent event, GameMode gameMode) {
+        Player sender = (Player) event.getWhoClicked();
+        targetPlayer.setGameMode(gameMode);
+
+        String modeName = gameMode.name().substring(0, 1) + gameMode.name().substring(1).toLowerCase();
+        String message = TranslationManager.translate("PlayerManage", "gamemode_changed_message", "&eSet {player}'s gamemode to " + modeName)
+                .replace("{player}", targetPlayer.getName());
+        sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+
+        if (targetPlayer.isOnline()) {
+            String playerMessage = TranslationManager.translate("PlayerManage", "gamemode_notification", "&eYour gamemode has been changed to " + modeName);
+            targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
+        }
+    }
+
+    // ========== EXIT HANDLER ==========
+
     private void handleExitClick(InventoryClickEvent event) {
         new PlayerListGui((Player) event.getWhoClicked(), 1).open();
     }

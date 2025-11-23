@@ -5,8 +5,10 @@ import it.alessiogta.adminmanager.utils.TranslationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
@@ -99,6 +101,14 @@ public abstract class BaseGui implements Listener {
         if (event.getView().getTitle().equals(title) && event.getWhoClicked() == player) {
             event.setCancelled(true); // Rende le icone immobili
             handleClick(event); // Permette di gestire i clic personalizzati
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        // Deregistra questo listener quando l'inventario viene chiuso
+        if (event.getView().getTitle().equals(title) && event.getPlayer() == player) {
+            HandlerList.unregisterAll(this);
         }
     }
 

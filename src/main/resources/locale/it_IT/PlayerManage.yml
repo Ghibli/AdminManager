@@ -1,5 +1,4 @@
 
-
 #Stringhe generali
 back_button_title: "&cIndietro"
 back_button_lore: "&aRitorna alla lista giocatori"
@@ -13,29 +12,99 @@ tp_to_me_lore: "&fTeletrasporta &e{player} &fda te"
 tp_to_me_success: "&e{player} &aè stato teletrasportato da te"
 tp_to_me_failure: "&e{player} &cnon è online!"
 
+#Freeze
+freeze_title: "&bCongela"
+freeze_lore: "&7Congela {player}"
+unfreeze_title: "&aScongela"
+unfreeze_lore: "&7Scongela {player}"
+freeze_message: "&c{player} è stato congelato"
+unfreeze_message: "&a{player} è stato scongelato"
+freeze_notification: "&cSei stato congelato!"
+unfreeze_notification: "&aSei stato scongelato!"
+freeze_cannot_move: "&cSei congelato e non puoi muoverti!"
+
+#Fly
+fly_enable_title: "&aAbilita Volo"
+fly_enable_lore: "&7Abilita il volo per {player}"
+fly_disable_title: "&cDisabilita Volo"
+fly_disable_lore: "&7Disabilita il volo per {player}"
+fly_enabled_message: "&aVolo abilitato per {player}"
+fly_disabled_message: "&cVolo disabilitato per {player}"
+
+#Heal & Feed
+heal_title: "&cCura"
+heal_lore: "&7Ripristina salute e fame di {player}"
+heal_message: "&a{player} è stato curato"
+feed_title: "&6Sazia"
+feed_lore: "&7Ripristina la fame di {player}"
+feed_message: "&a{player} è stato saziato"
+
+#Kill
+kill_title: "&4Uccidi"
+kill_lore: "&7Uccidi {player}"
+kill_message: "&c{player} è stato ucciso"
+
+#Clear Effects
+clear_effects_title: "&eRimuovi Effetti"
+clear_effects_lore: "&7Rimuovi tutti gli effetti pozione da {player}"
+clear_effects_message: "&aRimossi tutti gli effetti da {player}"
+
+#God Mode
+godmode_enable_title: "&6Abilita God Mode"
+godmode_enable_lore: "&7Rendi {player} invincibile"
+godmode_disable_title: "&cDisabilita God Mode"
+godmode_disable_lore: "&7Disabilita l'invincibilità per {player}"
+godmode_enabled_message: "&6God mode abilitato per {player}"
+godmode_disabled_message: "&cGod mode disabilitato per {player}"
+godmode_notification_on: "&6Sei ora invincibile!"
+godmode_notification_off: "&cNon sei più invincibile!"
+
 #Messaggi Kick dal server
-kick_title: "&cEspelli dal server"
-kick_lore: "&fEspelli dal server &e{player}"
+kick_title: "&cEspelli"
+kick_lore: "&7Espelli {player} dal server"
 kick_message: "&e{player} &cè stato espulso dal server"
 kick_reason: "&cSei stato espulso dal server per violazione del regolamento"
 kick_failure: "&e{player} &cnon è online!"
 
 #Messaggi Ban dal server
-ban_title: "&4Ban dal server"
-ban_lore: "&fBanna &e{player} &fdal server"
+ban_title: "&4Ban"
+ban_lore: "&7Banna {player} dal server"
 ban_message: "&4{player} è stato bannato dal server"
 ban_reason: "&cSei stato bannato dal server per aver &lGRAVEMENTE &cviolato il regolamento!"
 ban_failure: "&e{player} &cnon è online!"
 source: "Bannato da {player} tramite Admin Manager"
 
 #Messaggi Mute
-mute_title: "&aMuta giocatore"
+mute_title: "&aMuta"
 mute_lore: "&7Muta {player}"
 mute_unmute_title: "&cRimuovi mute"
 mute_unmute_lore: "&7Rimuovi il mute da {player}"
 mute_message: "&c{player} è stato mutato"
 unmute_message: "&a{player} non è più mutato"
+mute_notification: "&cSei stato mutato!"
+unmute_notification: "&aSei stato smutato!"
 mute_chat_message: "&cSei mutato e non puoi parlare!"
 mute_notify_message: "&e{player} ha tentato di parlare ma è mutato!"
 
+#Inventario
+inventory_title: "&9Visualizza Inventario"
+inventory_lore: "&7Visualizza l'inventario di {player}"
+enderchest_title: "&5Visualizza EnderChest"
+enderchest_lore: "&7Visualizza l'enderchest di {player}"
+clear_inventory_title: "&cCancella Inventario"
+clear_inventory_lore: "&7Cancella l'inventario di {player}"
+clear_enderchest_title: "&5Cancella EnderChest"
+clear_enderchest_lore: "&7Cancella l'enderchest di {player}"
+clear_inventory_message: "&cInventario di {player} cancellato"
+clear_enderchest_message: "&5EnderChest di {player} cancellato"
+inventory_cleared_notification: "&cIl tuo inventario è stato cancellato!"
+enderchest_cleared_notification: "&5Il tuo enderchest è stato cancellato!"
 
+#Gamemode
+gamemode_survival_title: "&eSopravvivenza"
+gamemode_creative_title: "&eCreativa"
+gamemode_adventure_title: "&eAvventura"
+gamemode_spectator_title: "&eSpettatore"
+gamemode_lore: "&7Imposta modalità di gioco"
+gamemode_changed_message: "&eModalità di gioco di {player} cambiata"
+gamemode_notification: "&eIl tua modalità di gioco è stata cambiata"
