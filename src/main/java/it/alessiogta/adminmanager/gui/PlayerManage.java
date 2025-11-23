@@ -1,5 +1,6 @@
 package it.alessiogta.adminmanager.gui;
 
+import it.alessiogta.adminmanager.utils.MuteManager;
 import it.alessiogta.adminmanager.utils.PlayerLogger;
 import it.alessiogta.adminmanager.utils.TranslationManager;
 import org.bukkit.Bukkit;
@@ -27,6 +28,7 @@ public class PlayerManage extends BaseGui {
         setItem(11, createTpToMeButton());
         setItem(13, createKickButton());
         setItem(14, createBanButton());
+        setItem(15, createMuteButton());
         setItem(49, createExitButton());
     }
 
@@ -58,6 +60,24 @@ public class PlayerManage extends BaseGui {
         return createItem(Material.RED_BANNER, title, lore);
     }
 
+    private ItemStack createMuteButton() {
+        boolean isMuted = MuteManager.isMuted(targetPlayer.getUniqueId());
+
+        if (isMuted) {
+            // Mostra bottone "Rimuovi Mute"
+            String title = TranslationManager.translate("PlayerManage", "mute_unmute_title", "&cRimuovi mute");
+            String lore = TranslationManager.translate("PlayerManage", "mute_unmute_lore", "&7Rimuovi il mute da {player}")
+                    .replace("{player}", targetPlayer.getName());
+            return createItem(Material.LIME_DYE, title, lore);
+        } else {
+            // Mostra bottone "Muta"
+            String title = TranslationManager.translate("PlayerManage", "mute_title", "&aMuta giocatore");
+            String lore = TranslationManager.translate("PlayerManage", "mute_lore", "&7Muta {player}")
+                    .replace("{player}", targetPlayer.getName());
+            return createItem(Material.GRAY_DYE, title, lore);
+        }
+    }
+
     private ItemStack createExitButton() {
         String title = TranslationManager.translate("PlayerManage", "back_button_title", "&cIndietro");
         String lore = TranslationManager.translate("PlayerManage", "back_button_lore", "&aRitorna alla lista giocatori");
@@ -80,6 +100,9 @@ public class PlayerManage extends BaseGui {
                 break;
             case 14:
                 handleBanClick(event);
+                break;
+            case 15:
+                handleMuteClick(event);
                 break;
             case 49:
                 handleExitClick(event);
@@ -152,6 +175,40 @@ public class PlayerManage extends BaseGui {
             sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', failureMessage));
         }
     }
+
+    private void handleMuteClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        boolean isMuted = MuteManager.isMuted(targetPlayer.getUniqueId());
+
+        if (isMuted) {
+            // Unmute il giocatore
+            MuteManager.unmutePlayer(targetPlayer.getUniqueId());
+            String unmuteMessage = TranslationManager.translate("PlayerManage", "unmute_message", "&a{player} non è più mutato")
+                    .replace("{player}", targetPlayer.getName());
+            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', unmuteMessage));
+
+            // Notifica al giocatore unmutato se online
+            if (targetPlayer.isOnline()) {
+                targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', "&aNon sei più mutato!"));
+            }
+        } else {
+            // Mute il giocatore
+            MuteManager.mutePlayer(targetPlayer.getUniqueId());
+            String muteMessage = TranslationManager.translate("PlayerManage", "mute_message", "&c{player} è stato mutato")
+                    .replace("{player}", targetPlayer.getName());
+            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', muteMessage));
+
+            // Notifica al giocatore mutato se online
+            if (targetPlayer.isOnline()) {
+                targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', "&cSei stato mutato!"));
+            }
+        }
+
+        // Ricarica la GUI per aggiornare il bottone
+        event.getWhoClicked().closeInventory();
+        new PlayerManage(sender, targetPlayer).open();
+    }
+
     private void handleExitClick(InventoryClickEvent event) {
         new PlayerListGui((Player) event.getWhoClicked(), 1).open();
     }

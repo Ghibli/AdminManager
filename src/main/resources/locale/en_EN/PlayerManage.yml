@@ -1,20 +1,38 @@
 
-#Stringhe generali
-back_button_title: "&cIndietro"
-back_button_lore: "&aRitorna alla lista giocatori"
+#General strings
+back_button_title: "&cBack"
+back_button_lore: "&aReturn to player list"
 
-#Stringhe Teletrasporto
-teleport_title: "&aTeletrasporto"
-teleport_lore: "&fTeletrasportati da &e{player}"
-teleport_message: "&aTi sei teletrasportato da &e{player}"
-tp_to_me_title: "&aTP da me"
-tp_to_me_lore: "&fTeletrasporta &e{player} &fda te"
-tp_to_me_success: "&e{player} &aè stato teletrasportato da te"
-tp_to_me_failure: "&e{player} &cnon è online!"
+#Teleport strings
+teleport_title: "&aTeleport"
+teleport_lore: "&fTeleport to &e{player}"
+teleport_message: "&aYou teleported to &e{player}"
+tp_to_me_title: "&aTP to me"
+tp_to_me_lore: "&fTeleport &e{player} &fto you"
+tp_to_me_success: "&e{player} &ahas been teleported to you"
+tp_to_me_failure: "&e{player} &cis not online!"
 
-#Messaggi Kick dal server
-kick_title: "&cEspelli dal server"
-kick_lore: "&fEspelli dal server &e{player}"
-kick_message: "&e{player} &cè stato espulso dal server"
-kick_reason: "&cSei stato espulso dal server per violazione del regolamento"
-kick_failure: "&e{player} &cnon è online!"
+#Kick messages
+kick_title: "&cKick from server"
+kick_lore: "&fKick &e{player} &ffrom the server"
+kick_message: "&e{player} &chas been kicked from the server"
+kick_reason: "&cYou have been kicked from the server for violating the rules"
+kick_failure: "&e{player} &cis not online!"
+
+#Ban messages
+ban_title: "&4Ban from server"
+ban_lore: "&fBan &e{player} &ffrom the server"
+ban_message: "&4{player} has been banned from the server"
+ban_reason: "&cYou have been banned from the server for &lSERIOUSLY &cviolating the rules!"
+ban_failure: "&e{player} &cis not online!"
+source: "Banned by {player} via Admin Manager"
+
+#Mute messages
+mute_title: "&aMute player"
+mute_lore: "&7Mute {player}"
+mute_unmute_title: "&cUnmute"
+mute_unmute_lore: "&7Unmute {player}"
+mute_message: "&c{player} has been muted"
+unmute_message: "&a{player} is no longer muted"
+mute_chat_message: "&cYou are muted and cannot talk!"
+mute_notify_message: "&e{player} tried to talk but is muted!"

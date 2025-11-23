@@ -60,7 +60,7 @@ public class PlayerListGui extends BaseGui {
             lore.add("");
             lore.add(ChatColor.translateAlternateColorCodes('&',TranslationManager.translate("PlayerListGui", "uuid", "UUID: %uuid%").replace("%uuid%", uuid.toString())));
             lore.add(ChatColor.translateAlternateColorCodes('&',TranslationManager.translate("PlayerListGui", "ping", "Ping: %ping% ms").replace("%ping%" , getPing(name))));
-            lore.add(ChatColor.translateAlternateColorCodes('&',TranslationManager.translate("PlayerListGui", "world","Mondo: %world%").replace("%world%", Bukkit.getWorlds().get(0).getName())));
+            lore.add(ChatColor.translateAlternateColorCodes('&',TranslationManager.translate("PlayerListGui", "world","Mondo: %world%").replace("%world%", getPlayerWorld(name))));
             lore.add(ChatColor.translateAlternateColorCodes('&',TranslationManager.translate("PlayerListGui","ip","IP: %ip%").replace("%ip%",getPlayerIP(name))));
             lore.add(ChatColor.translateAlternateColorCodes('&',TranslationManager.translate("PlayerListGui","coordinates" , "Coordinate: %coordinates%").replace("%coordinates%" , getPlayerCoordinates(name))));
             lore.add(ChatColor.translateAlternateColorCodes('&',TranslationManager.translate("PlayerListGui" , "action" , "Clicca per Gestire")));
