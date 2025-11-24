@@ -1,0 +1,39 @@
+# Armor Creator GUI Translations (English)
+
+# Material Buttons
+material_chainmail_title: "&7Chainmail"
+material_netherite_title: "&5Netherite"
+material_diamond_title: "&bDiamond"
+material_iron_title: "&fIron"
+material_golden_title: "&6Golden"
+material_leather_title: "&eLeather"
+
+material_lore_left: "&7LEFT: Helmet"
+material_lore_right: "&7RIGHT: Chestplate"
+material_lore_shift_left: "&7SHIFT+LEFT: Leggings"
+material_lore_shift_right: "&7SHIFT+RIGHT: Boots"
+material_lore_double: "&7DOUBLE CLICK: All"
+
+# Armor Preview
+empty_slot_title: "&7Empty"
+
+# Action Buttons
+clear_title: "&cClear All"
+clear_lore: "&7Remove all armor pieces"
+
+protection_title: "&9Protection"
+protection_lore: "&7Click to add Protection IV"
+
+give_armor_title: "&aGive Armor"
+give_armor_lore: "&7Give armor to {player}"
+
+back_button_title: "&cBack"
+back_button_lore: "&aReturn to player management"
+
+# Messages
+armor_updated: "&aArmor updated!"
+armor_cleared: "&cArmor cleared!"
+enchantment_added: "&aProtection IV added!"
+armor_given: "&aArmor given to {player}!"
+armor_received: "&aYou received armor!"
+no_armor: "&cNo armor to give!"

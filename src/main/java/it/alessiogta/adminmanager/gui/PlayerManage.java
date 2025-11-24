@@ -34,6 +34,7 @@ public class PlayerManage extends BaseGui {
         setItem(4, createGetSkullButton());
         setItem(5, createSpawnTeleportButton());
         setItem(6, createEconomyButton());
+        setItem(7, createArmorCreatorButton());
 
         // Row 2: Player State
         setItem(9, createHealButton());
@@ -51,11 +52,8 @@ public class PlayerManage extends BaseGui {
         setItem(20, createClearInventoryButton());
         setItem(21, createClearEnderChestButton());
 
-        // Row 4: Gamemode
-        setItem(27, createGamemodeButton(GameMode.SURVIVAL));
-        setItem(28, createGamemodeButton(GameMode.CREATIVE));
-        setItem(29, createGamemodeButton(GameMode.ADVENTURE));
-        setItem(30, createGamemodeButton(GameMode.SPECTATOR));
+        // Row 4: Gamemode Toggle
+        setItem(27, createGamemodeToggleButton());
 
         // Exit button
         setItem(49, createExitButton());
@@ -120,6 +118,13 @@ public class PlayerManage extends BaseGui {
         String lore = TranslationManager.translate("PlayerManage", "economy_lore", "&7Manage {player}'s money")
                 .replace("{player}", targetPlayer.getName());
         return createItem(Material.GOLD_INGOT, title, lore);
+    }
+
+    private ItemStack createArmorCreatorButton() {
+        String title = TranslationManager.translate("PlayerManage", "armor_creator_title", "&dArmor Creator");
+        String lore = TranslationManager.translate("PlayerManage", "armor_creator_lore", "&7Create and give armor to {player}")
+                .replace("{player}", targetPlayer.getName());
+        return createItem(Material.DIAMOND_CHESTPLATE, title, lore);
     }
 
     // ========== PLAYER STATE BUTTONS ==========
@@ -219,15 +224,29 @@ public class PlayerManage extends BaseGui {
 
     // ========== GAMEMODE BUTTONS ==========
 
-    private ItemStack createGamemodeButton(GameMode gameMode) {
-        String modeName = gameMode.name().substring(0, 1) + gameMode.name().substring(1).toLowerCase();
-        String title = TranslationManager.translate("PlayerManage", "gamemode_" + gameMode.name().toLowerCase() + "_title",
-                "&e" + modeName);
-        String lore = TranslationManager.translate("PlayerManage", "gamemode_lore", "&7Set gamemode to " + modeName)
-                .replace("{player}", targetPlayer.getName());
+    private ItemStack createGamemodeToggleButton() {
+        GameMode currentMode = targetPlayer.getGameMode();
+
+        String title = TranslationManager.translate("PlayerManage", "gamemode_toggle_title", "&eGamemode");
+
+        // Build lore with all gamemodes, highlighting current one
+        StringBuilder loreBuilder = new StringBuilder();
+        loreBuilder.append(TranslationManager.translate("PlayerManage", "gamemode_toggle_lore", "&7Click to cycle\n"));
+
+        GameMode[] modes = {GameMode.SURVIVAL, GameMode.CREATIVE, GameMode.ADVENTURE, GameMode.SPECTATOR};
+        for (GameMode mode : modes) {
+            String modeName = translateGamemodeName(mode);
+            if (mode == currentMode) {
+                loreBuilder.append("&a> ").append(modeName).append("\n");
+            } else {
+                loreBuilder.append("&7  ").append(modeName).append("\n");
+            }
+        }
+
+        String lore = loreBuilder.toString().trim();
 
         Material material;
-        switch (gameMode) {
+        switch (currentMode) {
             case SURVIVAL: material = Material.IRON_SWORD; break;
             case CREATIVE: material = Material.GRASS_BLOCK; break;
             case ADVENTURE: material = Material.MAP; break;
@@ -236,6 +255,12 @@ public class PlayerManage extends BaseGui {
         }
 
         return createItem(material, title, lore);
+    }
+
+    private String translateGamemodeName(GameMode gameMode) {
+        String key = "gamemode_" + gameMode.name().toLowerCase() + "_name";
+        String defaultName = gameMode.name().substring(0, 1) + gameMode.name().substring(1).toLowerCase();
+        return TranslationManager.translate("PlayerManage", key, defaultName);
     }
 
     // ========== EXIT BUTTON ==========
@@ -261,6 +286,7 @@ public class PlayerManage extends BaseGui {
             case 4: handleGetSkullClick(event); break;
             case 5: handleSpawnTeleportClick(event); break;
             case 6: handleEconomyClick(event); break;
+            case 7: handleArmorCreatorClick(event); break;
 
             // Row 2
             case 9: handleHealClick(event); break;
@@ -279,10 +305,7 @@ public class PlayerManage extends BaseGui {
             case 21: handleClearEnderChestClick(event); break;
 
             // Row 4
-            case 27: handleGamemodeClick(event, GameMode.SURVIVAL); break;
-            case 28: handleGamemodeClick(event, GameMode.CREATIVE); break;
-            case 29: handleGamemodeClick(event, GameMode.ADVENTURE); break;
-            case 30: handleGamemodeClick(event, GameMode.SPECTATOR); break;
+            case 27: handleGamemodeToggleClick(event); break;
 
             // Exit
             case 49: handleExitClick(event); break;
@@ -403,6 +426,15 @@ public class PlayerManage extends BaseGui {
         Bukkit.getScheduler().runTask(
                 Bukkit.getPluginManager().getPlugin("AdminManager"),
                 () -> new EconomyManagerGui(sender, targetPlayer).open()
+        );
+    }
+
+    private void handleArmorCreatorClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        event.getWhoClicked().closeInventory();
+        Bukkit.getScheduler().runTask(
+                Bukkit.getPluginManager().getPlugin("AdminManager"),
+                () -> new ArmorCreatorGui(sender, targetPlayer).open()
         );
     }
 
@@ -560,19 +592,37 @@ public class PlayerManage extends BaseGui {
 
     // ========== GAMEMODE HANDLERS ==========
 
-    private void handleGamemodeClick(InventoryClickEvent event, GameMode gameMode) {
+    private void handleGamemodeToggleClick(InventoryClickEvent event) {
         Player sender = (Player) event.getWhoClicked();
-        targetPlayer.setGameMode(gameMode);
+        GameMode currentMode = targetPlayer.getGameMode();
 
-        String modeName = gameMode.name().substring(0, 1) + gameMode.name().substring(1).toLowerCase();
-        String message = TranslationManager.translate("PlayerManage", "gamemode_changed_message", "&eSet {player}'s gamemode to " + modeName)
-                .replace("{player}", targetPlayer.getName());
+        // Cycle to next gamemode
+        GameMode nextMode;
+        switch (currentMode) {
+            case SURVIVAL: nextMode = GameMode.CREATIVE; break;
+            case CREATIVE: nextMode = GameMode.ADVENTURE; break;
+            case ADVENTURE: nextMode = GameMode.SPECTATOR; break;
+            case SPECTATOR: nextMode = GameMode.SURVIVAL; break;
+            default: nextMode = GameMode.SURVIVAL;
+        }
+
+        targetPlayer.setGameMode(nextMode);
+
+        String modeName = translateGamemodeName(nextMode);
+        String message = TranslationManager.translate("PlayerManage", "gamemode_changed_message", "&eSet {player}'s gamemode to {mode}")
+                .replace("{player}", targetPlayer.getName())
+                .replace("{mode}", modeName);
         sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
 
         if (targetPlayer.isOnline()) {
-            String playerMessage = TranslationManager.translate("PlayerManage", "gamemode_notification", "&eYour gamemode has been changed to " + modeName);
+            String playerMessage = TranslationManager.translate("PlayerManage", "gamemode_notification", "&eYour gamemode has been changed to {mode}")
+                    .replace("{mode}", modeName);
             targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
         }
+
+        // Refresh GUI to update the icon
+        event.getWhoClicked().closeInventory();
+        new PlayerManage(sender, targetPlayer).open();
     }
 
     // ========== EXIT HANDLER ==========

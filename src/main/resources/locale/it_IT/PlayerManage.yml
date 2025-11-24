@@ -46,6 +46,10 @@ spawn_teleport_notification: "&aSei stato teletrasportato allo spawn!"
 economy_title: "&6Economia"
 economy_lore: "&7Gestisci i soldi di {player}"
 
+#Armor Creator
+armor_creator_title: "&dArmor Creator"
+armor_creator_lore: "&7Crea e dai armatura a {player}"
+
 #Heal & Feed
 heal_title: "&cCura"
 heal_lore: "&7Ripristina salute e fame di {player}"
@@ -128,11 +132,14 @@ clear_enderchest_message: "&5EnderChest di {player} cancellato"
 inventory_cleared_notification: "&cIl tuo inventario è stato cancellato!"
 enderchest_cleared_notification: "&5Il tuo enderchest è stato cancellato!"
 
-#Gamemode
-gamemode_survival_title: "&eSopravvivenza"
-gamemode_creative_title: "&eCreativa"
-gamemode_adventure_title: "&eAvventura"
-gamemode_spectator_title: "&eSpettatore"
-gamemode_lore: "&7Imposta modalità di gioco"
-gamemode_changed_message: "&eModalità di gioco di {player} cambiata"
-gamemode_notification: "&eIl tua modalità di gioco è stata cambiata"
+#Gamemode Toggle
+gamemode_toggle_title: "&eModalità di Gioco"
+gamemode_toggle_lore: "&7Clicca per cambiare"
+
+gamemode_survival_name: "Sopravvivenza"
+gamemode_creative_name: "Creativa"
+gamemode_adventure_name: "Avventura"
+gamemode_spectator_name: "Spettatore"
+
+gamemode_changed_message: "&eModalità di gioco di {player} cambiata in {mode}"
+gamemode_notification: "&eLa tua modalità di gioco è stata cambiata in {mode}"
