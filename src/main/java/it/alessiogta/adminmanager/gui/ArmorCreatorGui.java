@@ -16,6 +16,7 @@ import java.util.Map;
 
 public class ArmorCreatorGui extends BaseGui {
 
+    private final Player admin;
     private final Player targetPlayer;
     private ItemStack helmet, chestplate, leggings, boots;
     private int protectionLevel = 0;
@@ -55,6 +56,7 @@ public class ArmorCreatorGui extends BaseGui {
 
     public ArmorCreatorGui(Player player, Player targetPlayer) {
         super(player, formatTitle(targetPlayer), 1);
+        this.admin = player;
         this.targetPlayer = targetPlayer;
         setupGuiItems();
     }
@@ -264,7 +266,7 @@ public class ArmorCreatorGui extends BaseGui {
     }
 
     private void handleMaterialClick(ArmorMaterial material, ClickType clickType) {
-        Player sender = (Player) player;
+        Player sender = admin;
 
         if (clickType == ClickType.DOUBLE_CLICK) {
             // Create full set
@@ -331,7 +333,7 @@ public class ArmorCreatorGui extends BaseGui {
 
     private void handleYourArmorClick() {
         // Show player's current armor
-        Player sender = (Player) player;
+        Player sender = admin;
         ItemStack[] armor = targetPlayer.getInventory().getArmorContents();
 
         sender.sendMessage("§e" + targetPlayer.getName() + "'s armor:");
@@ -354,7 +356,7 @@ public class ArmorCreatorGui extends BaseGui {
         setItem(49, createProjectileProtectionButton());
         updateInfoPanel();
 
-        player.sendMessage("§cArmor cleared!");
+        admin.sendMessage("§cArmor cleared!");
     }
 
     private void handleGiveArmorClick() {
@@ -378,20 +380,20 @@ public class ArmorCreatorGui extends BaseGui {
         }
 
         if (given > 0) {
-            player.sendMessage("§aGave " + given + " armor piece(s) to §e" + targetPlayer.getName());
+            admin.sendMessage("§aGave " + given + " armor piece(s) to §e" + targetPlayer.getName());
             if (targetPlayer.isOnline()) {
                 targetPlayer.sendMessage("§aYou received armor from an admin!");
             }
         } else {
-            player.sendMessage("§cNo armor to give!");
+            admin.sendMessage("§cNo armor to give!");
         }
     }
 
     private void handleExitClick() {
-        player.closeInventory();
+        admin.closeInventory();
         Bukkit.getScheduler().runTask(
             Bukkit.getPluginManager().getPlugin("AdminManager"),
-            () -> new PlayerManage((Player) player, targetPlayer).open()
+            () -> new PlayerManage(admin, targetPlayer).open()
         );
     }
 
