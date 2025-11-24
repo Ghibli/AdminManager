@@ -29,33 +29,35 @@ public class PlayerManage extends BaseGui {
         // Row 1: Teleport & Movement
         setItem(0, createTeleportButton());
         setItem(1, createTpToMeButton());
-        setItem(2, createFreezeButton());
-        setItem(3, createFlyButton());
-        setItem(4, createGetSkullButton());
-        setItem(5, createSpawnTeleportButton());
-        setItem(6, createEconomyButton());
-        setItem(7, createArmorCreatorButton());
+        setItem(2, createSpawnTeleportButton());
+        setItem(3, createFreezeButton());
+        setItem(4, createFlyButton());
 
-        // Row 2: Player State
+        // Row 2: Health & State
         setItem(9, createHealButton());
         setItem(10, createFeedButton());
-        setItem(11, createKillButton());
+        setItem(11, createGodModeButton());
         setItem(12, createClearEffectsButton());
-        setItem(13, createGodModeButton());
-        setItem(14, createWalkSpeedButton());
-        setItem(15, createFlySpeedButton());
-        setItem(16, createGiveItemButton());
+        setItem(13, createKillButton());
 
-        // Row 3: Inventory
-        setItem(18, createInventoryButton());
-        setItem(19, createEnderChestButton());
-        setItem(20, createClearInventoryButton());
-        setItem(21, createClearEnderChestButton());
+        // Row 3: Speed & Gamemode
+        setItem(18, createWalkSpeedButton());
+        setItem(19, createFlySpeedButton());
+        setItem(20, createGamemodeToggleButton());
 
-        // Row 4: Gamemode Toggle
-        setItem(27, createGamemodeToggleButton());
+        // Row 4: Inventory Management
+        setItem(27, createInventoryButton());
+        setItem(28, createEnderChestButton());
+        setItem(29, createClearInventoryButton());
+        setItem(30, createClearEnderChestButton());
 
-        // Exit button
+        // Row 5: Items & Special
+        setItem(36, createGiveItemButton());
+        setItem(37, createGetSkullButton());
+        setItem(38, createArmorCreatorButton());
+        setItem(39, createEconomyButton());
+
+        // Row 6: Exit
         setItem(49, createExitButton());
     }
 
@@ -278,36 +280,38 @@ public class PlayerManage extends BaseGui {
         int slot = event.getRawSlot();
 
         switch (slot) {
-            // Row 1
+            // Row 1: Teleport & Movement
             case 0: handleTeleportClick(event); break;
             case 1: handleTpToMeClick(event); break;
-            case 2: handleFreezeClick(event); break;
-            case 3: handleFlyClick(event); break;
-            case 4: handleGetSkullClick(event); break;
-            case 5: handleSpawnTeleportClick(event); break;
-            case 6: handleEconomyClick(event); break;
-            case 7: handleArmorCreatorClick(event); break;
+            case 2: handleSpawnTeleportClick(event); break;
+            case 3: handleFreezeClick(event); break;
+            case 4: handleFlyClick(event); break;
 
-            // Row 2
+            // Row 2: Health & State
             case 9: handleHealClick(event); break;
             case 10: handleFeedClick(event); break;
-            case 11: handleKillClick(event); break;
+            case 11: handleGodModeClick(event); break;
             case 12: handleClearEffectsClick(event); break;
-            case 13: handleGodModeClick(event); break;
-            case 14: handleWalkSpeedClick(event); break;
-            case 15: handleFlySpeedClick(event); break;
-            case 16: handleGiveItemClick(event); break;
+            case 13: handleKillClick(event); break;
 
-            // Row 3
-            case 18: handleInventoryClick(event); break;
-            case 19: handleEnderChestClick(event); break;
-            case 20: handleClearInventoryClick(event); break;
-            case 21: handleClearEnderChestClick(event); break;
+            // Row 3: Speed & Gamemode
+            case 18: handleWalkSpeedClick(event); break;
+            case 19: handleFlySpeedClick(event); break;
+            case 20: handleGamemodeToggleClick(event); break;
 
-            // Row 4
-            case 27: handleGamemodeToggleClick(event); break;
+            // Row 4: Inventory Management
+            case 27: handleInventoryClick(event); break;
+            case 28: handleEnderChestClick(event); break;
+            case 29: handleClearInventoryClick(event); break;
+            case 30: handleClearEnderChestClick(event); break;
 
-            // Exit
+            // Row 5: Items & Special
+            case 36: handleGiveItemClick(event); break;
+            case 37: handleGetSkullClick(event); break;
+            case 38: handleArmorCreatorClick(event); break;
+            case 39: handleEconomyClick(event); break;
+
+            // Row 6: Exit
             case 49: handleExitClick(event); break;
 
             default: event.setCancelled(true); break;
