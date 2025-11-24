@@ -31,6 +31,17 @@ fly_disable_lore: "&7Disabilita il volo per {player}"
 fly_enabled_message: "&aVolo abilitato per {player}"
 fly_disabled_message: "&cVolo disabilitato per {player}"
 
+#Get Skull
+get_skull_title: "&6Ottieni Testa"
+get_skull_lore: "&7Ottieni la testa di {player}"
+get_skull_message: "&aHai ricevuto la testa di {player}"
+
+#Spawn Teleport
+spawn_teleport_title: "&bTP allo Spawn"
+spawn_teleport_lore: "&7Teletrasporta {player} allo spawn"
+spawn_teleport_message: "&a{player} è stato teletrasportato allo spawn"
+spawn_teleport_notification: "&aSei stato teletrasportato allo spawn!"
+
 #Heal & Feed
 heal_title: "&cCura"
 heal_lore: "&7Ripristina salute e fame di {player}"
@@ -58,6 +69,12 @@ godmode_enabled_message: "&6God mode abilitato per {player}"
 godmode_disabled_message: "&cGod mode disabilitato per {player}"
 godmode_notification_on: "&6Sei ora invincibile!"
 godmode_notification_off: "&cNon sei più invincibile!"
+
+#Speed Control
+walk_speed_title: "&eVelocità Camminata"
+walk_speed_lore: "&7Attuale: &f{speed}\n&7Clicca per modificare"
+fly_speed_title: "&bVelocità Volo"
+fly_speed_lore: "&7Attuale: &f{speed}\n&7Clicca per modificare"
 
 #Messaggi Kick dal server
 kick_title: "&cEspelli"

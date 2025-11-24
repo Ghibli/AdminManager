@@ -1,0 +1,22 @@
+# Speed Control GUI Translations (Italian)
+
+# Buttons
+decrease_title: "&c- Diminuisci"
+decrease_lore: "&7Clicca per diminuire la velocità"
+
+display_title: "&eVelocità Attuale"
+display_lore: "&7Velocità: &f{speed}"
+
+increase_title: "&a+ Aumenta"
+increase_lore: "&7Clicca per aumentare la velocità"
+
+reset_title: "&6Ripristina"
+reset_lore: "&7Ripristina al valore predefinito ({default})"
+
+back_button_title: "&cIndietro"
+back_button_lore: "&aRitorna alla gestione giocatore"
+
+# Messages
+speed_decreased: "&aVelocità diminuita a &e{speed}"
+speed_increased: "&aVelocità aumentata a &e{speed}"
+speed_reset: "&aVelocità ripristinata al valore predefinito &e{speed}"

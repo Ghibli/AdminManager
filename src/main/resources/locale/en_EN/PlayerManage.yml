@@ -31,6 +31,17 @@ fly_disable_lore: "&7Disable fly for {player}"
 fly_enabled_message: "&aFly enabled for {player}"
 fly_disabled_message: "&cFly disabled for {player}"
 
+#Get Skull
+get_skull_title: "&6Get Skull"
+get_skull_lore: "&7Get {player}'s skull"
+get_skull_message: "&aYou received {player}'s skull"
+
+#Spawn Teleport
+spawn_teleport_title: "&bTP to Spawn"
+spawn_teleport_lore: "&7Teleport {player} to spawn"
+spawn_teleport_message: "&a{player} has been teleported to spawn"
+spawn_teleport_notification: "&aYou have been teleported to spawn!"
+
 #Heal & Feed
 heal_title: "&cHeal"
 heal_lore: "&7Restore health and food for {player}"
@@ -58,6 +69,12 @@ godmode_enabled_message: "&6God mode enabled for {player}"
 godmode_disabled_message: "&cGod mode disabled for {player}"
 godmode_notification_on: "&6You are now invincible!"
 godmode_notification_off: "&cYou are no longer invincible!"
+
+#Speed Control
+walk_speed_title: "&eWalk Speed"
+walk_speed_lore: "&7Current: &f{speed}\n&7Click to modify"
+fly_speed_title: "&bFly Speed"
+fly_speed_lore: "&7Current: &f{speed}\n&7Click to modify"
 
 #Kick messages
 kick_title: "&cKick"

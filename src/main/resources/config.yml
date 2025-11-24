@@ -12,6 +12,9 @@ log_messages:
   kick: "[%s] [%s] ha espulso %s dal server"
   ban: "[%s] [%s] ha bannato %s dal server"
 
+# Comando spawn personalizzato (lascia vuoto per usare la spawn del mondo)
+# Esempi: "spawn", "hub", "lobby"
+spawn_command: ""
 
 permissions:
   use: adminmanager.use

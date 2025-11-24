@@ -31,6 +31,8 @@ public class PlayerManage extends BaseGui {
         setItem(1, createTpToMeButton());
         setItem(2, createFreezeButton());
         setItem(3, createFlyButton());
+        setItem(4, createGetSkullButton());
+        setItem(5, createSpawnTeleportButton());
 
         // Row 2: Player State
         setItem(9, createHealButton());
@@ -38,6 +40,8 @@ public class PlayerManage extends BaseGui {
         setItem(11, createKillButton());
         setItem(12, createClearEffectsButton());
         setItem(13, createGodModeButton());
+        setItem(14, createWalkSpeedButton());
+        setItem(15, createFlySpeedButton());
 
         // Row 3: Inventory
         setItem(18, createInventoryButton());
@@ -95,6 +99,20 @@ public class PlayerManage extends BaseGui {
         return createItem(canFly ? Material.FEATHER : Material.ELYTRA, title, lore);
     }
 
+    private ItemStack createGetSkullButton() {
+        String title = TranslationManager.translate("PlayerManage", "get_skull_title", "&6Get Skull");
+        String lore = TranslationManager.translate("PlayerManage", "get_skull_lore", "&7Get {player}'s skull")
+                .replace("{player}", targetPlayer.getName());
+        return createItem(Material.PLAYER_HEAD, title, lore);
+    }
+
+    private ItemStack createSpawnTeleportButton() {
+        String title = TranslationManager.translate("PlayerManage", "spawn_teleport_title", "&bTP to Spawn");
+        String lore = TranslationManager.translate("PlayerManage", "spawn_teleport_lore", "&7Teleport {player} to spawn")
+                .replace("{player}", targetPlayer.getName());
+        return createItem(Material.RESPAWN_ANCHOR, title, lore);
+    }
+
     // ========== PLAYER STATE BUTTONS ==========
 
     private ItemStack createHealButton() {
@@ -135,6 +153,22 @@ public class PlayerManage extends BaseGui {
                 hasGodMode ? "&7Disable invincibility for {player}" : "&7Make {player} invincible")
                 .replace("{player}", targetPlayer.getName());
         return createItem(hasGodMode ? Material.DIAMOND_CHESTPLATE : Material.GOLDEN_CHESTPLATE, title, lore);
+    }
+
+    private ItemStack createWalkSpeedButton() {
+        float walkSpeed = targetPlayer.getWalkSpeed();
+        String title = TranslationManager.translate("PlayerManage", "walk_speed_title", "&eWalk Speed");
+        String lore = TranslationManager.translate("PlayerManage", "walk_speed_lore", "&7Current: &f{speed}\n&7Click to modify")
+                .replace("{speed}", String.format("%.2f", walkSpeed));
+        return createItem(Material.LEATHER_BOOTS, title, lore);
+    }
+
+    private ItemStack createFlySpeedButton() {
+        float flySpeed = targetPlayer.getFlySpeed();
+        String title = TranslationManager.translate("PlayerManage", "fly_speed_title", "&bFly Speed");
+        String lore = TranslationManager.translate("PlayerManage", "fly_speed_lore", "&7Current: &f{speed}\n&7Click to modify")
+                .replace("{speed}", String.format("%.2f", flySpeed));
+        return createItem(Material.PHANTOM_MEMBRANE, title, lore);
     }
 
     // ========== INVENTORY BUTTONS ==========
@@ -208,6 +242,8 @@ public class PlayerManage extends BaseGui {
             case 1: handleTpToMeClick(event); break;
             case 2: handleFreezeClick(event); break;
             case 3: handleFlyClick(event); break;
+            case 4: handleGetSkullClick(event); break;
+            case 5: handleSpawnTeleportClick(event); break;
 
             // Row 2
             case 9: handleHealClick(event); break;
@@ -215,6 +251,8 @@ public class PlayerManage extends BaseGui {
             case 11: handleKillClick(event); break;
             case 12: handleClearEffectsClick(event); break;
             case 13: handleGodModeClick(event); break;
+            case 14: handleWalkSpeedClick(event); break;
+            case 15: handleFlySpeedClick(event); break;
 
             // Row 3
             case 18: handleInventoryClick(event); break;
@@ -300,6 +338,47 @@ public class PlayerManage extends BaseGui {
         new PlayerManage(sender, targetPlayer).open();
     }
 
+    private void handleGetSkullClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
+        org.bukkit.inventory.meta.SkullMeta skullMeta = (org.bukkit.inventory.meta.SkullMeta) skull.getItemMeta();
+        if (skullMeta != null) {
+            skullMeta.setOwningPlayer(targetPlayer);
+            skull.setItemMeta(skullMeta);
+        }
+
+        sender.getInventory().addItem(skull);
+
+        String message = TranslationManager.translate("PlayerManage", "get_skull_message", "&aYou received {player}'s skull")
+                .replace("{player}", targetPlayer.getName());
+        sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+    }
+
+    private void handleSpawnTeleportClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+
+        // Check if there's a custom spawn command configured
+        String spawnCommand = Bukkit.getPluginManager().getPlugin("AdminManager").getConfig().getString("spawn_command", "");
+
+        if (spawnCommand != null && !spawnCommand.isEmpty()) {
+            // Execute custom spawn command
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), spawnCommand + " " + targetPlayer.getName());
+        } else {
+            // Teleport to world spawn
+            targetPlayer.teleport(targetPlayer.getWorld().getSpawnLocation());
+        }
+
+        String message = TranslationManager.translate("PlayerManage", "spawn_teleport_message", "&a{player} has been teleported to spawn")
+                .replace("{player}", targetPlayer.getName());
+        sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+
+        if (targetPlayer.isOnline()) {
+            String playerMessage = TranslationManager.translate("PlayerManage", "spawn_teleport_notification", "&aYou have been teleported to spawn!");
+            targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
+        }
+    }
+
     // ========== PLAYER STATE HANDLERS ==========
 
     private void handleHealClick(InventoryClickEvent event) {
@@ -363,6 +442,24 @@ public class PlayerManage extends BaseGui {
         // Refresh GUI
         event.getWhoClicked().closeInventory();
         new PlayerManage(sender, targetPlayer).open();
+    }
+
+    private void handleWalkSpeedClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        event.getWhoClicked().closeInventory();
+        Bukkit.getScheduler().runTask(
+                Bukkit.getPluginManager().getPlugin("AdminManager"),
+                () -> new SpeedControlGui(sender, targetPlayer, SpeedControlGui.SpeedType.WALK).open()
+        );
+    }
+
+    private void handleFlySpeedClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        event.getWhoClicked().closeInventory();
+        Bukkit.getScheduler().runTask(
+                Bukkit.getPluginManager().getPlugin("AdminManager"),
+                () -> new SpeedControlGui(sender, targetPlayer, SpeedControlGui.SpeedType.FLY).open()
+        );
     }
 
     // ========== INVENTORY HANDLERS ==========

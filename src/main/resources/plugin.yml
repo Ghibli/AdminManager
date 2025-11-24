@@ -6,6 +6,7 @@ prefix: AdminM
 authors: [AlessioGTA]
 description: Plugin for managing players on your server
 website: https://www.mclegacy.it
+softdepend: [Vault]
 
 commands:
   adminm:
