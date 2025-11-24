@@ -2,8 +2,6 @@ package it.alessiogta.adminmanager.gui;
 
 import it.alessiogta.adminmanager.utils.FreezeManager;
 import it.alessiogta.adminmanager.utils.GodModeManager;
-import it.alessiogta.adminmanager.utils.MuteManager;
-import it.alessiogta.adminmanager.utils.PlayerLogger;
 import it.alessiogta.adminmanager.utils.TranslationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -41,22 +39,17 @@ public class PlayerManage extends BaseGui {
         setItem(12, createClearEffectsButton());
         setItem(13, createGodModeButton());
 
-        // Row 3: Punishments
-        setItem(18, createKickButton());
-        setItem(19, createBanButton());
-        setItem(20, createMuteButton());
+        // Row 3: Inventory
+        setItem(18, createInventoryButton());
+        setItem(19, createEnderChestButton());
+        setItem(20, createClearInventoryButton());
+        setItem(21, createClearEnderChestButton());
 
-        // Row 4: Inventory
-        setItem(27, createInventoryButton());
-        setItem(28, createEnderChestButton());
-        setItem(29, createClearInventoryButton());
-        setItem(30, createClearEnderChestButton());
-
-        // Row 5: Gamemode
-        setItem(36, createGamemodeButton(GameMode.SURVIVAL));
-        setItem(37, createGamemodeButton(GameMode.CREATIVE));
-        setItem(38, createGamemodeButton(GameMode.ADVENTURE));
-        setItem(39, createGamemodeButton(GameMode.SPECTATOR));
+        // Row 4: Gamemode
+        setItem(27, createGamemodeButton(GameMode.SURVIVAL));
+        setItem(28, createGamemodeButton(GameMode.CREATIVE));
+        setItem(29, createGamemodeButton(GameMode.ADVENTURE));
+        setItem(30, createGamemodeButton(GameMode.SPECTATOR));
 
         // Exit button
         setItem(49, createExitButton());
@@ -144,34 +137,6 @@ public class PlayerManage extends BaseGui {
         return createItem(hasGodMode ? Material.DIAMOND_CHESTPLATE : Material.GOLDEN_CHESTPLATE, title, lore);
     }
 
-    // ========== PUNISHMENT BUTTONS ==========
-
-    private ItemStack createKickButton() {
-        String title = TranslationManager.translate("PlayerManage", "kick_title", "&cKick");
-        String lore = TranslationManager.translate("PlayerManage", "kick_lore", "&7Kick {player} from server")
-                .replace("{player}", targetPlayer.getName());
-        return createItem(Material.IRON_DOOR, title, lore);
-    }
-
-    private ItemStack createBanButton() {
-        String title = TranslationManager.translate("PlayerManage", "ban_title", "&4Ban");
-        String lore = TranslationManager.translate("PlayerManage", "ban_lore", "&7Ban {player} from server")
-                .replace("{player}", targetPlayer.getName());
-        return createItem(Material.RED_BANNER, title, lore);
-    }
-
-    private ItemStack createMuteButton() {
-        boolean isMuted = MuteManager.isMuted(targetPlayer.getUniqueId());
-        String title = TranslationManager.translate("PlayerManage",
-                isMuted ? "mute_unmute_title" : "mute_title",
-                isMuted ? "&cUnmute" : "&aMute");
-        String lore = TranslationManager.translate("PlayerManage",
-                isMuted ? "mute_unmute_lore" : "mute_lore",
-                isMuted ? "&7Unmute {player}" : "&7Mute {player}")
-                .replace("{player}", targetPlayer.getName());
-        return createItem(isMuted ? Material.LIME_DYE : Material.GRAY_DYE, title, lore);
-    }
-
     // ========== INVENTORY BUTTONS ==========
 
     private ItemStack createInventoryButton() {
@@ -252,21 +217,16 @@ public class PlayerManage extends BaseGui {
             case 13: handleGodModeClick(event); break;
 
             // Row 3
-            case 18: handleKickClick(event); break;
-            case 19: handleBanClick(event); break;
-            case 20: handleMuteClick(event); break;
+            case 18: handleInventoryClick(event); break;
+            case 19: handleEnderChestClick(event); break;
+            case 20: handleClearInventoryClick(event); break;
+            case 21: handleClearEnderChestClick(event); break;
 
             // Row 4
-            case 27: handleInventoryClick(event); break;
-            case 28: handleEnderChestClick(event); break;
-            case 29: handleClearInventoryClick(event); break;
-            case 30: handleClearEnderChestClick(event); break;
-
-            // Row 5
-            case 36: handleGamemodeClick(event, GameMode.SURVIVAL); break;
-            case 37: handleGamemodeClick(event, GameMode.CREATIVE); break;
-            case 38: handleGamemodeClick(event, GameMode.ADVENTURE); break;
-            case 39: handleGamemodeClick(event, GameMode.SPECTATOR); break;
+            case 27: handleGamemodeClick(event, GameMode.SURVIVAL); break;
+            case 28: handleGamemodeClick(event, GameMode.CREATIVE); break;
+            case 29: handleGamemodeClick(event, GameMode.ADVENTURE); break;
+            case 30: handleGamemodeClick(event, GameMode.SPECTATOR); break;
 
             // Exit
             case 49: handleExitClick(event); break;
@@ -397,71 +357,6 @@ public class PlayerManage extends BaseGui {
             String playerMessage = TranslationManager.translate("PlayerManage",
                     hasGodMode ? "godmode_notification_on" : "godmode_notification_off",
                     hasGodMode ? "&6You are now invincible!" : "&cYou are no longer invincible!");
-            targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
-        }
-
-        // Refresh GUI
-        event.getWhoClicked().closeInventory();
-        new PlayerManage(sender, targetPlayer).open();
-    }
-
-    // ========== PUNISHMENT HANDLERS ==========
-
-    private void handleKickClick(InventoryClickEvent event) {
-        Player sender = (Player) event.getWhoClicked();
-        if (targetPlayer.isOnline()) {
-            String kickReason = TranslationManager.translate("PlayerManage", "kick_reason", "&cYou have been kicked from the server!");
-            targetPlayer.kickPlayer(org.bukkit.ChatColor.translateAlternateColorCodes('&', kickReason));
-
-            String message = TranslationManager.translate("PlayerManage", "kick_message", "&e{player} &chas been kicked")
-                    .replace("{player}", targetPlayer.getName());
-            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
-
-            PlayerLogger.logKick(sender.getName(), targetPlayer.getName());
-        } else {
-            String message = TranslationManager.translate("PlayerManage", "kick_failure", "&e{player} &cis not online!")
-                    .replace("{player}", targetPlayer.getName());
-            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
-        }
-    }
-
-    private void handleBanClick(InventoryClickEvent event) {
-        Player sender = (Player) event.getWhoClicked();
-        if (targetPlayer.isOnline()) {
-            String banReason = TranslationManager.translate("PlayerManage", "ban_reason", "&cYou have been banned!");
-            String source = TranslationManager.translate("PlayerManage", "source", "Banned by {player} via Admin Manager")
-                    .replace("{player}", sender.getName());
-
-            Bukkit.getBanList(org.bukkit.BanList.Type.NAME).addBan(targetPlayer.getName(),
-                    org.bukkit.ChatColor.translateAlternateColorCodes('&', banReason), null, source);
-            targetPlayer.kickPlayer(org.bukkit.ChatColor.translateAlternateColorCodes('&', banReason));
-
-            String message = TranslationManager.translate("PlayerManage", "ban_message", "&4{player} has been banned")
-                    .replace("{player}", targetPlayer.getName());
-            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
-
-            PlayerLogger.logBan(sender.getName(), targetPlayer.getName());
-        } else {
-            String message = TranslationManager.translate("PlayerManage", "ban_failure", "&e{player} &cis not online!")
-                    .replace("{player}", targetPlayer.getName());
-            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
-        }
-    }
-
-    private void handleMuteClick(InventoryClickEvent event) {
-        Player sender = (Player) event.getWhoClicked();
-        boolean isMuted = MuteManager.toggleMute(targetPlayer.getUniqueId());
-
-        String message = TranslationManager.translate("PlayerManage",
-                isMuted ? "mute_message" : "unmute_message",
-                isMuted ? "&c{player} has been muted" : "&a{player} has been unmuted")
-                .replace("{player}", targetPlayer.getName());
-        sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
-
-        if (targetPlayer.isOnline()) {
-            String playerMessage = TranslationManager.translate("PlayerManage",
-                    isMuted ? "mute_notification" : "unmute_notification",
-                    isMuted ? "&cYou have been muted!" : "&aYou have been unmuted!");
             targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
         }
 

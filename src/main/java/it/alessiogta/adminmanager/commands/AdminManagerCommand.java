@@ -2,7 +2,6 @@ package it.alessiogta.adminmanager.commands;
 
 import it.alessiogta.adminmanager.AdminManager;
 import it.alessiogta.adminmanager.gui.PlayerListGui;
-import it.alessiogta.adminmanager.utils.MuteManager;
 import it.alessiogta.adminmanager.utils.TranslationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -49,9 +48,6 @@ public class AdminManagerCommand implements CommandExecutor {
                 // Ricarica i file di traduzione
                 String language = plugin.getConfig().getString("language", "en_EN");
                 TranslationManager.loadTranslations(language);
-
-                // Ricarica il MuteManager
-                MuteManager.reload();
 
                 sender.sendMessage("§aConfigurazione e file di traduzione ricaricati con successo.");
             } else {

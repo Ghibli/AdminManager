@@ -2,10 +2,7 @@ package it.alessiogta.adminmanager;
 
 import it.alessiogta.adminmanager.commands.AdminManagerCommand;
 import it.alessiogta.adminmanager.commands.AdminManagerTabCompleter;
-import it.alessiogta.adminmanager.listeners.ChatListener;
 import it.alessiogta.adminmanager.listeners.PlayerControlListener;
-import it.alessiogta.adminmanager.utils.MuteManager;
-import it.alessiogta.adminmanager.utils.PlayerLogger;
 import it.alessiogta.adminmanager.utils.TranslationManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.HandlerList;
@@ -30,12 +27,6 @@ public class AdminManager extends JavaPlugin {
         String language = config.getString("language", "it_IT");
         TranslationManager.loadTranslations(language);
 
-        // Inizializzazione del sistema di log
-        PlayerLogger.initialize(config);
-
-        // Inizializzazione del sistema di mute
-        MuteManager.initialize();
-
         // Registrazione dei comandi
         registerCommands();
 
@@ -44,7 +35,6 @@ public class AdminManager extends JavaPlugin {
 
         // Registrazione degli eventi
         HandlerList.unregisterAll(this); // Evita registrazioni multiple
-        getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerControlListener(), this);
     }
 
