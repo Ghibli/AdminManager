@@ -19,8 +19,11 @@ public class ArmorCreatorGui extends BaseGui {
     private final Player admin;
     private final Player targetPlayer;
     private ItemStack helmet, chestplate, leggings, boots;
-    private int protectionLevel = 0;
-    private int projectileProtectionLevel = 0;
+    private int helmetProtection = 0;
+    private int chestplateProtection = 0;
+    private int leggingsProtection = 0;
+    private int bootsProtection = 0;
+    private int bootsProjectileProtection = 0;
 
     public enum ArmorMaterial {
         CHAINMAIL("Chainmail", Material.CHAINMAIL_HELMET, Material.CHAINMAIL_CHESTPLATE,
@@ -74,20 +77,18 @@ public class ArmorCreatorGui extends BaseGui {
         setItem(36, createMaterialButton(ArmorMaterial.GOLDEN));
         setItem(45, createMaterialButton(ArmorMaterial.LEATHER));
 
-        // Center: Armor preview (two 3x3 areas)
-        // First preview area: slots 10-12, 19-21, 28-30
-        // Second preview area: slots 14-16, 23-25, 32-34
+        // Center: Armor preview with enchantment books
+        // Helmet at 13, Protection book at 14
+        // Chestplate at 22, Protection book at 23
+        // Leggings at 31, Protection book at 32
+        // Boots at 40, Protection book at 41, Projectile Protection at 42
         updateArmorPreview();
+        updateEnchantmentBooks();
 
         // Bottom row: Control buttons
-        setItem(46, createProtectionButton());
         setItem(47, createYourArmorButton());
         setItem(48, createClearButton());
-        setItem(49, createProjectileProtectionButton());
         setItem(50, createGiveArmorButton());
-
-        // Right side info panel (slot 52)
-        setItem(52, createInfoPanel());
 
         // Exit button (slot 53)
         setItem(53, createExitButton());
@@ -115,42 +116,51 @@ public class ArmorCreatorGui extends BaseGui {
     }
 
     private void updateArmorPreview() {
-        // Clear preview areas first
-        for (int i = 10; i <= 12; i++) setItem(i, new ItemStack(Material.AIR));
-        for (int i = 19; i <= 21; i++) setItem(i, new ItemStack(Material.AIR));
-        for (int i = 28; i <= 30; i++) setItem(i, new ItemStack(Material.AIR));
-
-        for (int i = 14; i <= 16; i++) setItem(i, new ItemStack(Material.AIR));
-        for (int i = 23; i <= 25; i++) setItem(i, new ItemStack(Material.AIR));
-        for (int i = 32; i <= 34; i++) setItem(i, new ItemStack(Material.AIR));
-
-        // First preview area (left) - Show armor pieces
-        if (helmet != null) setItem(11, helmet.clone());
-        if (chestplate != null) setItem(20, chestplate.clone());
-        if (leggings != null) setItem(29, leggings.clone());
-
-        // Second preview area (right) - Show armor pieces
-        if (helmet != null) setItem(15, helmet.clone());
-        if (chestplate != null) setItem(24, chestplate.clone());
-        if (leggings != null) setItem(33, leggings.clone());
-
-        // Boots in bottom of second area
-        if (boots != null) {
-            setItem(30, boots.clone());
-            setItem(34, boots.clone());
-        }
+        // Clear preview area (center column slots: 13, 22, 31, 40)
+        setItem(13, helmet != null ? helmet.clone() : createEmptySlot("HELMET"));
+        setItem(22, chestplate != null ? chestplate.clone() : createEmptySlot("CHESTPLATE"));
+        setItem(31, leggings != null ? leggings.clone() : createEmptySlot("LEGGINGS"));
+        setItem(40, boots != null ? boots.clone() : createEmptySlot("BOOTS"));
     }
 
-    private ItemStack createProtectionButton() {
+    private ItemStack createEmptySlot(String name) {
+        ItemStack item = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName("§7" + name);
+            item.setItemMeta(meta);
+        }
+        return item;
+    }
+
+    private void updateEnchantmentBooks() {
+        // Helmet Protection (slot 14)
+        setItem(14, createProtectionBook("HELMET", helmetProtection));
+
+        // Chestplate Protection (slot 23)
+        setItem(23, createProtectionBook("CHESTPLATE", chestplateProtection));
+
+        // Leggings Protection (slot 32)
+        setItem(32, createProtectionBook("LEGGINGS", leggingsProtection));
+
+        // Boots Protection (slot 41)
+        setItem(41, createProtectionBook("BOOTS", bootsProtection));
+
+        // Boots Projectile Protection (slot 42)
+        setItem(42, createProjectileProtectionBook(bootsProjectileProtection));
+    }
+
+    private ItemStack createProtectionBook(String armorPiece, int level) {
         ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {
-            meta.setDisplayName("§9§lPROTECTION");
+            meta.setDisplayName("§9§lPROTECTION " + (level > 0 ? level : ""));
             meta.setLore(Arrays.asList(
-                "§7Current level: §f" + protectionLevel,
+                "§7For: §e" + armorPiece,
+                "§7Level: §f" + level,
                 "§7",
-                "§aLEFT §7OPEN GUI"
+                "§aLEFT §7Cycle 1→2→3→4"
             ));
             item.setItemMeta(meta);
         }
@@ -158,15 +168,17 @@ public class ArmorCreatorGui extends BaseGui {
         return item;
     }
 
-    private ItemStack createProjectileProtectionButton() {
-        ItemStack item = new ItemStack(Material.ARROW);
+    private ItemStack createProjectileProtectionBook(int level) {
+        ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {
-            meta.setDisplayName("§9PROJECTILE PROTECTION " + projectileProtectionLevel);
+            meta.setDisplayName("§b§lPROJECTILE PROT " + (level > 0 ? level : ""));
             meta.setLore(Arrays.asList(
+                "§7For: §eBOOTS",
+                "§7Level: §f" + level,
                 "§7",
-                "§aLEFT §7ADD FOR BOOTS"
+                "§aLEFT §7Cycle 1→2→3→4"
             ));
             item.setItemMeta(meta);
         }
@@ -213,22 +225,6 @@ public class ArmorCreatorGui extends BaseGui {
         return item;
     }
 
-    private ItemStack createInfoPanel() {
-        ItemStack item = new ItemStack(Material.PAPER);
-        ItemMeta meta = item.getItemMeta();
-
-        if (meta != null) {
-            meta.setDisplayName("§6§lPROTECTION " + protectionLevel);
-            meta.setLore(Arrays.asList(
-                "§7",
-                "§aLEFT §7ADD FOR CHESTPLATE"
-            ));
-            item.setItemMeta(meta);
-        }
-
-        return item;
-    }
-
     private ItemStack createExitButton() {
         ItemStack item = new ItemStack(Material.DARK_OAK_DOOR);
         ItemMeta meta = item.getItemMeta();
@@ -254,11 +250,16 @@ public class ArmorCreatorGui extends BaseGui {
         else if (slot == 36) handleMaterialClick(ArmorMaterial.GOLDEN, clickType);
         else if (slot == 45) handleMaterialClick(ArmorMaterial.LEATHER, clickType);
 
+        // Enchantment books
+        else if (slot == 14) handleHelmetProtectionClick();
+        else if (slot == 23) handleChestplateProtectionClick();
+        else if (slot == 32) handleLeggingsProtectionClick();
+        else if (slot == 41) handleBootsProtectionClick();
+        else if (slot == 42) handleBootsProjectileProtectionClick();
+
         // Control buttons (bottom row)
-        else if (slot == 46) handleProtectionClick(clickType);
         else if (slot == 47) handleYourArmorClick();
         else if (slot == 48) handleClearClick();
-        else if (slot == 49) handleProjectileProtectionClick();
         else if (slot == 50) handleGiveArmorClick();
         else if (slot == 53) handleExitClick();
 
@@ -266,69 +267,110 @@ public class ArmorCreatorGui extends BaseGui {
     }
 
     private void handleMaterialClick(ArmorMaterial material, ClickType clickType) {
-        Player sender = admin;
-
         if (clickType == ClickType.DOUBLE_CLICK) {
             // Create full set
             helmet = new ItemStack(material.getHelmet());
             chestplate = new ItemStack(material.getChestplate());
             leggings = new ItemStack(material.getLeggings());
             boots = new ItemStack(material.getBoots());
+
+            // Apply existing enchantments
+            applyEnchantmentsToArmor();
         } else if (clickType == ClickType.LEFT) {
             // Create helmet
             helmet = new ItemStack(material.getHelmet());
+            applyHelmetEnchantments();
         } else if (clickType == ClickType.RIGHT) {
             // Create chestplate
             chestplate = new ItemStack(material.getChestplate());
+            applyChestplateEnchantments();
         } else if (clickType == ClickType.SHIFT_LEFT) {
             // Create leggings
             leggings = new ItemStack(material.getLeggings());
+            applyLeggingsEnchantments();
         } else if (clickType == ClickType.SHIFT_RIGHT) {
             // Create boots
             boots = new ItemStack(material.getBoots());
+            applyBootsEnchantments();
         }
 
         updateArmorPreview();
-        updateInfoPanel();
     }
 
-    private void handleProtectionClick(ClickType clickType) {
-        if (clickType == ClickType.LEFT) {
-            // Cycle protection level 0 -> 1 -> 2 -> 3 -> 4 -> 0
-            protectionLevel = (protectionLevel + 1) % 5;
+    private void handleHelmetProtectionClick() {
+        // Cycle 1 -> 2 -> 3 -> 4 -> 1
+        helmetProtection = helmetProtection == 4 ? 1 : (helmetProtection == 0 ? 1 : helmetProtection + 1);
+        applyHelmetEnchantments();
+        updateArmorPreview();
+        updateEnchantmentBooks();
+    }
 
-            // Apply to all pieces
-            if (protectionLevel > 0) {
-                if (helmet != null) helmet.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, protectionLevel);
-                if (chestplate != null) chestplate.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, protectionLevel);
-                if (leggings != null) leggings.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, protectionLevel);
-                if (boots != null) boots.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, protectionLevel);
-            } else {
-                if (helmet != null) helmet.removeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL);
-                if (chestplate != null) chestplate.removeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL);
-                if (leggings != null) leggings.removeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL);
-                if (boots != null) boots.removeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL);
-            }
+    private void handleChestplateProtectionClick() {
+        // Cycle 1 -> 2 -> 3 -> 4 -> 1
+        chestplateProtection = chestplateProtection == 4 ? 1 : (chestplateProtection == 0 ? 1 : chestplateProtection + 1);
+        applyChestplateEnchantments();
+        updateArmorPreview();
+        updateEnchantmentBooks();
+    }
 
-            updateArmorPreview();
-            setItem(46, createProtectionButton());
-            updateInfoPanel();
+    private void handleLeggingsProtectionClick() {
+        // Cycle 1 -> 2 -> 3 -> 4 -> 1
+        leggingsProtection = leggingsProtection == 4 ? 1 : (leggingsProtection == 0 ? 1 : leggingsProtection + 1);
+        applyLeggingsEnchantments();
+        updateArmorPreview();
+        updateEnchantmentBooks();
+    }
+
+    private void handleBootsProtectionClick() {
+        // Cycle 1 -> 2 -> 3 -> 4 -> 1
+        bootsProtection = bootsProtection == 4 ? 1 : (bootsProtection == 0 ? 1 : bootsProtection + 1);
+        applyBootsEnchantments();
+        updateArmorPreview();
+        updateEnchantmentBooks();
+    }
+
+    private void handleBootsProjectileProtectionClick() {
+        // Cycle 1 -> 2 -> 3 -> 4 -> 1
+        bootsProjectileProtection = bootsProjectileProtection == 4 ? 1 : (bootsProjectileProtection == 0 ? 1 : bootsProjectileProtection + 1);
+        applyBootsEnchantments();
+        updateArmorPreview();
+        updateEnchantmentBooks();
+    }
+
+    private void applyHelmetEnchantments() {
+        if (helmet != null && helmetProtection > 0) {
+            helmet.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, helmetProtection);
         }
     }
 
-    private void handleProjectileProtectionClick() {
-        projectileProtectionLevel = (projectileProtectionLevel + 1) % 5;
+    private void applyChestplateEnchantments() {
+        if (chestplate != null && chestplateProtection > 0) {
+            chestplate.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, chestplateProtection);
+        }
+    }
 
+    private void applyLeggingsEnchantments() {
+        if (leggings != null && leggingsProtection > 0) {
+            leggings.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, leggingsProtection);
+        }
+    }
+
+    private void applyBootsEnchantments() {
         if (boots != null) {
-            if (projectileProtectionLevel > 0) {
-                boots.addUnsafeEnchantment(Enchantment.PROTECTION_PROJECTILE, projectileProtectionLevel);
-            } else {
-                boots.removeEnchantment(Enchantment.PROTECTION_PROJECTILE);
+            if (bootsProtection > 0) {
+                boots.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, bootsProtection);
+            }
+            if (bootsProjectileProtection > 0) {
+                boots.addUnsafeEnchantment(Enchantment.PROTECTION_PROJECTILE, bootsProjectileProtection);
             }
         }
+    }
 
-        updateArmorPreview();
-        setItem(49, createProjectileProtectionButton());
+    private void applyEnchantmentsToArmor() {
+        applyHelmetEnchantments();
+        applyChestplateEnchantments();
+        applyLeggingsEnchantments();
+        applyBootsEnchantments();
     }
 
     private void handleYourArmorClick() {
@@ -348,13 +390,14 @@ public class ArmorCreatorGui extends BaseGui {
         chestplate = null;
         leggings = null;
         boots = null;
-        protectionLevel = 0;
-        projectileProtectionLevel = 0;
+        helmetProtection = 0;
+        chestplateProtection = 0;
+        leggingsProtection = 0;
+        bootsProtection = 0;
+        bootsProjectileProtection = 0;
 
         updateArmorPreview();
-        setItem(46, createProtectionButton());
-        setItem(49, createProjectileProtectionButton());
-        updateInfoPanel();
+        updateEnchantmentBooks();
 
         admin.sendMessage("§cArmor cleared!");
     }
