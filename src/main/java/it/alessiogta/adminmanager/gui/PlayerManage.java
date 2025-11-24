@@ -33,6 +33,7 @@ public class PlayerManage extends BaseGui {
         setItem(3, createFlyButton());
         setItem(4, createGetSkullButton());
         setItem(5, createSpawnTeleportButton());
+        setItem(6, createEconomyButton());
 
         // Row 2: Player State
         setItem(9, createHealButton());
@@ -42,6 +43,7 @@ public class PlayerManage extends BaseGui {
         setItem(13, createGodModeButton());
         setItem(14, createWalkSpeedButton());
         setItem(15, createFlySpeedButton());
+        setItem(16, createGiveItemButton());
 
         // Row 3: Inventory
         setItem(18, createInventoryButton());
@@ -113,6 +115,13 @@ public class PlayerManage extends BaseGui {
         return createItem(Material.RESPAWN_ANCHOR, title, lore);
     }
 
+    private ItemStack createEconomyButton() {
+        String title = TranslationManager.translate("PlayerManage", "economy_title", "&6Economy");
+        String lore = TranslationManager.translate("PlayerManage", "economy_lore", "&7Manage {player}'s money")
+                .replace("{player}", targetPlayer.getName());
+        return createItem(Material.GOLD_INGOT, title, lore);
+    }
+
     // ========== PLAYER STATE BUTTONS ==========
 
     private ItemStack createHealButton() {
@@ -169,6 +178,13 @@ public class PlayerManage extends BaseGui {
         String lore = TranslationManager.translate("PlayerManage", "fly_speed_lore", "&7Current: &f{speed}\n&7Click to modify")
                 .replace("{speed}", String.format("%.2f", flySpeed));
         return createItem(Material.PHANTOM_MEMBRANE, title, lore);
+    }
+
+    private ItemStack createGiveItemButton() {
+        String title = TranslationManager.translate("PlayerManage", "give_item_title", "&dGive Item");
+        String lore = TranslationManager.translate("PlayerManage", "give_item_lore", "&7Give item in hand to {player}")
+                .replace("{player}", targetPlayer.getName());
+        return createItem(Material.DROPPER, title, lore);
     }
 
     // ========== INVENTORY BUTTONS ==========
@@ -244,6 +260,7 @@ public class PlayerManage extends BaseGui {
             case 3: handleFlyClick(event); break;
             case 4: handleGetSkullClick(event); break;
             case 5: handleSpawnTeleportClick(event); break;
+            case 6: handleEconomyClick(event); break;
 
             // Row 2
             case 9: handleHealClick(event); break;
@@ -253,6 +270,7 @@ public class PlayerManage extends BaseGui {
             case 13: handleGodModeClick(event); break;
             case 14: handleWalkSpeedClick(event); break;
             case 15: handleFlySpeedClick(event); break;
+            case 16: handleGiveItemClick(event); break;
 
             // Row 3
             case 18: handleInventoryClick(event); break;
@@ -379,6 +397,15 @@ public class PlayerManage extends BaseGui {
         }
     }
 
+    private void handleEconomyClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        event.getWhoClicked().closeInventory();
+        Bukkit.getScheduler().runTask(
+                Bukkit.getPluginManager().getPlugin("AdminManager"),
+                () -> new EconomyManagerGui(sender, targetPlayer).open()
+        );
+    }
+
     // ========== PLAYER STATE HANDLERS ==========
 
     private void handleHealClick(InventoryClickEvent event) {
@@ -460,6 +487,35 @@ public class PlayerManage extends BaseGui {
                 Bukkit.getPluginManager().getPlugin("AdminManager"),
                 () -> new SpeedControlGui(sender, targetPlayer, SpeedControlGui.SpeedType.FLY).open()
         );
+    }
+
+    private void handleGiveItemClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        ItemStack itemInHand = sender.getInventory().getItemInMainHand();
+
+        if (itemInHand == null || itemInHand.getType() == Material.AIR) {
+            String message = TranslationManager.translate("PlayerManage", "give_item_no_item", "&cYou must hold an item in your hand!");
+            sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+            return;
+        }
+
+        // Clone the item to give to the player
+        ItemStack itemToGive = itemInHand.clone();
+        targetPlayer.getInventory().addItem(itemToGive);
+
+        String itemName = itemToGive.getType().name().toLowerCase().replace("_", " ");
+        String message = TranslationManager.translate("PlayerManage", "give_item_message", "&aGave {amount}x {item} to {player}")
+                .replace("{amount}", String.valueOf(itemToGive.getAmount()))
+                .replace("{item}", itemName)
+                .replace("{player}", targetPlayer.getName());
+        sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+
+        if (targetPlayer.isOnline()) {
+            String playerMessage = TranslationManager.translate("PlayerManage", "give_item_notification", "&aYou received {amount}x {item}!")
+                    .replace("{amount}", String.valueOf(itemToGive.getAmount()))
+                    .replace("{item}", itemName);
+            targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
+        }
     }
 
     // ========== INVENTORY HANDLERS ==========

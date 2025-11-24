@@ -1,0 +1,24 @@
+# Economy Manager GUI Translations (Italian)
+
+# Buttons
+add_money_title: "&a+ {amount}"
+add_money_lore: "&7Dai {amount} a {player}"
+
+remove_money_title: "&c- {amount}"
+remove_money_lore: "&7Togli {amount} da {player}"
+
+balance_title: "&eSaldo"
+balance_lore: "&7Attuale: &f{balance}"
+
+error_title: "&cVault Non Trovato"
+error_lore: "&7Le funzionalità economia sono disabilitate\n&7Installa Vault e un plugin di economia"
+
+back_button_title: "&cIndietro"
+back_button_lore: "&aRitorna alla gestione giocatore"
+
+# Messages
+money_added_message: "&aAggiunti {amount} al saldo di {player}"
+money_removed_message: "&cRimossi {amount} dal saldo di {player}"
+money_received_notification: "&aHai ricevuto {amount}!"
+money_taken_notification: "&cHai perso {amount}!"
+transaction_failed: "&cTransazione fallita! {player} potrebbe non avere abbastanza soldi."

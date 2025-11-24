@@ -3,6 +3,7 @@ package it.alessiogta.adminmanager;
 import it.alessiogta.adminmanager.commands.AdminManagerCommand;
 import it.alessiogta.adminmanager.commands.AdminManagerTabCompleter;
 import it.alessiogta.adminmanager.listeners.PlayerControlListener;
+import it.alessiogta.adminmanager.utils.EconomyManager;
 import it.alessiogta.adminmanager.utils.TranslationManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.HandlerList;
@@ -26,6 +27,13 @@ public class AdminManager extends JavaPlugin {
         // Inizializzazione delle traduzioni
         String language = config.getString("language", "it_IT");
         TranslationManager.loadTranslations(language);
+
+        // Inizializzazione Vault Economy
+        if (EconomyManager.setupEconomy()) {
+            getLogger().info("Vault economy integration enabled!");
+        } else {
+            getLogger().warning("Vault not found! Economy features will be disabled.");
+        }
 
         // Registrazione dei comandi
         registerCommands();

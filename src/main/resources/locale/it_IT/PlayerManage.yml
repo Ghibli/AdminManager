@@ -42,6 +42,10 @@ spawn_teleport_lore: "&7Teletrasporta {player} allo spawn"
 spawn_teleport_message: "&a{player} è stato teletrasportato allo spawn"
 spawn_teleport_notification: "&aSei stato teletrasportato allo spawn!"
 
+#Economy
+economy_title: "&6Economia"
+economy_lore: "&7Gestisci i soldi di {player}"
+
 #Heal & Feed
 heal_title: "&cCura"
 heal_lore: "&7Ripristina salute e fame di {player}"
@@ -75,6 +79,13 @@ walk_speed_title: "&eVelocità Camminata"
 walk_speed_lore: "&7Attuale: &f{speed}\n&7Clicca per modificare"
 fly_speed_title: "&bVelocità Volo"
 fly_speed_lore: "&7Attuale: &f{speed}\n&7Clicca per modificare"
+
+#Give Item
+give_item_title: "&dDai Item"
+give_item_lore: "&7Dai l'item in mano a {player}"
+give_item_no_item: "&cDevi tenere un item in mano!"
+give_item_message: "&aDato {amount}x {item} a {player}"
+give_item_notification: "&aHai ricevuto {amount}x {item}!"
 
 #Messaggi Kick dal server
 kick_title: "&cEspelli"
