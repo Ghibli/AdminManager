@@ -439,8 +439,4 @@ public class ArmorCreatorGui extends BaseGui {
             () -> new PlayerManage(admin, targetPlayer).open()
         );
     }
-
-    private void updateInfoPanel() {
-        setItem(52, createInfoPanel());
-    }
 }
