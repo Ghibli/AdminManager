@@ -18,25 +18,31 @@ public class ArmorCreatorGui extends BaseGui {
 
     private final Player admin;
     private final Player targetPlayer;
+
+    // Armor pieces being composed
     private ItemStack helmet, chestplate, leggings, boots;
-    private int helmetProtection = 0;
-    private int chestplateProtection = 0;
-    private int leggingsProtection = 0;
-    private int bootsProtection = 0;
-    private int bootsProjectileProtection = 0;
+
+    // Enchantments for each piece
+    private Map<String, Integer> helmetEnchants = new HashMap<>();
+    private Map<String, Integer> chestplateEnchants = new HashMap<>();
+    private Map<String, Integer> leggingsEnchants = new HashMap<>();
+    private Map<String, Integer> bootsEnchants = new HashMap<>();
+
+    // Current material selection
+    private ArmorMaterial currentMaterial = ArmorMaterial.DIAMOND;
 
     public enum ArmorMaterial {
-        CHAINMAIL("Chainmail", Material.CHAINMAIL_HELMET, Material.CHAINMAIL_CHESTPLATE,
+        CHAINMAIL("§fChainmail", Material.CHAINMAIL_HELMET, Material.CHAINMAIL_CHESTPLATE,
                   Material.CHAINMAIL_LEGGINGS, Material.CHAINMAIL_BOOTS),
-        NETHERITE("Netherite", Material.NETHERITE_HELMET, Material.NETHERITE_CHESTPLATE,
+        NETHERITE("§8Netherite", Material.NETHERITE_HELMET, Material.NETHERITE_CHESTPLATE,
                   Material.NETHERITE_LEGGINGS, Material.NETHERITE_BOOTS),
-        DIAMOND("Diamond", Material.DIAMOND_HELMET, Material.DIAMOND_CHESTPLATE,
+        DIAMOND("§bDiamond", Material.DIAMOND_HELMET, Material.DIAMOND_CHESTPLATE,
                 Material.DIAMOND_LEGGINGS, Material.DIAMOND_BOOTS),
-        IRON("Iron", Material.IRON_HELMET, Material.IRON_CHESTPLATE,
+        IRON("§7Iron", Material.IRON_HELMET, Material.IRON_CHESTPLATE,
              Material.IRON_LEGGINGS, Material.IRON_BOOTS),
-        GOLDEN("Golden", Material.GOLDEN_HELMET, Material.GOLDEN_CHESTPLATE,
+        GOLDEN("§eGolden", Material.GOLDEN_HELMET, Material.GOLDEN_CHESTPLATE,
                Material.GOLDEN_LEGGINGS, Material.GOLDEN_BOOTS),
-        LEATHER("Leather", Material.LEATHER_HELMET, Material.LEATHER_CHESTPLATE,
+        LEATHER("§6Leather", Material.LEATHER_HELMET, Material.LEATHER_CHESTPLATE,
                 Material.LEATHER_LEGGINGS, Material.LEATHER_BOOTS);
 
         private final String displayName;
@@ -50,64 +56,131 @@ public class ArmorCreatorGui extends BaseGui {
             this.bootsMat = boots;
         }
 
+        public String getDisplayName() { return displayName; }
         public Material getHelmet() { return helmetMat; }
         public Material getChestplate() { return chestplateMat; }
         public Material getLeggings() { return leggingsMat; }
         public Material getBoots() { return bootsMat; }
-        public String getDisplayName() { return displayName; }
     }
 
     public ArmorCreatorGui(Player player, Player targetPlayer) {
-        super(player, formatTitle(targetPlayer), 1);
+        super(player, "§6§lArmor Creator §8- §e" + targetPlayer.getName(), 6);
         this.admin = player;
         this.targetPlayer = targetPlayer;
         setupGuiItems();
     }
 
-    private static String formatTitle(Player targetPlayer) {
-        return "§6§lARMOR CREATOR";
-    }
-
     private void setupGuiItems() {
-        // Left column: Material buttons (slots 0, 9, 18, 27, 36, 45)
-        setItem(0, createMaterialButton(ArmorMaterial.CHAINMAIL));
-        setItem(9, createMaterialButton(ArmorMaterial.NETHERITE));
-        setItem(18, createMaterialButton(ArmorMaterial.DIAMOND));
-        setItem(27, createMaterialButton(ArmorMaterial.IRON));
-        setItem(36, createMaterialButton(ArmorMaterial.GOLDEN));
-        setItem(45, createMaterialButton(ArmorMaterial.LEATHER));
+        // Fill background
+        fillBackground();
 
-        // Center: Armor preview with enchantment books
-        // Helmet at 13, Protection book at 14
-        // Chestplate at 22, Protection book at 23
-        // Leggings at 31, Protection book at 32
-        // Boots at 40, Protection book at 41, Projectile Protection at 42
-        updateArmorPreview();
-        updateEnchantmentBooks();
+        // Material selection (top row)
+        setItem(1, createMaterialSelector(ArmorMaterial.LEATHER));
+        setItem(2, createMaterialSelector(ArmorMaterial.CHAINMAIL));
+        setItem(3, createMaterialSelector(ArmorMaterial.IRON));
+        setItem(4, createMaterialSelector(ArmorMaterial.GOLDEN));
+        setItem(5, createMaterialSelector(ArmorMaterial.DIAMOND));
+        setItem(6, createMaterialSelector(ArmorMaterial.NETHERITE));
 
-        // Bottom row: Control buttons
-        setItem(47, createYourArmorButton());
+        // Armor composition area (center)
+        setItem(11, createAddPieceButton("HELMET"));
+        setItem(20, createAddPieceButton("CHESTPLATE"));
+        setItem(29, createAddPieceButton("LEGGINGS"));
+        setItem(38, createAddPieceButton("BOOTS"));
+
+        // Preview slots (right of add buttons)
+        updatePreview();
+
+        // Enchantment buttons (right side)
+        setItem(15, createEnchantButton("PROTECTION", 4));
+        setItem(16, createEnchantButton("UNBREAKING", 3));
+        setItem(24, createEnchantButton("THORNS", 3));
+        setItem(25, createEnchantButton("FIRE_PROTECTION", 4));
+        setItem(33, createEnchantButton("BLAST_PROTECTION", 4));
+        setItem(34, createEnchantButton("PROJECTILE_PROTECTION", 4));
+
+        // Control buttons (bottom)
+        setItem(45, createInfoButton());
         setItem(48, createClearButton());
-        setItem(50, createGiveArmorButton());
-
-        // Exit button (slot 53)
+        setItem(49, createFullSetButton());
+        setItem(50, createGiveButton());
         setItem(53, createExitButton());
     }
 
-    private ItemStack createMaterialButton(ArmorMaterial material) {
-        ItemStack item = new ItemStack(material.getHelmet());
+    private void fillBackground() {
+        ItemStack glass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        ItemMeta meta = glass.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName(" ");
+            glass.setItemMeta(meta);
+        }
+
+        // Fill border and empty spaces
+        for (int i = 0; i < 54; i++) {
+            if (i == 0 || i == 7 || i == 8 || i == 17 || i == 18 || i == 26 || i == 27
+                || i == 35 || i == 36 || i == 44 || i == 46 || i == 47 || i == 51 || i == 52) {
+                setItem(i, glass);
+            }
+        }
+    }
+
+    private ItemStack createMaterialSelector(ArmorMaterial material) {
+        ItemStack item = new ItemStack(material.getChestplate());
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {
-            meta.setDisplayName("§e§l" + material.getDisplayName().toUpperCase());
+            boolean selected = material == currentMaterial;
+            meta.setDisplayName((selected ? "§a§l➤ " : "") + material.getDisplayName() + " Armor");
             meta.setLore(Arrays.asList(
                 "§7",
-                "§eDOUBLE CLICK §7ALL",
+                selected ? "§a§l✔ Selected" : "§eClick to select"
+            ));
+            item.setItemMeta(meta);
+        }
+
+        if (material == currentMaterial) {
+            item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
+        }
+
+        return item;
+    }
+
+    private ItemStack createAddPieceButton(String pieceType) {
+        Material mat;
+        String name;
+
+        switch (pieceType) {
+            case "HELMET":
+                mat = Material.LEATHER_HELMET;
+                name = "§e§lADD HELMET";
+                break;
+            case "CHESTPLATE":
+                mat = Material.LEATHER_CHESTPLATE;
+                name = "§e§lADD CHESTPLATE";
+                break;
+            case "LEGGINGS":
+                mat = Material.LEATHER_LEGGINGS;
+                name = "§e§lADD LEGGINGS";
+                break;
+            case "BOOTS":
+                mat = Material.LEATHER_BOOTS;
+                name = "§e§lADD BOOTS";
+                break;
+            default:
+                mat = Material.BARRIER;
+                name = "§cUnknown";
+        }
+
+        ItemStack item = new ItemStack(mat);
+        ItemMeta meta = item.getItemMeta();
+
+        if (meta != null) {
+            meta.setDisplayName(name);
+            meta.setLore(Arrays.asList(
+                "§7Material: " + currentMaterial.getDisplayName(),
                 "§7",
-                "§eLEFT §7HELMET",
-                "§eRIGHT §7CHESTPLATE",
-                "§eLEFT + SHIFT §7LEGGINGS",
-                "§eRIGHT + SHIFT §7BOOTS"
+                "§aLEFT §7Add to composition",
+                "§cRIGHT §7Remove from composition"
             ));
             item.setItemMeta(meta);
         }
@@ -115,52 +188,67 @@ public class ArmorCreatorGui extends BaseGui {
         return item;
     }
 
-    private void updateArmorPreview() {
-        // Clear preview area (center column slots: 13, 22, 31, 40)
-        setItem(13, helmet != null ? helmet.clone() : createEmptySlot("HELMET"));
-        setItem(22, chestplate != null ? chestplate.clone() : createEmptySlot("CHESTPLATE"));
-        setItem(31, leggings != null ? leggings.clone() : createEmptySlot("LEGGINGS"));
-        setItem(40, boots != null ? boots.clone() : createEmptySlot("BOOTS"));
+    private void updatePreview() {
+        // Preview frame with colored glass
+        ItemStack blueGlass = new ItemStack(Material.LIGHT_BLUE_STAINED_GLASS_PANE);
+        ItemMeta glassMeta = blueGlass.getItemMeta();
+        if (glassMeta != null) {
+            glassMeta.setDisplayName("§9§l▌ PREVIEW ▌");
+            blueGlass.setItemMeta(glassMeta);
+        }
+
+        // Frame around preview
+        setItem(12, blueGlass);
+        setItem(21, blueGlass);
+        setItem(30, blueGlass);
+        setItem(39, blueGlass);
+
+        // Actual preview slots
+        setItem(13, helmet != null ? helmet.clone() : createEmptySlot("§7Helmet Empty"));
+        setItem(22, chestplate != null ? chestplate.clone() : createEmptySlot("§7Chestplate Empty"));
+        setItem(31, leggings != null ? leggings.clone() : createEmptySlot("§7Leggings Empty"));
+        setItem(40, boots != null ? boots.clone() : createEmptySlot("§7Boots Empty"));
+
+        // Update add buttons to show current material
+        setItem(11, createAddPieceButton("HELMET"));
+        setItem(20, createAddPieceButton("CHESTPLATE"));
+        setItem(29, createAddPieceButton("LEGGINGS"));
+        setItem(38, createAddPieceButton("BOOTS"));
     }
 
     private ItemStack createEmptySlot(String name) {
-        ItemStack item = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        ItemStack item = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setDisplayName("§7" + name);
+            meta.setDisplayName(name);
+            meta.setLore(Arrays.asList("§8Click ADD button to add"));
             item.setItemMeta(meta);
         }
         return item;
     }
 
-    private void updateEnchantmentBooks() {
-        // Helmet Protection (slot 14)
-        setItem(14, createProtectionBook("HELMET", helmetProtection));
-
-        // Chestplate Protection (slot 23)
-        setItem(23, createProtectionBook("CHESTPLATE", chestplateProtection));
-
-        // Leggings Protection (slot 32)
-        setItem(32, createProtectionBook("LEGGINGS", leggingsProtection));
-
-        // Boots Protection (slot 41)
-        setItem(41, createProtectionBook("BOOTS", bootsProtection));
-
-        // Boots Projectile Protection (slot 42)
-        setItem(42, createProjectileProtectionBook(bootsProjectileProtection));
-    }
-
-    private ItemStack createProtectionBook(String armorPiece, int level) {
+    private ItemStack createEnchantButton(String enchantType, int maxLevel) {
         ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
         ItemMeta meta = item.getItemMeta();
 
+        String displayName;
+        switch (enchantType) {
+            case "PROTECTION": displayName = "§9Protection"; break;
+            case "UNBREAKING": displayName = "§bUnbreaking"; break;
+            case "THORNS": displayName = "§dThorns"; break;
+            case "FIRE_PROTECTION": displayName = "§cFire Protection"; break;
+            case "BLAST_PROTECTION": displayName = "§8Blast Protection"; break;
+            case "PROJECTILE_PROTECTION": displayName = "§fProjectile Protection"; break;
+            default: displayName = enchantType;
+        }
+
         if (meta != null) {
-            meta.setDisplayName("§9§lPROTECTION " + (level > 0 ? level : ""));
+            meta.setDisplayName(displayName);
             meta.setLore(Arrays.asList(
-                "§7For: §e" + armorPiece,
-                "§7Level: §f" + level,
+                "§7Max Level: §f" + maxLevel,
                 "§7",
-                "§aLEFT §7Cycle 1→2→3→4"
+                "§aLEFT §7Add to selected piece",
+                "§7Click piece preview to select"
             ));
             item.setItemMeta(meta);
         }
@@ -168,30 +256,27 @@ public class ArmorCreatorGui extends BaseGui {
         return item;
     }
 
-    private ItemStack createProjectileProtectionBook(int level) {
-        ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
+    private ItemStack createInfoButton() {
+        ItemStack item = new ItemStack(Material.PAPER);
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {
-            meta.setDisplayName("§b§lPROJECTILE PROT " + (level > 0 ? level : ""));
+            int pieces = 0;
+            if (helmet != null) pieces++;
+            if (chestplate != null) pieces++;
+            if (leggings != null) pieces++;
+            if (boots != null) pieces++;
+
+            meta.setDisplayName("§6§lComposition Info");
             meta.setLore(Arrays.asList(
-                "§7For: §eBOOTS",
-                "§7Level: §f" + level,
+                "§7Pieces: §e" + pieces + "§7/4",
+                "§7Material: " + currentMaterial.getDisplayName(),
                 "§7",
-                "§aLEFT §7Cycle 1→2→3→4"
+                "§7Helmet: " + (helmet != null ? "§a✔" : "§c✘"),
+                "§7Chestplate: " + (chestplate != null ? "§a✔" : "§c✘"),
+                "§7Leggings: " + (leggings != null ? "§a✔" : "§c✘"),
+                "§7Boots: " + (boots != null ? "§a✔" : "§c✘")
             ));
-            item.setItemMeta(meta);
-        }
-
-        return item;
-    }
-
-    private ItemStack createYourArmorButton() {
-        ItemStack item = new ItemStack(Material.ARMOR_STAND);
-        ItemMeta meta = item.getItemMeta();
-
-        if (meta != null) {
-            meta.setDisplayName("§e§lYOUR ARMOR");
             item.setItemMeta(meta);
         }
 
@@ -203,21 +288,39 @@ public class ArmorCreatorGui extends BaseGui {
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {
-            meta.setDisplayName("§c§lCLEAR");
+            meta.setDisplayName("§c§lClear All");
+            meta.setLore(Arrays.asList("§7Remove all armor pieces"));
             item.setItemMeta(meta);
         }
 
         return item;
     }
 
-    private ItemStack createGiveArmorButton() {
-        ItemStack item = new ItemStack(Material.CHEST);
+    private ItemStack createFullSetButton() {
+        ItemStack item = new ItemStack(Material.ARMOR_STAND);
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {
-            meta.setDisplayName("§a§lGIVE ARMOR");
+            meta.setDisplayName("§a§lCreate Full Set");
             meta.setLore(Arrays.asList(
-                "§7Give armor to §e" + targetPlayer.getName()
+                "§7Add all 4 pieces",
+                "§7Material: " + currentMaterial.getDisplayName()
+            ));
+            item.setItemMeta(meta);
+        }
+
+        return item;
+    }
+
+    private ItemStack createGiveButton() {
+        ItemStack item = new ItemStack(Material.LIME_DYE);
+        ItemMeta meta = item.getItemMeta();
+
+        if (meta != null) {
+            meta.setDisplayName("§a§lGive Armor");
+            meta.setLore(Arrays.asList(
+                "§7Give composed armor to",
+                "§e" + targetPlayer.getName()
             ));
             item.setItemMeta(meta);
         }
@@ -230,7 +333,7 @@ public class ArmorCreatorGui extends BaseGui {
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {
-            meta.setDisplayName("§c§lBACK");
+            meta.setDisplayName("§c§lBack");
             item.setItemMeta(meta);
         }
 
@@ -242,167 +345,136 @@ public class ArmorCreatorGui extends BaseGui {
         int slot = event.getRawSlot();
         ClickType clickType = event.getClick();
 
-        // Material buttons (left column)
-        if (slot == 0) handleMaterialClick(ArmorMaterial.CHAINMAIL, clickType);
-        else if (slot == 9) handleMaterialClick(ArmorMaterial.NETHERITE, clickType);
-        else if (slot == 18) handleMaterialClick(ArmorMaterial.DIAMOND, clickType);
-        else if (slot == 27) handleMaterialClick(ArmorMaterial.IRON, clickType);
-        else if (slot == 36) handleMaterialClick(ArmorMaterial.GOLDEN, clickType);
-        else if (slot == 45) handleMaterialClick(ArmorMaterial.LEATHER, clickType);
+        // Material selection
+        if (slot == 1) selectMaterial(ArmorMaterial.LEATHER);
+        else if (slot == 2) selectMaterial(ArmorMaterial.CHAINMAIL);
+        else if (slot == 3) selectMaterial(ArmorMaterial.IRON);
+        else if (slot == 4) selectMaterial(ArmorMaterial.GOLDEN);
+        else if (slot == 5) selectMaterial(ArmorMaterial.DIAMOND);
+        else if (slot == 6) selectMaterial(ArmorMaterial.NETHERITE);
 
-        // Enchantment books
-        else if (slot == 14) handleHelmetProtectionClick();
-        else if (slot == 23) handleChestplateProtectionClick();
-        else if (slot == 32) handleLeggingsProtectionClick();
-        else if (slot == 41) handleBootsProtectionClick();
-        else if (slot == 42) handleBootsProjectileProtectionClick();
+        // Add/Remove pieces
+        else if (slot == 11) handlePieceClick("HELMET", clickType);
+        else if (slot == 20) handlePieceClick("CHESTPLATE", clickType);
+        else if (slot == 29) handlePieceClick("LEGGINGS", clickType);
+        else if (slot == 38) handlePieceClick("BOOTS", clickType);
 
-        // Control buttons (bottom row)
-        else if (slot == 47) handleYourArmorClick();
-        else if (slot == 48) handleClearClick();
-        else if (slot == 50) handleGiveArmorClick();
-        else if (slot == 53) handleExitClick();
+        // Preview selection for enchanting
+        else if (slot == 13) admin.sendMessage("§aHelmet selected for enchanting");
+        else if (slot == 22) admin.sendMessage("§aChestplate selected for enchanting");
+        else if (slot == 31) admin.sendMessage("§aLeggings selected for enchanting");
+        else if (slot == 40) admin.sendMessage("§aBoots selected for enchanting");
+
+        // Enchantments (simplified for now)
+        else if (slot == 15) admin.sendMessage("§7Enchantment system coming soon");
+        else if (slot == 16) admin.sendMessage("§7Enchantment system coming soon");
+        else if (slot == 24) admin.sendMessage("§7Enchantment system coming soon");
+        else if (slot == 25) admin.sendMessage("§7Enchantment system coming soon");
+        else if (slot == 33) admin.sendMessage("§7Enchantment system coming soon");
+        else if (slot == 34) admin.sendMessage("§7Enchantment system coming soon");
+
+        // Control buttons
+        else if (slot == 48) handleClear();
+        else if (slot == 49) handleFullSet();
+        else if (slot == 50) handleGive();
+        else if (slot == 53) handleExit();
 
         else event.setCancelled(true);
     }
 
-    private void handleMaterialClick(ArmorMaterial material, ClickType clickType) {
-        if (clickType == ClickType.DOUBLE_CLICK) {
-            // Create full set
-            helmet = new ItemStack(material.getHelmet());
-            chestplate = new ItemStack(material.getChestplate());
-            leggings = new ItemStack(material.getLeggings());
-            boots = new ItemStack(material.getBoots());
+    private void selectMaterial(ArmorMaterial material) {
+        currentMaterial = material;
 
-            // Apply existing enchantments
-            applyEnchantmentsToArmor();
-        } else if (clickType == ClickType.LEFT) {
-            // Create helmet
-            helmet = new ItemStack(material.getHelmet());
-            applyHelmetEnchantments();
+        // Update material selectors
+        setItem(1, createMaterialSelector(ArmorMaterial.LEATHER));
+        setItem(2, createMaterialSelector(ArmorMaterial.CHAINMAIL));
+        setItem(3, createMaterialSelector(ArmorMaterial.IRON));
+        setItem(4, createMaterialSelector(ArmorMaterial.GOLDEN));
+        setItem(5, createMaterialSelector(ArmorMaterial.DIAMOND));
+        setItem(6, createMaterialSelector(ArmorMaterial.NETHERITE));
+
+        updatePreview();
+        setItem(45, createInfoButton());
+
+        admin.sendMessage("§aMaterial changed to " + material.getDisplayName());
+    }
+
+    private void handlePieceClick(String pieceType, ClickType clickType) {
+        if (clickType == ClickType.LEFT) {
+            // Add piece
+            switch (pieceType) {
+                case "HELMET":
+                    helmet = new ItemStack(currentMaterial.getHelmet());
+                    admin.sendMessage("§a+ Added helmet to composition");
+                    break;
+                case "CHESTPLATE":
+                    chestplate = new ItemStack(currentMaterial.getChestplate());
+                    admin.sendMessage("§a+ Added chestplate to composition");
+                    break;
+                case "LEGGINGS":
+                    leggings = new ItemStack(currentMaterial.getLeggings());
+                    admin.sendMessage("§a+ Added leggings to composition");
+                    break;
+                case "BOOTS":
+                    boots = new ItemStack(currentMaterial.getBoots());
+                    admin.sendMessage("§a+ Added boots to composition");
+                    break;
+            }
         } else if (clickType == ClickType.RIGHT) {
-            // Create chestplate
-            chestplate = new ItemStack(material.getChestplate());
-            applyChestplateEnchantments();
-        } else if (clickType == ClickType.SHIFT_LEFT) {
-            // Create leggings
-            leggings = new ItemStack(material.getLeggings());
-            applyLeggingsEnchantments();
-        } else if (clickType == ClickType.SHIFT_RIGHT) {
-            // Create boots
-            boots = new ItemStack(material.getBoots());
-            applyBootsEnchantments();
-        }
-
-        updateArmorPreview();
-    }
-
-    private void handleHelmetProtectionClick() {
-        // Cycle 1 -> 2 -> 3 -> 4 -> 1
-        helmetProtection = helmetProtection == 4 ? 1 : (helmetProtection == 0 ? 1 : helmetProtection + 1);
-        applyHelmetEnchantments();
-        updateArmorPreview();
-        updateEnchantmentBooks();
-    }
-
-    private void handleChestplateProtectionClick() {
-        // Cycle 1 -> 2 -> 3 -> 4 -> 1
-        chestplateProtection = chestplateProtection == 4 ? 1 : (chestplateProtection == 0 ? 1 : chestplateProtection + 1);
-        applyChestplateEnchantments();
-        updateArmorPreview();
-        updateEnchantmentBooks();
-    }
-
-    private void handleLeggingsProtectionClick() {
-        // Cycle 1 -> 2 -> 3 -> 4 -> 1
-        leggingsProtection = leggingsProtection == 4 ? 1 : (leggingsProtection == 0 ? 1 : leggingsProtection + 1);
-        applyLeggingsEnchantments();
-        updateArmorPreview();
-        updateEnchantmentBooks();
-    }
-
-    private void handleBootsProtectionClick() {
-        // Cycle 1 -> 2 -> 3 -> 4 -> 1
-        bootsProtection = bootsProtection == 4 ? 1 : (bootsProtection == 0 ? 1 : bootsProtection + 1);
-        applyBootsEnchantments();
-        updateArmorPreview();
-        updateEnchantmentBooks();
-    }
-
-    private void handleBootsProjectileProtectionClick() {
-        // Cycle 1 -> 2 -> 3 -> 4 -> 1
-        bootsProjectileProtection = bootsProjectileProtection == 4 ? 1 : (bootsProjectileProtection == 0 ? 1 : bootsProjectileProtection + 1);
-        applyBootsEnchantments();
-        updateArmorPreview();
-        updateEnchantmentBooks();
-    }
-
-    private void applyHelmetEnchantments() {
-        if (helmet != null && helmetProtection > 0) {
-            helmet.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, helmetProtection);
-        }
-    }
-
-    private void applyChestplateEnchantments() {
-        if (chestplate != null && chestplateProtection > 0) {
-            chestplate.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, chestplateProtection);
-        }
-    }
-
-    private void applyLeggingsEnchantments() {
-        if (leggings != null && leggingsProtection > 0) {
-            leggings.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, leggingsProtection);
-        }
-    }
-
-    private void applyBootsEnchantments() {
-        if (boots != null) {
-            if (bootsProtection > 0) {
-                boots.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, bootsProtection);
-            }
-            if (bootsProjectileProtection > 0) {
-                boots.addUnsafeEnchantment(Enchantment.PROTECTION_PROJECTILE, bootsProjectileProtection);
+            // Remove piece
+            switch (pieceType) {
+                case "HELMET":
+                    helmet = null;
+                    admin.sendMessage("§c- Removed helmet from composition");
+                    break;
+                case "CHESTPLATE":
+                    chestplate = null;
+                    admin.sendMessage("§c- Removed chestplate from composition");
+                    break;
+                case "LEGGINGS":
+                    leggings = null;
+                    admin.sendMessage("§c- Removed leggings from composition");
+                    break;
+                case "BOOTS":
+                    boots = null;
+                    admin.sendMessage("§c- Removed boots from composition");
+                    break;
             }
         }
+
+        updatePreview();
+        setItem(45, createInfoButton());
     }
 
-    private void applyEnchantmentsToArmor() {
-        applyHelmetEnchantments();
-        applyChestplateEnchantments();
-        applyLeggingsEnchantments();
-        applyBootsEnchantments();
-    }
-
-    private void handleYourArmorClick() {
-        // Show player's current armor
-        Player sender = admin;
-        ItemStack[] armor = targetPlayer.getInventory().getArmorContents();
-
-        sender.sendMessage("§e" + targetPlayer.getName() + "'s armor:");
-        sender.sendMessage("§7Helmet: " + (armor[3] != null ? armor[3].getType().name() : "None"));
-        sender.sendMessage("§7Chestplate: " + (armor[2] != null ? armor[2].getType().name() : "None"));
-        sender.sendMessage("§7Leggings: " + (armor[1] != null ? armor[1].getType().name() : "None"));
-        sender.sendMessage("§7Boots: " + (armor[0] != null ? armor[0].getType().name() : "None"));
-    }
-
-    private void handleClearClick() {
+    private void handleClear() {
         helmet = null;
         chestplate = null;
         leggings = null;
         boots = null;
-        helmetProtection = 0;
-        chestplateProtection = 0;
-        leggingsProtection = 0;
-        bootsProtection = 0;
-        bootsProjectileProtection = 0;
+        helmetEnchants.clear();
+        chestplateEnchants.clear();
+        leggingsEnchants.clear();
+        bootsEnchants.clear();
 
-        updateArmorPreview();
-        updateEnchantmentBooks();
+        updatePreview();
+        setItem(45, createInfoButton());
 
-        admin.sendMessage("§cArmor cleared!");
+        admin.sendMessage("§cComposition cleared!");
     }
 
-    private void handleGiveArmorClick() {
+    private void handleFullSet() {
+        helmet = new ItemStack(currentMaterial.getHelmet());
+        chestplate = new ItemStack(currentMaterial.getChestplate());
+        leggings = new ItemStack(currentMaterial.getLeggings());
+        boots = new ItemStack(currentMaterial.getBoots());
+
+        updatePreview();
+        setItem(45, createInfoButton());
+
+        admin.sendMessage("§aFull set added to composition!");
+    }
+
+    private void handleGive() {
         int given = 0;
 
         if (helmet != null) {
@@ -423,16 +495,14 @@ public class ArmorCreatorGui extends BaseGui {
         }
 
         if (given > 0) {
-            admin.sendMessage("§aGave " + given + " armor piece(s) to §e" + targetPlayer.getName());
-            if (targetPlayer.isOnline()) {
-                targetPlayer.sendMessage("§aYou received armor from an admin!");
-            }
+            admin.sendMessage("§aGiven §e" + given + " §aarmor piece(s) to §e" + targetPlayer.getName());
+            targetPlayer.sendMessage("§aYou received §e" + given + " §aarmor piece(s) from §e" + admin.getName());
         } else {
-            admin.sendMessage("§cNo armor to give!");
+            admin.sendMessage("§cNo armor in composition to give!");
         }
     }
 
-    private void handleExitClick() {
+    private void handleExit() {
         admin.closeInventory();
         Bukkit.getScheduler().runTask(
             Bukkit.getPluginManager().getPlugin("AdminManager"),
