@@ -36,6 +36,12 @@ public class PlayerManage extends BaseGui {
         }
     }
 
+    @Override
+    protected void setupNavigationButtons() {
+        // Disable BaseGui's automatic navigation buttons
+        // PlayerManage uses custom button layout
+    }
+
     private static String formatTitle(Player targetPlayer) {
         return String.format("§a[§6%s§a] §7Manage", targetPlayer.getName());
     }

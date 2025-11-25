@@ -43,7 +43,7 @@ public abstract class BaseGui implements Listener {
         return this.page;
     }
 
-    private void setupNavigationButtons() {
+    protected void setupNavigationButtons() {
         int totalItems = items.size();
         int itemsPerPage = 45;
 

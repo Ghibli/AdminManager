@@ -40,6 +40,12 @@ public class SpeedControlGui extends BaseGui {
         }
     }
 
+    @Override
+    protected void setupNavigationButtons() {
+        // Disable BaseGui's automatic navigation buttons
+        // SpeedControlGui uses custom button layout
+    }
+
     private static String formatTitle(Player targetPlayer, SpeedType speedType) {
         String typeStr = speedType == SpeedType.WALK ? "Walk" : "Fly";
         return String.format("§a[§6%s§a] §7%s Speed", targetPlayer.getName(), typeStr);

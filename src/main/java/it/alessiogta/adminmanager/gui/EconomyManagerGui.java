@@ -32,6 +32,12 @@ public class EconomyManagerGui extends BaseGui {
         }
     }
 
+    @Override
+    protected void setupNavigationButtons() {
+        // Disable BaseGui's automatic navigation buttons
+        // EconomyManagerGui uses custom button layout
+    }
+
     private static String formatTitle(Player targetPlayer) {
         return String.format("§a[§6%s§a] §7Economy", targetPlayer.getName());
     }
