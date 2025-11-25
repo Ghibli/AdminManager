@@ -54,8 +54,8 @@ public class SpeedControlGui extends BaseGui {
         // Row 3: Reset button
         setItem(22, createResetButton());
 
-        // Exit button
-        setItem(49, createExitButton());
+        // Exit button (moved to slot 45 to prevent cursor auto-positioning)
+        setItem(45, createExitButton());
     }
 
     private ItemStack createDecreaseButton() {
@@ -104,7 +104,7 @@ public class SpeedControlGui extends BaseGui {
             case 13: event.setCancelled(true); break; // Just display, no action
             case 16: handleIncreaseClick(event); break;
             case 22: handleResetClick(event); break;
-            case 49: handleExitClick(event); break;
+            case 45: handleExitClick(event); break; // Moved from slot 49
             default: event.setCancelled(true); break;
         }
     }

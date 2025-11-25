@@ -10,11 +10,26 @@ import org.bukkit.inventory.ItemStack;
 public class EconomyManagerGui extends BaseGui {
 
     private final Player targetPlayer;
+    private final Player admin;
 
     public EconomyManagerGui(Player player, Player targetPlayer) {
         super(player, formatTitle(targetPlayer), 1);
+        this.admin = player;
         this.targetPlayer = targetPlayer;
         setupGuiItems();
+    }
+
+    @Override
+    public void open() {
+        inventory = build();
+        admin.openInventory(inventory);
+    }
+
+    private void refreshSlot(int slot, ItemStack item) {
+        setItem(slot, item);
+        if (inventory != null) {
+            inventory.setItem(slot, item);
+        }
     }
 
     private static String formatTitle(Player targetPlayer) {
@@ -25,7 +40,7 @@ public class EconomyManagerGui extends BaseGui {
         if (!EconomyManager.isEnabled()) {
             // Show error message if Vault is not available
             setItem(22, createErrorButton());
-            setItem(49, createExitButton());
+            setItem(45, createExitButton());
             return;
         }
 
@@ -44,8 +59,8 @@ public class EconomyManagerGui extends BaseGui {
         // Row 3: Balance display
         setItem(22, createBalanceButton());
 
-        // Exit button
-        setItem(49, createExitButton());
+        // Exit button (moved to slot 45 to prevent cursor auto-positioning)
+        setItem(45, createExitButton());
     }
 
     private ItemStack createAddButton(double amount) {
@@ -91,7 +106,7 @@ public class EconomyManagerGui extends BaseGui {
         int slot = event.getRawSlot();
 
         if (!EconomyManager.isEnabled()) {
-            if (slot == 49) {
+            if (slot == 45) {
                 handleExitClick(event);
             } else {
                 event.setCancelled(true);
@@ -115,8 +130,8 @@ public class EconomyManagerGui extends BaseGui {
             // Balance display
             case 22: event.setCancelled(true); break;
 
-            // Exit
-            case 49: handleExitClick(event); break;
+            // Exit (moved to slot 45)
+            case 45: handleExitClick(event); break;
 
             default: event.setCancelled(true); break;
         }
@@ -154,9 +169,8 @@ public class EconomyManagerGui extends BaseGui {
             sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
         }
 
-        // Refresh GUI
-        event.getWhoClicked().closeInventory();
-        new EconomyManagerGui(sender, targetPlayer).open();
+        // Refresh balance display without closing GUI
+        refreshSlot(22, createBalanceButton());
     }
 
     private void handleExitClick(InventoryClickEvent event) {

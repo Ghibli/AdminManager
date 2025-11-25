@@ -70,8 +70,8 @@ public class PlayerManage extends BaseGui {
         setItem(38, createArmorCreatorButton());
         setItem(39, createEconomyButton());
 
-        // Row 6: Exit
-        setItem(49, createExitButton());
+        // Row 6: Exit (moved to slot 45 to prevent cursor auto-positioning)
+        setItem(45, createExitButton());
     }
 
     // ========== TELEPORT BUTTONS ==========
@@ -308,8 +308,8 @@ public class PlayerManage extends BaseGui {
             case 38: handleArmorCreatorClick(event); break;
             case 39: handleEconomyClick(event); break;
 
-            // Row 6: Exit
-            case 49: handleExitClick(event); break;
+            // Row 6: Exit (slot 45)
+            case 45: handleExitClick(event); break;
 
             default: event.setCancelled(true); break;
         }
