@@ -62,6 +62,19 @@ public class SpeedControlGui extends BaseGui {
 
         // Exit button (moved to slot 45 to prevent cursor auto-positioning)
         setItem(45, createExitButton());
+
+        // Fill slot 49 with decorative glass to prevent accidental clicks
+        setItem(49, createDecorativeGlass());
+    }
+
+    private ItemStack createDecorativeGlass() {
+        ItemStack glass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        org.bukkit.inventory.meta.ItemMeta meta = glass.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName(" ");
+            glass.setItemMeta(meta);
+        }
+        return glass;
     }
 
     private ItemStack createDecreaseButton() {
