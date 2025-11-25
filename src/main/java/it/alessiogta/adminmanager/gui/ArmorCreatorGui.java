@@ -70,6 +70,19 @@ public class ArmorCreatorGui extends BaseGui {
         setupGuiItems();
     }
 
+    @Override
+    public void open() {
+        inventory = build();
+        admin.openInventory(inventory);
+    }
+
+    private void refreshSlot(int slot, ItemStack item) {
+        setItem(slot, item);
+        if (inventory != null) {
+            inventory.setItem(slot, item);
+        }
+    }
+
     private void setupGuiItems() {
         // Fill background
         fillBackground();
@@ -198,22 +211,22 @@ public class ArmorCreatorGui extends BaseGui {
         }
 
         // Frame around preview
-        setItem(12, blueGlass);
-        setItem(21, blueGlass);
-        setItem(30, blueGlass);
-        setItem(39, blueGlass);
+        refreshSlot(12, blueGlass);
+        refreshSlot(21, blueGlass);
+        refreshSlot(30, blueGlass);
+        refreshSlot(39, blueGlass);
 
         // Actual preview slots
-        setItem(13, helmet != null ? helmet.clone() : createEmptySlot("§7Helmet Empty"));
-        setItem(22, chestplate != null ? chestplate.clone() : createEmptySlot("§7Chestplate Empty"));
-        setItem(31, leggings != null ? leggings.clone() : createEmptySlot("§7Leggings Empty"));
-        setItem(40, boots != null ? boots.clone() : createEmptySlot("§7Boots Empty"));
+        refreshSlot(13, helmet != null ? helmet.clone() : createEmptySlot("§7Helmet Empty"));
+        refreshSlot(22, chestplate != null ? chestplate.clone() : createEmptySlot("§7Chestplate Empty"));
+        refreshSlot(31, leggings != null ? leggings.clone() : createEmptySlot("§7Leggings Empty"));
+        refreshSlot(40, boots != null ? boots.clone() : createEmptySlot("§7Boots Empty"));
 
         // Update add buttons to show current material
-        setItem(11, createAddPieceButton("HELMET"));
-        setItem(20, createAddPieceButton("CHESTPLATE"));
-        setItem(29, createAddPieceButton("LEGGINGS"));
-        setItem(38, createAddPieceButton("BOOTS"));
+        refreshSlot(11, createAddPieceButton("HELMET"));
+        refreshSlot(20, createAddPieceButton("CHESTPLATE"));
+        refreshSlot(29, createAddPieceButton("LEGGINGS"));
+        refreshSlot(38, createAddPieceButton("BOOTS"));
     }
 
     private ItemStack createEmptySlot(String name) {
@@ -386,15 +399,15 @@ public class ArmorCreatorGui extends BaseGui {
         currentMaterial = material;
 
         // Update material selectors
-        setItem(1, createMaterialSelector(ArmorMaterial.LEATHER));
-        setItem(2, createMaterialSelector(ArmorMaterial.CHAINMAIL));
-        setItem(3, createMaterialSelector(ArmorMaterial.IRON));
-        setItem(4, createMaterialSelector(ArmorMaterial.GOLDEN));
-        setItem(5, createMaterialSelector(ArmorMaterial.DIAMOND));
-        setItem(6, createMaterialSelector(ArmorMaterial.NETHERITE));
+        refreshSlot(1, createMaterialSelector(ArmorMaterial.LEATHER));
+        refreshSlot(2, createMaterialSelector(ArmorMaterial.CHAINMAIL));
+        refreshSlot(3, createMaterialSelector(ArmorMaterial.IRON));
+        refreshSlot(4, createMaterialSelector(ArmorMaterial.GOLDEN));
+        refreshSlot(5, createMaterialSelector(ArmorMaterial.DIAMOND));
+        refreshSlot(6, createMaterialSelector(ArmorMaterial.NETHERITE));
 
         updatePreview();
-        setItem(45, createInfoButton());
+        refreshSlot(45, createInfoButton());
 
         admin.sendMessage("§aMaterial changed to " + material.getDisplayName());
     }
@@ -443,7 +456,7 @@ public class ArmorCreatorGui extends BaseGui {
         }
 
         updatePreview();
-        setItem(45, createInfoButton());
+        refreshSlot(45, createInfoButton());
     }
 
     private void handleClear() {
@@ -457,7 +470,7 @@ public class ArmorCreatorGui extends BaseGui {
         bootsEnchants.clear();
 
         updatePreview();
-        setItem(45, createInfoButton());
+        refreshSlot(45, createInfoButton());
 
         admin.sendMessage("§cComposition cleared!");
     }
@@ -469,7 +482,7 @@ public class ArmorCreatorGui extends BaseGui {
         boots = new ItemStack(currentMaterial.getBoots());
 
         updatePreview();
-        setItem(45, createInfoButton());
+        refreshSlot(45, createInfoButton());
 
         admin.sendMessage("§aFull set added to composition!");
     }
