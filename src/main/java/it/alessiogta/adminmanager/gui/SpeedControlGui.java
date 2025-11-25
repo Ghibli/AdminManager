@@ -1,14 +1,17 @@
 package it.alessiogta.adminmanager.gui;
 
 import it.alessiogta.adminmanager.utils.TranslationManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class SpeedControlGui extends BaseGui {
 
     private final Player targetPlayer;
+    private final Player admin;
     private final SpeedType speedType;
 
     public enum SpeedType {
@@ -18,9 +21,23 @@ public class SpeedControlGui extends BaseGui {
 
     public SpeedControlGui(Player player, Player targetPlayer, SpeedType speedType) {
         super(player, formatTitle(targetPlayer, speedType), 1);
+        this.admin = player;
         this.targetPlayer = targetPlayer;
         this.speedType = speedType;
         setupGuiItems();
+    }
+
+    @Override
+    public void open() {
+        inventory = build();
+        admin.openInventory(inventory);
+    }
+
+    private void refreshSlot(int slot, ItemStack item) {
+        setItem(slot, item);
+        if (inventory != null) {
+            inventory.setItem(slot, item);
+        }
     }
 
     private static String formatTitle(Player targetPlayer, SpeedType speedType) {
@@ -110,9 +127,8 @@ public class SpeedControlGui extends BaseGui {
                 .replace("{speed}", String.format("%.2f", newSpeed));
         sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
 
-        // Refresh GUI
-        event.getWhoClicked().closeInventory();
-        new SpeedControlGui(sender, targetPlayer, speedType).open();
+        // Refresh display button without closing GUI
+        refreshSlot(13, createSpeedDisplayButton());
     }
 
     private void handleIncreaseClick(InventoryClickEvent event) {
@@ -133,9 +149,8 @@ public class SpeedControlGui extends BaseGui {
                 .replace("{speed}", String.format("%.2f", newSpeed));
         sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
 
-        // Refresh GUI
-        event.getWhoClicked().closeInventory();
-        new SpeedControlGui(sender, targetPlayer, speedType).open();
+        // Refresh display button without closing GUI
+        refreshSlot(13, createSpeedDisplayButton());
     }
 
     private void handleResetClick(InventoryClickEvent event) {
@@ -153,9 +168,8 @@ public class SpeedControlGui extends BaseGui {
                 .replace("{speed}", String.format("%.1f", defaultSpeed));
         sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
 
-        // Refresh GUI
-        event.getWhoClicked().closeInventory();
-        new SpeedControlGui(sender, targetPlayer, speedType).open();
+        // Refresh display button without closing GUI
+        refreshSlot(13, createSpeedDisplayButton());
     }
 
     private void handleExitClick(InventoryClickEvent event) {
