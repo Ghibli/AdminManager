@@ -14,11 +14,26 @@ import org.bukkit.potion.PotionEffect;
 public class PlayerManage extends BaseGui {
 
     private final Player targetPlayer;
+    private final Player admin;
 
     public PlayerManage(Player player, Player targetPlayer) {
         super(player, formatTitle(targetPlayer), 1);
+        this.admin = player;
         this.targetPlayer = targetPlayer;
         setupGuiItems();
+    }
+
+    @Override
+    public void open() {
+        inventory = build();
+        admin.openInventory(inventory);
+    }
+
+    private void refreshSlot(int slot, ItemStack item) {
+        setItem(slot, item);
+        if (inventory != null) {
+            inventory.setItem(slot, item);
+        }
     }
 
     private static String formatTitle(Player targetPlayer) {
@@ -48,8 +63,6 @@ public class PlayerManage extends BaseGui {
         // Row 4: Inventory Management
         setItem(27, createInventoryButton());
         setItem(28, createEnderChestButton());
-        setItem(29, createClearInventoryButton());
-        setItem(30, createClearEnderChestButton());
 
         // Row 5: Items & Special
         setItem(36, createGiveItemButton());
@@ -210,20 +223,6 @@ public class PlayerManage extends BaseGui {
         return createItem(Material.ENDER_CHEST, title, lore);
     }
 
-    private ItemStack createClearInventoryButton() {
-        String title = TranslationManager.translate("PlayerManage", "clear_inventory_title", "&cClear Inventory");
-        String lore = TranslationManager.translate("PlayerManage", "clear_inventory_lore", "&7Clear {player}'s inventory")
-                .replace("{player}", targetPlayer.getName());
-        return createItem(Material.BARRIER, title, lore);
-    }
-
-    private ItemStack createClearEnderChestButton() {
-        String title = TranslationManager.translate("PlayerManage", "clear_enderchest_title", "&5Clear EnderChest");
-        String lore = TranslationManager.translate("PlayerManage", "clear_enderchest_lore", "&7Clear {player}'s enderchest")
-                .replace("{player}", targetPlayer.getName());
-        return createItem(Material.PURPLE_DYE, title, lore);
-    }
-
     // ========== GAMEMODE BUTTONS ==========
 
     private ItemStack createGamemodeToggleButton() {
@@ -302,8 +301,6 @@ public class PlayerManage extends BaseGui {
             // Row 4: Inventory Management
             case 27: handleInventoryClick(event); break;
             case 28: handleEnderChestClick(event); break;
-            case 29: handleClearInventoryClick(event); break;
-            case 30: handleClearEnderChestClick(event); break;
 
             // Row 5: Items & Special
             case 36: handleGiveItemClick(event); break;
@@ -358,9 +355,8 @@ public class PlayerManage extends BaseGui {
             targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
         }
 
-        // Refresh GUI
-        event.getWhoClicked().closeInventory();
-        new PlayerManage(sender, targetPlayer).open();
+        // Refresh button
+        refreshSlot(3, createFreezeButton());
     }
 
     private void handleFlyClick(InventoryClickEvent event) {
@@ -378,9 +374,8 @@ public class PlayerManage extends BaseGui {
                 .replace("{player}", targetPlayer.getName());
         sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
 
-        // Refresh GUI
-        event.getWhoClicked().closeInventory();
-        new PlayerManage(sender, targetPlayer).open();
+        // Refresh button
+        refreshSlot(4, createFlyButton());
     }
 
     private void handleGetSkullClick(InventoryClickEvent event) {
@@ -502,9 +497,8 @@ public class PlayerManage extends BaseGui {
             targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
         }
 
-        // Refresh GUI
-        event.getWhoClicked().closeInventory();
-        new PlayerManage(sender, targetPlayer).open();
+        // Refresh button
+        refreshSlot(11, createGodModeButton());
     }
 
     private void handleWalkSpeedClick(InventoryClickEvent event) {
@@ -558,40 +552,20 @@ public class PlayerManage extends BaseGui {
 
     private void handleInventoryClick(InventoryClickEvent event) {
         Player sender = (Player) event.getWhoClicked();
-        sender.openInventory(targetPlayer.getInventory());
+        event.getWhoClicked().closeInventory();
+        Bukkit.getScheduler().runTask(
+                Bukkit.getPluginManager().getPlugin("AdminManager"),
+                () -> new PlayerInventoryGui(sender, targetPlayer).open()
+        );
     }
 
     private void handleEnderChestClick(InventoryClickEvent event) {
         Player sender = (Player) event.getWhoClicked();
-        sender.openInventory(targetPlayer.getEnderChest());
-    }
-
-    private void handleClearInventoryClick(InventoryClickEvent event) {
-        Player sender = (Player) event.getWhoClicked();
-        targetPlayer.getInventory().clear();
-
-        String message = TranslationManager.translate("PlayerManage", "clear_inventory_message", "&cCleared inventory of {player}")
-                .replace("{player}", targetPlayer.getName());
-        sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
-
-        if (targetPlayer.isOnline()) {
-            String playerMessage = TranslationManager.translate("PlayerManage", "inventory_cleared_notification", "&cYour inventory has been cleared!");
-            targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
-        }
-    }
-
-    private void handleClearEnderChestClick(InventoryClickEvent event) {
-        Player sender = (Player) event.getWhoClicked();
-        targetPlayer.getEnderChest().clear();
-
-        String message = TranslationManager.translate("PlayerManage", "clear_enderchest_message", "&5Cleared enderchest of {player}")
-                .replace("{player}", targetPlayer.getName());
-        sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
-
-        if (targetPlayer.isOnline()) {
-            String playerMessage = TranslationManager.translate("PlayerManage", "enderchest_cleared_notification", "&5Your enderchest has been cleared!");
-            targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
-        }
+        event.getWhoClicked().closeInventory();
+        Bukkit.getScheduler().runTask(
+                Bukkit.getPluginManager().getPlugin("AdminManager"),
+                () -> new PlayerEnderChestGui(sender, targetPlayer).open()
+        );
     }
 
     // ========== GAMEMODE HANDLERS ==========
@@ -624,9 +598,8 @@ public class PlayerManage extends BaseGui {
             targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
         }
 
-        // Refresh GUI to update the icon
-        event.getWhoClicked().closeInventory();
-        new PlayerManage(sender, targetPlayer).open();
+        // Refresh button to update the icon
+        refreshSlot(20, createGamemodeToggleButton());
     }
 
     // ========== EXIT HANDLER ==========
