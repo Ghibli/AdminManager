@@ -28,6 +28,9 @@ public class ArmorCreatorGui extends BaseGui {
     private Map<String, Integer> leggingsEnchants = new HashMap<>();
     private Map<String, Integer> bootsEnchants = new HashMap<>();
 
+    // Current selected piece for enchanting
+    private String selectedPieceForEnchant = null;
+
     // Current material selection
     private ArmorMaterial currentMaterial = ArmorMaterial.DIAMOND;
 
@@ -479,16 +482,40 @@ public class ArmorCreatorGui extends BaseGui {
 
         if (meta != null) {
             meta.setDisplayName(displayName);
-            meta.setLore(Arrays.asList(
-                "§7Max Level: §f" + maxLevel,
-                "§7",
-                "§aLEFT §7Add to selected piece",
-                "§7Click piece preview to select"
-            ));
+            if (selectedPieceForEnchant != null) {
+                int currentLevel = getCurrentEnchantLevel(selectedPieceForEnchant, enchantType);
+                meta.setLore(Arrays.asList(
+                    "§7Max Level: §f" + maxLevel,
+                    "§7Current: §e" + (currentLevel > 0 ? "Level " + currentLevel : "None"),
+                    "§7Target: §a" + selectedPieceForEnchant,
+                    "§7",
+                    "§aLEFT §7Level 1  §bRIGHT §7Level 2",
+                    "§eSHIFT+LEFT §7Level 3  §6SHIFT+RIGHT §7Level 4"
+                ));
+            } else {
+                meta.setLore(Arrays.asList(
+                    "§7Max Level: §f" + maxLevel,
+                    "§7",
+                    "§eClick armor preview to select target",
+                    "§7Then click here to add enchantment"
+                ));
+            }
             item.setItemMeta(meta);
         }
 
         return item;
+    }
+
+    private int getCurrentEnchantLevel(String piece, String enchantType) {
+        Map<String, Integer> enchants;
+        switch (piece) {
+            case "HELMET": enchants = helmetEnchants; break;
+            case "CHESTPLATE": enchants = chestplateEnchants; break;
+            case "LEGGINGS": enchants = leggingsEnchants; break;
+            case "BOOTS": enchants = bootsEnchants; break;
+            default: return 0;
+        }
+        return enchants.getOrDefault(enchantType, 0);
     }
 
     private ItemStack createClearButton() {
@@ -568,18 +595,18 @@ public class ArmorCreatorGui extends BaseGui {
         else if (slot == 38) handlePieceClick("BOOTS", clickType);
 
         // Preview selection for enchanting
-        else if (slot == 13) admin.sendMessage("§aHelmet selected for enchanting");
-        else if (slot == 22) admin.sendMessage("§aChestplate selected for enchanting");
-        else if (slot == 31) admin.sendMessage("§aLeggings selected for enchanting");
-        else if (slot == 40) admin.sendMessage("§aBoots selected for enchanting");
+        else if (slot == 13) handlePreviewSelect("HELMET");
+        else if (slot == 22) handlePreviewSelect("CHESTPLATE");
+        else if (slot == 31) handlePreviewSelect("LEGGINGS");
+        else if (slot == 40) handlePreviewSelect("BOOTS");
 
-        // Enchantments (simplified for now)
-        else if (slot == 15) admin.sendMessage("§7Enchantment system coming soon");
-        else if (slot == 16) admin.sendMessage("§7Enchantment system coming soon");
-        else if (slot == 24) admin.sendMessage("§7Enchantment system coming soon");
-        else if (slot == 25) admin.sendMessage("§7Enchantment system coming soon");
-        else if (slot == 33) admin.sendMessage("§7Enchantment system coming soon");
-        else if (slot == 34) admin.sendMessage("§7Enchantment system coming soon");
+        // Enchantments
+        else if (slot == 15) handleEnchantClick("PROTECTION", 4, clickType);
+        else if (slot == 16) handleEnchantClick("UNBREAKING", 3, clickType);
+        else if (slot == 24) handleEnchantClick("THORNS", 3, clickType);
+        else if (slot == 25) handleEnchantClick("FIRE_PROTECTION", 4, clickType);
+        else if (slot == 33) handleEnchantClick("BLAST_PROTECTION", 4, clickType);
+        else if (slot == 34) handleEnchantClick("PROJECTILE_PROTECTION", 4, clickType);
 
         // Control buttons
         else if (slot == 45) {} // Status button (informational only)
@@ -611,6 +638,119 @@ public class ArmorCreatorGui extends BaseGui {
         refreshSlot(52, createArmorStatsButton());
 
         admin.sendMessage("§aMaterial changed to " + material.getDisplayName());
+    }
+
+    private void handlePreviewSelect(String pieceType) {
+        ItemStack piece = null;
+        switch (pieceType) {
+            case "HELMET": piece = helmet; break;
+            case "CHESTPLATE": piece = chestplate; break;
+            case "LEGGINGS": piece = leggings; break;
+            case "BOOTS": piece = boots; break;
+        }
+
+        if (piece == null) {
+            admin.sendMessage("§cNo " + pieceType.toLowerCase() + " in composition! Add one first.");
+            return;
+        }
+
+        selectedPieceForEnchant = pieceType;
+        admin.sendMessage("§a" + pieceType + " selected for enchanting! Click enchantment books on the right.");
+
+        // Refresh enchantment buttons to show selection
+        refreshSlot(15, createEnchantButton("PROTECTION", 4));
+        refreshSlot(16, createEnchantButton("UNBREAKING", 3));
+        refreshSlot(24, createEnchantButton("THORNS", 3));
+        refreshSlot(25, createEnchantButton("FIRE_PROTECTION", 4));
+        refreshSlot(33, createEnchantButton("BLAST_PROTECTION", 4));
+        refreshSlot(34, createEnchantButton("PROJECTILE_PROTECTION", 4));
+    }
+
+    private void handleEnchantClick(String enchantType, int maxLevel, ClickType clickType) {
+        if (selectedPieceForEnchant == null) {
+            admin.sendMessage("§eSelect an armor piece first by clicking its preview!");
+            return;
+        }
+
+        int level = 0;
+        switch (clickType) {
+            case LEFT: level = 1; break;
+            case RIGHT: level = 2; break;
+            case SHIFT_LEFT: level = 3; break;
+            case SHIFT_RIGHT: level = 4; break;
+            default:
+                admin.sendMessage("§cInvalid click type!");
+                return;
+        }
+
+        if (level > maxLevel) {
+            admin.sendMessage("§cMax level for this enchantment is " + maxLevel + "!");
+            return;
+        }
+
+        // Get the enchantment map for the selected piece
+        Map<String, Integer> enchants;
+        ItemStack targetPiece;
+        switch (selectedPieceForEnchant) {
+            case "HELMET":
+                enchants = helmetEnchants;
+                targetPiece = helmet;
+                break;
+            case "CHESTPLATE":
+                enchants = chestplateEnchants;
+                targetPiece = chestplate;
+                break;
+            case "LEGGINGS":
+                enchants = leggingsEnchants;
+                targetPiece = leggings;
+                break;
+            case "BOOTS":
+                enchants = bootsEnchants;
+                targetPiece = boots;
+                break;
+            default:
+                return;
+        }
+
+        // Store enchantment level
+        enchants.put(enchantType, level);
+
+        // Apply enchantment to the actual item
+        Enchantment bukkitEnchant = getEnchantmentByType(enchantType);
+        if (bukkitEnchant != null && targetPiece != null) {
+            targetPiece.addUnsafeEnchantment(bukkitEnchant, level);
+        }
+
+        String enchantName = enchantType.replace("_", " ");
+        admin.sendMessage("§aAdded " + enchantName + " " + level + " to " + selectedPieceForEnchant + "!");
+
+        // Refresh enchantment button and preview
+        updatePreview();
+        refreshSlot(getEnchantSlot(enchantType), createEnchantButton(enchantType, maxLevel));
+    }
+
+    private Enchantment getEnchantmentByType(String type) {
+        switch (type) {
+            case "PROTECTION": return Enchantment.PROTECTION_ENVIRONMENTAL;
+            case "UNBREAKING": return Enchantment.DURABILITY;
+            case "THORNS": return Enchantment.THORNS;
+            case "FIRE_PROTECTION": return Enchantment.PROTECTION_FIRE;
+            case "BLAST_PROTECTION": return Enchantment.PROTECTION_EXPLOSIONS;
+            case "PROJECTILE_PROTECTION": return Enchantment.PROTECTION_PROJECTILE;
+            default: return null;
+        }
+    }
+
+    private int getEnchantSlot(String type) {
+        switch (type) {
+            case "PROTECTION": return 15;
+            case "UNBREAKING": return 16;
+            case "THORNS": return 24;
+            case "FIRE_PROTECTION": return 25;
+            case "BLAST_PROTECTION": return 33;
+            case "PROJECTILE_PROTECTION": return 34;
+            default: return 0;
+        }
     }
 
     private void handlePieceClick(String pieceType, ClickType clickType) {
