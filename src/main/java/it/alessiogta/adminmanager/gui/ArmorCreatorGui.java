@@ -607,6 +607,7 @@ public class ArmorCreatorGui extends BaseGui {
 
         updatePreview();
         refreshSlot(45, createCompositionStatusButton());
+        refreshSlot(49, createFullSetButton());
         refreshSlot(52, createArmorStatsButton());
 
         admin.sendMessage("§aMaterial changed to " + material.getDisplayName());
