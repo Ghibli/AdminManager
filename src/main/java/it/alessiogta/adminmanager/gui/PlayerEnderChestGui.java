@@ -92,9 +92,8 @@ public class PlayerEnderChestGui extends BaseGui {
 
         // Control buttons
         if (slot == 27) {
-            // Back button
+            // Back button - don't close inventory to preserve cursor position
             event.setCancelled(true);
-            clicker.closeInventory();
             Bukkit.getScheduler().runTask(
                 Bukkit.getPluginManager().getPlugin("AdminManager"),
                 () -> new PlayerManage(clicker, targetPlayer).open()
@@ -114,16 +113,14 @@ public class PlayerEnderChestGui extends BaseGui {
                 targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
             }
 
-            // Refresh view
-            clicker.closeInventory();
+            // Refresh view - don't close inventory to preserve cursor position
             Bukkit.getScheduler().runTask(
                 Bukkit.getPluginManager().getPlugin("AdminManager"),
                 () -> new PlayerEnderChestGui(clicker, targetPlayer).open()
             );
         } else if (slot == 35) {
-            // Refresh button
+            // Refresh button - don't close inventory to preserve cursor position
             event.setCancelled(true);
-            clicker.closeInventory();
             Bukkit.getScheduler().runTask(
                 Bukkit.getPluginManager().getPlugin("AdminManager"),
                 () -> new PlayerEnderChestGui(clicker, targetPlayer).open()

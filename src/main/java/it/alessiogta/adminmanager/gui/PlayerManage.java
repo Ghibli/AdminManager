@@ -48,33 +48,33 @@ public class PlayerManage extends BaseGui {
 
     private void setupGuiItems() {
         // Row 1: Teleport & Movement
-        setItem(0, createTeleportButton());
-        setItem(1, createTpToMeButton());
-        setItem(2, createSpawnTeleportButton());
-        setItem(3, createFreezeButton());
-        setItem(4, createFlyButton());
+        setItem(2, createTeleportButton());
+        setItem(3, createTpToMeButton());
+        setItem(4, createSpawnTeleportButton());
+        setItem(5, createFreezeButton());
+        setItem(7, createFlyButton());
 
         // Row 2: Health & State
-        setItem(9, createHealButton());
-        setItem(10, createFeedButton());
-        setItem(11, createGodModeButton());
-        setItem(12, createClearEffectsButton());
-        setItem(13, createKillButton());
+        setItem(18, createHealButton());
+        setItem(19, createFeedButton());
+        setItem(22, createGodModeButton());
+        setItem(23, createClearEffectsButton());
+        setItem(20, createKillButton());
 
         // Row 3: Speed & Gamemode
-        setItem(18, createWalkSpeedButton());
-        setItem(19, createFlySpeedButton());
-        setItem(20, createGamemodeToggleButton());
+        setItem(0, createWalkSpeedButton());
+        setItem(8, createFlySpeedButton());
+        setItem(25, createGamemodeToggleButton());
 
         // Row 4: Inventory Management
-        setItem(27, createInventoryButton());
-        setItem(28, createEnderChestButton());
+        setItem(37, createInventoryButton());
+        setItem(38, createEnderChestButton());
 
         // Row 5: Items & Special
-        setItem(36, createGiveItemButton());
-        setItem(37, createGetSkullButton());
-        setItem(38, createArmorCreatorButton());
-        setItem(39, createEconomyButton());
+        setItem(40, createGiveItemButton());
+        setItem(41, createGetSkullButton());
+        setItem(34, createArmorCreatorButton());
+        setItem(43, createEconomyButton());
 
         // Row 6: Exit (moved to slot 45 to prevent cursor auto-positioning)
         setItem(45, createExitButton());
@@ -299,33 +299,33 @@ public class PlayerManage extends BaseGui {
 
         switch (slot) {
             // Row 1: Teleport & Movement
-            case 0: handleTeleportClick(event); break;
-            case 1: handleTpToMeClick(event); break;
-            case 2: handleSpawnTeleportClick(event); break;
-            case 3: handleFreezeClick(event); break;
-            case 4: handleFlyClick(event); break;
+            case 2: handleTeleportClick(event); break;
+            case 3: handleTpToMeClick(event); break;
+            case 4: handleSpawnTeleportClick(event); break;
+            case 5: handleFreezeClick(event); break;
+            case 7: handleFlyClick(event); break;
 
             // Row 2: Health & State
-            case 9: handleHealClick(event); break;
-            case 10: handleFeedClick(event); break;
-            case 11: handleGodModeClick(event); break;
-            case 12: handleClearEffectsClick(event); break;
-            case 13: handleKillClick(event); break;
+            case 18: handleHealClick(event); break;
+            case 19: handleFeedClick(event); break;
+            case 22: handleGodModeClick(event); break;
+            case 23: handleClearEffectsClick(event); break;
+            case 20: handleKillClick(event); break;
 
             // Row 3: Speed & Gamemode
-            case 18: handleWalkSpeedClick(event); break;
-            case 19: handleFlySpeedClick(event); break;
-            case 20: handleGamemodeToggleClick(event); break;
+            case 0: handleWalkSpeedClick(event); break;
+            case 8: handleFlySpeedClick(event); break;
+            case 25: handleGamemodeToggleClick(event); break;
 
             // Row 4: Inventory Management
-            case 27: handleInventoryClick(event); break;
-            case 28: handleEnderChestClick(event); break;
+            case 37: handleInventoryClick(event); break;
+            case 38: handleEnderChestClick(event); break;
 
             // Row 5: Items & Special
-            case 36: handleGiveItemClick(event); break;
-            case 37: handleGetSkullClick(event); break;
-            case 38: handleArmorCreatorClick(event); break;
-            case 39: handleEconomyClick(event); break;
+            case 40: handleGiveItemClick(event); break;
+            case 41: handleGetSkullClick(event); break;
+            case 34: handleArmorCreatorClick(event); break;
+            case 43: handleEconomyClick(event); break;
 
             // Row 6: Exit (slot 45)
             case 45: handleExitClick(event); break;
@@ -374,8 +374,8 @@ public class PlayerManage extends BaseGui {
             targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
         }
 
-        // Refresh button
-        refreshSlot(3, createFreezeButton());
+        // Refresh button at new position (slot 5)
+        refreshSlot(5, createFreezeButton());
     }
 
     private void handleFlyClick(InventoryClickEvent event) {
@@ -393,8 +393,8 @@ public class PlayerManage extends BaseGui {
                 .replace("{player}", targetPlayer.getName());
         sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
 
-        // Refresh button
-        refreshSlot(4, createFlyButton());
+        // Refresh button at new position (slot 7)
+        refreshSlot(7, createFlyButton());
     }
 
     private void handleGetSkullClick(InventoryClickEvent event) {
@@ -440,7 +440,7 @@ public class PlayerManage extends BaseGui {
 
     private void handleEconomyClick(InventoryClickEvent event) {
         Player sender = (Player) event.getWhoClicked();
-        event.getWhoClicked().closeInventory();
+        // Don't close inventory - open new GUI directly to preserve cursor position
         Bukkit.getScheduler().runTask(
                 Bukkit.getPluginManager().getPlugin("AdminManager"),
                 () -> new EconomyManagerGui(sender, targetPlayer).open()
@@ -449,7 +449,7 @@ public class PlayerManage extends BaseGui {
 
     private void handleArmorCreatorClick(InventoryClickEvent event) {
         Player sender = (Player) event.getWhoClicked();
-        event.getWhoClicked().closeInventory();
+        // Don't close inventory - open new GUI directly to preserve cursor position
         Bukkit.getScheduler().runTask(
                 Bukkit.getPluginManager().getPlugin("AdminManager"),
                 () -> new ArmorCreatorGui(sender, targetPlayer).open()
@@ -516,13 +516,13 @@ public class PlayerManage extends BaseGui {
             targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
         }
 
-        // Refresh button
-        refreshSlot(11, createGodModeButton());
+        // Refresh button at new position (slot 22)
+        refreshSlot(22, createGodModeButton());
     }
 
     private void handleWalkSpeedClick(InventoryClickEvent event) {
         Player sender = (Player) event.getWhoClicked();
-        event.getWhoClicked().closeInventory();
+        // Don't close inventory - open new GUI directly to preserve cursor position
         Bukkit.getScheduler().runTask(
                 Bukkit.getPluginManager().getPlugin("AdminManager"),
                 () -> new SpeedControlGui(sender, targetPlayer, SpeedControlGui.SpeedType.WALK).open()
@@ -531,7 +531,7 @@ public class PlayerManage extends BaseGui {
 
     private void handleFlySpeedClick(InventoryClickEvent event) {
         Player sender = (Player) event.getWhoClicked();
-        event.getWhoClicked().closeInventory();
+        // Don't close inventory - open new GUI directly to preserve cursor position
         Bukkit.getScheduler().runTask(
                 Bukkit.getPluginManager().getPlugin("AdminManager"),
                 () -> new SpeedControlGui(sender, targetPlayer, SpeedControlGui.SpeedType.FLY).open()
@@ -571,7 +571,7 @@ public class PlayerManage extends BaseGui {
 
     private void handleInventoryClick(InventoryClickEvent event) {
         Player sender = (Player) event.getWhoClicked();
-        event.getWhoClicked().closeInventory();
+        // Don't close inventory - open new GUI directly to preserve cursor position
         Bukkit.getScheduler().runTask(
                 Bukkit.getPluginManager().getPlugin("AdminManager"),
                 () -> new PlayerInventoryGui(sender, targetPlayer).open()
@@ -580,7 +580,7 @@ public class PlayerManage extends BaseGui {
 
     private void handleEnderChestClick(InventoryClickEvent event) {
         Player sender = (Player) event.getWhoClicked();
-        event.getWhoClicked().closeInventory();
+        // Don't close inventory - open new GUI directly to preserve cursor position
         Bukkit.getScheduler().runTask(
                 Bukkit.getPluginManager().getPlugin("AdminManager"),
                 () -> new PlayerEnderChestGui(sender, targetPlayer).open()
@@ -617,8 +617,8 @@ public class PlayerManage extends BaseGui {
             targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
         }
 
-        // Refresh button to update the icon
-        refreshSlot(20, createGamemodeToggleButton());
+        // Refresh button at new position (slot 25)
+        refreshSlot(25, createGamemodeToggleButton());
     }
 
     // ========== EXIT HANDLER ==========
