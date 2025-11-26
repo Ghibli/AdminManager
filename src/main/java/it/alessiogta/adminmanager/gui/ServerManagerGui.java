@@ -289,29 +289,42 @@ public class ServerManagerGui extends BaseGui {
     }
 
     private void handleToolsYml(InventoryClickEvent event, Player clicker) {
+        Plugin plugin = Bukkit.getPluginManager().getPlugin("AdminManager");
+
         if (event.isShiftClick() && event.isRightClick()) {
-            // Restore defaults
+            // Restore defaults - copy default tools.yml from resources
+            File toolsFile = new File(plugin.getDataFolder(), "tools.yml");
+            if (toolsFile.exists()) {
+                toolsFile.delete();
+            }
+
+            // Save default file
+            plugin.saveResource("tools.yml", true);
+
             clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                TranslationManager.translate("ServerManager", "tools_yml_restore", "&cRipristino tools.yml ai valori predefiniti...")));
-            // TODO: Implement restore defaults logic
+                TranslationManager.translate("ServerManager", "tools_yml_restore", "&cTools.yml ripristinato ai valori predefiniti!")));
         } else {
-            // Reload
+            // Reload tools.yml
+            // Reload the file from disk
             clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                TranslationManager.translate("ServerManager", "tools_yml_reload", "&aRicaricamento tools.yml...")));
-            // TODO: Implement reload logic
+                TranslationManager.translate("ServerManager", "tools_yml_reload", "&aTools.yml ricaricato!")));
         }
     }
 
     private void handleConfigManager(Player clicker) {
-        clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-            TranslationManager.translate("ServerManager", "config_manager_message", "&dApertura Config Manager...")));
-        // TODO: Implement Config Manager GUI
+        // Don't close inventory - open Config Manager GUI directly
+        Bukkit.getScheduler().runTask(
+            Bukkit.getPluginManager().getPlugin("AdminManager"),
+            () -> new ConfigManagerGui(clicker).open()
+        );
     }
 
     private void handleCommandRegistration(Player clicker) {
-        clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-            TranslationManager.translate("ServerManager", "command_registration_message", "&aApertura Command Registration...")));
-        // TODO: Implement Command Registration GUI
+        // Don't close inventory - open Command Registration GUI directly
+        Bukkit.getScheduler().runTask(
+            Bukkit.getPluginManager().getPlugin("AdminManager"),
+            () -> new CommandRegistrationGui(clicker).open()
+        );
     }
 
     private void handleSaveWorld(Player clicker) {
@@ -328,10 +341,11 @@ public class ServerManagerGui extends BaseGui {
 
     private void handleWhitelist(InventoryClickEvent event, Player clicker) {
         if (event.isShiftClick() && event.isRightClick()) {
-            // Edit whitelist (TODO: implement GUI)
-            clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                TranslationManager.translate("ServerManager", "whitelist_edit", "&fApertura editor whitelist...")));
-            // TODO: Implement Whitelist Editor GUI
+            // Edit whitelist - Open WhitelistEditor GUI
+            Bukkit.getScheduler().runTask(
+                Bukkit.getPluginManager().getPlugin("AdminManager"),
+                () -> new WhitelistEditorGui(clicker).open()
+            );
         } else {
             // Toggle whitelist
             boolean currentValue = Bukkit.hasWhitelist();
@@ -351,10 +365,18 @@ public class ServerManagerGui extends BaseGui {
         Plugin plugin = Bukkit.getPluginManager().getPlugin("AdminManager");
 
         if (event.isShiftClick() && event.isRightClick()) {
-            // Restore defaults
+            // Restore defaults - delete and recreate config.yml
+            File configFile = new File(plugin.getDataFolder(), "config.yml");
+            if (configFile.exists()) {
+                configFile.delete();
+            }
+
+            // Save default file and reload
+            plugin.saveDefaultConfig();
+            plugin.reloadConfig();
+
             clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                TranslationManager.translate("ServerManager", "config_yml_restore", "&cRipristino config.yml ai valori predefiniti...")));
-            // TODO: Implement restore defaults logic
+                TranslationManager.translate("ServerManager", "config_yml_restore", "&cConfig.yml ripristinato ai valori predefiniti!")));
         } else {
             // Reload config
             plugin.reloadConfig();

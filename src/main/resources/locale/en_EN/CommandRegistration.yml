@@ -1,0 +1,45 @@
+# CommandRegistration GUI Translations (English)
+
+title: "&aCommand Registration"
+back_button_title: "&cBack"
+back_button_lore: "&7Return to Server Manager"
+
+# Command toggle message
+command_toggled: "&fCommand &e/{command} {status}"
+
+# Commands
+command_banlist_title: "&f/banlist"
+command_banlist_lore: "{status}\n\n&e&lLEFT: &7Toggle"
+
+command_player_title: "&f/player"
+command_player_lore: "{status}\n\n&e&lLEFT: &7Toggle"
+
+command_unban_title: "&f/unban"
+command_unban_lore: "{status}\n\n&e&lLEFT: &7Toggle"
+
+command_god_title: "&f/god"
+command_god_lore: "{status}\n\n&e&lLEFT: &7Toggle"
+
+command_kickall_title: "&f/kickall"
+command_kickall_lore: "{status}\n\n&e&lLEFT: &7Toggle"
+
+command_gamemode_title: "&f/gamemode"
+command_gamemode_lore: "{status}\n\n&e&lLEFT: &7Toggle"
+
+command_freeze_title: "&f/freeze"
+command_freeze_lore: "{status}\n\n&e&lLEFT: &7Toggle"
+
+command_fly_title: "&f/fly"
+command_fly_lore: "{status}\n\n&e&lLEFT: &7Toggle"
+
+command_heal_title: "&f/heal"
+command_heal_lore: "{status}\n\n&e&lLEFT: &7Toggle"
+
+command_teleport_title: "&f/teleport"
+command_teleport_lore: "{status}\n\n&e&lLEFT: &7Toggle"
+
+command_economy_title: "&f/economy"
+command_economy_lore: "{status}\n\n&e&lLEFT: &7Toggle"
+
+command_vanish_title: "&f/vanish"
+command_vanish_lore: "{status}\n\n&e&lLEFT: &7Toggle"

@@ -1,0 +1,27 @@
+# WhitelistEditor GUI Translations (English)
+
+title: "&fWhitelist Editor"
+back_button_title: "&cBack"
+back_button_lore: "&7Return to Server Manager"
+
+add_button_title: "&aAdd Player"
+add_button_lore: "&7Add an online player\n&7to the whitelist"
+
+clear_button_title: "&cClear Whitelist"
+clear_button_lore: "&7Remove all players\n&7from the whitelist"
+
+# Player head
+player_name: "&a{name}"
+player_uuid: "&7UUID: &f{uuid}"
+player_status: "&7Status: {status}"
+player_action: "&c&lClick: &7Remove from whitelist"
+
+# Empty whitelist
+empty_title: "&7Empty Whitelist"
+empty_lore: "&7No players in whitelist\n&7Click the green button\n&7to add one"
+
+# Messages
+no_players_to_add: "&cNo online players to add!"
+player_added: "&a{player} added to whitelist!"
+player_removed: "&c{player} removed from whitelist!"
+whitelist_cleared: "&cRemoved &e{count} &cplayers from whitelist!"

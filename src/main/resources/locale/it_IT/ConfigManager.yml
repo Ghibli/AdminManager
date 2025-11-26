@@ -1,0 +1,30 @@
+# ConfigManager GUI Translations (Italian)
+
+title: "&dConfig Manager"
+back_button_title: "&cIndietro"
+back_button_lore: "&7Torna a Server Manager"
+
+# Config files
+config_yml_title: "&eConfig.yml"
+config_yml_lore: "&7File di configurazione principale\n\n&e&lLEFT: &7Reload\n&c&lSHIFT+RIGHT: &7Restore defaults"
+
+tools_yml_title: "&eTools.yml"
+tools_yml_lore: "&7Configurazione strumenti\n\n&e&lLEFT: &7Reload\n&c&lSHIFT+RIGHT: &7Restore defaults"
+
+translations_title: "&bTranslations"
+translations_lore: "&7Lingua corrente: &e{lang}\n\n&e&lLEFT: &7Switch language"
+
+player_data_title: "&6Player Data"
+player_data_lore: "&7File salvati: &e{count}\n\n&e&lLEFT: &7View details"
+
+gui_config_title: "&d{gui}.yml"
+gui_config_lore: "&7Configurazione GUI\n\n&e&lLEFT: &7Reload"
+
+# Messages
+config_restored: "&cConfig.yml ripristinato!"
+config_reloaded: "&aConfig.yml ricaricato!"
+tools_restored: "&cTools.yml ripristinato!"
+tools_reloaded: "&aTools.yml ricaricato!"
+language_changed: "&bLingua cambiata in: &e{lang}"
+player_data_message: "&6Visualizzazione dati player..."
+gui_config_reloaded: "&d{gui}.yml ricaricato!"
