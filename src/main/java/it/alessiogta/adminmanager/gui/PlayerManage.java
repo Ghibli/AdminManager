@@ -250,20 +250,19 @@ public class PlayerManage extends BaseGui {
         String title = TranslationManager.translate("PlayerManage", "gamemode_toggle_title", "&eGamemode");
 
         // Build lore with all gamemodes, highlighting current one
-        StringBuilder loreBuilder = new StringBuilder();
-        loreBuilder.append(TranslationManager.translate("PlayerManage", "gamemode_toggle_lore", "&7Click to cycle\n"));
+        java.util.List<String> loreLines = new java.util.ArrayList<>();
+        loreLines.add(TranslationManager.translate("PlayerManage", "gamemode_toggle_lore", "&7Click to cycle"));
+        loreLines.add(""); // Empty line for spacing
 
         GameMode[] modes = {GameMode.SURVIVAL, GameMode.CREATIVE, GameMode.ADVENTURE, GameMode.SPECTATOR};
         for (GameMode mode : modes) {
             String modeName = translateGamemodeName(mode);
             if (mode == currentMode) {
-                loreBuilder.append("&a✓ ").append(modeName).append("\n");
+                loreLines.add("&a✓ " + modeName);
             } else {
-                loreBuilder.append("&7  ").append(modeName).append("\n");
+                loreLines.add("&7  " + modeName);
             }
         }
-
-        String lore = loreBuilder.toString().trim();
 
         Material material;
         switch (currentMode) {
@@ -274,7 +273,7 @@ public class PlayerManage extends BaseGui {
             default: material = Material.PAPER;
         }
 
-        return createItem(material, title, lore);
+        return createItem(material, title, loreLines.toArray(new String[0]));
     }
 
     private String translateGamemodeName(GameMode gameMode) {

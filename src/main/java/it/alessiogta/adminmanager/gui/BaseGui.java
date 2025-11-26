@@ -90,7 +90,7 @@ public abstract class BaseGui implements Listener {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setDisplayName(name);
+            meta.setDisplayName(org.bukkit.ChatColor.translateAlternateColorCodes('&', name));
             item.setItemMeta(meta);
         }
         return item;
@@ -118,9 +118,13 @@ public abstract class BaseGui implements Listener {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setDisplayName(title);
+            meta.setDisplayName(org.bukkit.ChatColor.translateAlternateColorCodes('&', title));
             if (lore != null) {
-                meta.setLore(Arrays.asList(lore));
+                java.util.List<String> translatedLore = new java.util.ArrayList<>();
+                for (String line : lore) {
+                    translatedLore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', line));
+                }
+                meta.setLore(translatedLore);
             }
             item.setItemMeta(meta);
         }
