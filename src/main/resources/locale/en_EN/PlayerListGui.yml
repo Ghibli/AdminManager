@@ -1,6 +1,6 @@
 
-
 exit: "&cExit"
+exit_message: "&a You closed &6&lAdmin Manager :-)"
 previous_page: "&aPrevious Page"
 next_page: "&aNext Page"
 player_list_title: "&6Players Online"
@@ -10,6 +10,10 @@ world: "&7World: &f%world%"
 ip: "&7IP: &f%ip%"
 coordinates: "&7Coordinates: &f%coordinates%"
 action: "&7Click to manage"
+
+# Server Manager Button
+server_manager_title: "&6Server Manager"
+server_manager_lore: "&7Manage the server"
 
 
 

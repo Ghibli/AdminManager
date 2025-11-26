@@ -1,0 +1,66 @@
+# ServerManager GUI Translations (Italian)
+
+title: "&6&lServer Manager"
+back_button_title: "&cIndietro"
+back_button_lore: "&7Torna alla lista giocatori"
+
+# Server Control
+reload_server_title: "&aRELOAD SERVER"
+reload_server_lore: "&7Ricarica tutti i plugin del server"
+reload_server_message: "&aRicaricamento server in corso..."
+
+restart_server_title: "&eRESTART SERVER"
+restart_server_lore: "&7Riavvia completamente il server\n&c&lATTENZIONE: Richiede script esterno!"
+restart_server_message: "&eRiavvio server in corso..."
+restart_file_not_found: "&cFile di riavvio non trovato: {file}"
+
+stop_server_title: "&cSTOP SERVER"
+stop_server_lore: "&7Arresta il server\n&c&lATTENZIONE: Azione irreversibile!"
+stop_server_message: "&cArresto server in corso..."
+
+clear_entities_title: "&6CLEAR ENTITIES"
+clear_entities_lore: "&7Rimuovi tutte le entità (mob, item, ecc.)"
+clear_entities_message: "&aRimosse &e{count} &aentità dal server"
+
+# Economy Provider
+economy_provider_title: "&6Economy Provider: {status}"
+economy_provider_lore: "&7Usa questo plugin come provider\n&7economico principale con Vault\n&e&lClick: &7{action}"
+economy_provider_toggled: "&6Economy Provider {status}&6. Riavvia il server per applicare."
+
+# Language
+language_title: "&bLANGUAGE"
+language_lore: "&7Lingua corrente: &e{lang}\n&7Click per cambiare lingua"
+language_changed: "&bLingua cambiata in: &e{lang} &b- Ricarica il server per applicare"
+
+# Config Files
+tools_yml_title: "&eTools.yml"
+tools_yml_lore: "&e&lLEFT: &7Ricarica config\n&c&lSHIFT+RIGHT: &7Ripristina defaults"
+tools_yml_reload: "&aRicaricamento tools.yml..."
+tools_yml_restore: "&cRipristino tools.yml ai valori predefiniti..."
+
+config_yml_title: "&eConfig.yml"
+config_yml_lore: "&e&lLEFT: &7Ricarica config\n&c&lSHIFT+RIGHT: &7Ripristina defaults"
+config_yml_reload: "&aConfig.yml ricaricato!"
+config_yml_restore: "&cRipristino config.yml ai valori predefiniti..."
+
+# Config Manager
+config_manager_title: "&dConfig Manager"
+config_manager_lore: "&e&lLEFT: &7Apri GUI gestione config"
+config_manager_message: "&dApertura Config Manager..."
+
+# Command Registration
+command_registration_title: "&aCommand Registration"
+command_registration_lore: "&e&lLEFT: &7Apri GUI comandi"
+command_registration_message: "&aApertura Command Registration..."
+
+# Save World
+save_world_title: "&eSAVE WORLD"
+save_world_lore: "&e&lLEFT: &7Salva tutti i mondi"
+save_world_message: "&eSalvataggio mondi in corso..."
+save_world_complete: "&aTutti i mondi sono stati salvati!"
+
+# Whitelist
+whitelist_title: "&fWHITELIST: {status}"
+whitelist_lore: "&e&lLEFT: &7{action} whitelist\n&c&lSHIFT+RIGHT: &7Modifica whitelist"
+whitelist_toggled: "&fWhitelist {status}"
+whitelist_edit: "&fApertura editor whitelist..."

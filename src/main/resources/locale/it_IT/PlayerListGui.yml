@@ -1,5 +1,4 @@
 
-
 exit: "&cEsci"
 exit_message: "&a Hai chiuso &6&lAdmin Manager :-)"
 previous_page: "&aPagina precedente"
@@ -11,6 +10,10 @@ world: "&7Mondo: &f%world%"
 ip: "&7IP: &f%ip%"
 coordinates: "&7Coordinate: &f%coordinates%"
 action: "&7Clicca per gestire"
+
+# Server Manager Button
+server_manager_title: "&6Server Manager"
+server_manager_lore: "&7Gestisci il server"
 
 
 

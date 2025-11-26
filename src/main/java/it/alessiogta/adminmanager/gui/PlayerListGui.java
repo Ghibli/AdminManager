@@ -47,6 +47,33 @@ public class PlayerListGui extends BaseGui {
         }
     }
 
+    @Override
+    protected void setupNavigationButtons() {
+        int itemsPerPage = 45;
+        int totalPlayers = onlinePlayers.size();
+
+        // Server Manager button (slot 45)
+        String serverManagerTitle = TranslationManager.translate("PlayerListGui", "server_manager_title", "&6Server Manager");
+        String serverManagerLore = TranslationManager.translate("PlayerListGui", "server_manager_lore", "&7Gestisci il server");
+        setItem(45, createItem(Material.COMMAND_BLOCK, serverManagerTitle, serverManagerLore));
+
+        // Previous page button (slot 47) - only if there's a previous page
+        if (getPage() > 1) {
+            String prevTitle = TranslationManager.translate("PlayerListGui", "previous_page", "&ePagina precedente");
+            setItem(47, createItem(Material.ARROW, prevTitle));
+        }
+
+        // Exit button (slot 49) - always present
+        String exitTitle = TranslationManager.translate("PlayerListGui", "exit", "&cEsci");
+        setItem(49, createItem(Material.DARK_OAK_DOOR, exitTitle));
+
+        // Next page button (slot 51) - only if there are more players
+        if (totalPlayers > getPage() * itemsPerPage) {
+            String nextTitle = TranslationManager.translate("PlayerListGui", "next_page", "&ePagina successiva");
+            setItem(51, createItem(Material.ARROW, nextTitle));
+        }
+    }
+
     private ItemStack createPlayerHead(UUID uuid, String name) {
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
@@ -130,6 +157,28 @@ public class PlayerListGui extends BaseGui {
             }
         }
 
+        // Gestisce il pulsante "Server Manager" (slot 45)
+        if (slot == 45) {
+            Player clicker = (Player) event.getWhoClicked();
+            // Don't close inventory - open new GUI directly to preserve cursor position
+            Bukkit.getScheduler().runTask(
+                Bukkit.getPluginManager().getPlugin("AdminManager"),
+                () -> new ServerManagerGui(clicker).open()
+            );
+            return;
+        }
+
+        // Gestisce il pulsante "Pagina Precedente" (slot 47)
+        if (slot == 47 && getPage() > 1) {
+            Player clicker = (Player) event.getWhoClicked();
+            // Don't close inventory - open previous page directly
+            Bukkit.getScheduler().runTask(
+                Bukkit.getPluginManager().getPlugin("AdminManager"),
+                () -> new PlayerListGui(clicker, getPage() - 1).open()
+            );
+            return;
+        }
+
         // Gestisce il pulsante "Chiudi" (slot 49)
         if (slot == 49) {
             if (event.getWhoClicked().getOpenInventory().getType() != InventoryType.CHEST) {
@@ -141,6 +190,22 @@ public class PlayerListGui extends BaseGui {
             isClosing = true;
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().sendMessage(TranslationManager.translate("PlayerListGui", "exit_message", "&a Hai chiuso &6&lAdmin Manager :-)"));
+            return;
+        }
+
+        // Gestisce il pulsante "Pagina Successiva" (slot 51)
+        if (slot == 51) {
+            int itemsPerPage = 45;
+            int totalPlayers = onlinePlayers.size();
+            if (totalPlayers > getPage() * itemsPerPage) {
+                Player clicker = (Player) event.getWhoClicked();
+                // Don't close inventory - open next page directly
+                Bukkit.getScheduler().runTask(
+                    Bukkit.getPluginManager().getPlugin("AdminManager"),
+                    () -> new PlayerListGui(clicker, getPage() + 1).open()
+                );
+            }
+            return;
         }
     }
 
