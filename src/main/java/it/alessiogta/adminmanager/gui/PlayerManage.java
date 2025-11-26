@@ -257,7 +257,7 @@ public class PlayerManage extends BaseGui {
         for (GameMode mode : modes) {
             String modeName = translateGamemodeName(mode);
             if (mode == currentMode) {
-                loreBuilder.append("&a> ").append(modeName).append("\n");
+                loreBuilder.append("&a✓ ").append(modeName).append("\n");
             } else {
                 loreBuilder.append("&7  ").append(modeName).append("\n");
             }
