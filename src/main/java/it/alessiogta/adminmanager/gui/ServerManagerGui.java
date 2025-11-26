@@ -289,8 +289,11 @@ public class ServerManagerGui extends BaseGui {
         plugin.getConfig().set("language", newLang);
         plugin.saveConfig();
 
+        // Reload translations immediately
+        TranslationManager.reloadTranslations(newLang);
+
         String message = TranslationManager.translate("ServerManager", "language_changed",
-            "&bLingua cambiata in: &e" + newLang + " &b- Ricarica il server per applicare");
+            "&bLingua cambiata in: &e" + newLang + " &b- Traduzioni applicate immediatamente!");
         clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
 
         // Refresh button

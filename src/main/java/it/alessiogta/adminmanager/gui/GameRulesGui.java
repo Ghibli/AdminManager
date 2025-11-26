@@ -38,8 +38,8 @@ public class GameRulesGui extends BaseGui {
         put("showDeathMessages", Material.SKELETON_SKULL);
         put("doImmediateRespawn", Material.RED_BED);
         put("doInsomnia", Material.PHANTOM_MEMBRANE);
-        put("doPatrolSpawning", Material.CROSSBOW);
-        put("doTraderSpawning", Material.LEAD);
+        put("doPatrolSpawning", Material.PILLAGER_SPAWN_EGG);
+        put("doTraderSpawning", Material.WANDERING_TRADER_SPAWN_EGG);
         put("forgiveDeadPlayers", Material.TOTEM_OF_UNDYING);
         put("universalAnger", Material.FIRE_CHARGE);
     }};

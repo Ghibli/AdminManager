@@ -162,8 +162,11 @@ public class ConfigManagerGui extends BaseGui {
         plugin.getConfig().set("language", newLang);
         plugin.saveConfig();
 
+        // Reload translations immediately
+        TranslationManager.reloadTranslations(newLang);
+
         String message = TranslationManager.translate("ConfigManager", "language_changed",
-            "&bLingua cambiata in: &e" + newLang);
+            "&bLingua cambiata in: &e" + newLang + " &b- Traduzioni applicate immediatamente!");
         clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
 
         // Refresh button

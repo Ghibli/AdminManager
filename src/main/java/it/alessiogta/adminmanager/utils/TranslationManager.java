@@ -39,7 +39,20 @@ public class TranslationManager {
             }
 
             // Copia i file di traduzione predefiniti per ogni lingua
-            for (String guiFile : new String[]{"PlayerListGui.yml" , "PlayerManage.yml"}) {
+            String[] guiFiles = {
+                "PlayerListGui.yml",
+                "PlayerManage.yml",
+                "ServerManager.yml",
+                "SpeedControl.yml",
+                "EconomyManager.yml",
+                "ArmorCreator.yml",
+                "CommandRegistration.yml",
+                "ConfigManager.yml",
+                "WhitelistEditor.yml",
+                "GameRules.yml"
+            };
+
+            for (String guiFile : guiFiles) {
                 File file = new File(languageFolder, guiFile);
                 if (!file.exists()) {
                     copyDefaultTranslationFile(lang, guiFile);
@@ -82,5 +95,15 @@ public class TranslationManager {
 
     public static String getCurrentLanguage() {
         return currentLanguage;
+    }
+
+    /**
+     * Ricarica le traduzioni per la lingua specificata
+     * Svuota la cache e ricarica tutti i file di traduzione
+     */
+    public static void reloadTranslations(String newLanguage) {
+        translations.clear();
+        loadTranslations(newLanguage);
+        Bukkit.getLogger().info("[AdminManager] Traduzioni ricaricate per la lingua: " + newLanguage);
     }
 }

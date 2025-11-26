@@ -30,7 +30,7 @@ economy_provider_toggled: "&6Economy Provider {status}&6. Restart server to appl
 # Language
 language_title: "&bLANGUAGE"
 language_lore: "&7Current language: &e{lang}\n&7Click to change language"
-language_changed: "&bLanguage changed to: &e{lang} &b- Reload server to apply"
+language_changed: "&bLanguage changed to: &e{lang} &b- Translations applied immediately!"
 
 # Config Files
 tools_yml_title: "&eTools.yml"

@@ -30,7 +30,7 @@ economy_provider_toggled: "&6Economy Provider {status}&6. Riavvia il server per 
 # Language
 language_title: "&bLANGUAGE"
 language_lore: "&7Lingua corrente: &e{lang}\n&7Click per cambiare lingua"
-language_changed: "&bLingua cambiata in: &e{lang} &b- Ricarica il server per applicare"
+language_changed: "&bLingua cambiata in: &e{lang} &b- Traduzioni applicate immediatamente!"
 
 # Config Files
 tools_yml_title: "&eTools.yml"
