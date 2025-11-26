@@ -30,30 +30,30 @@ public class ServerManagerGui extends BaseGui {
     }
 
     private void setupGuiItems() {
-        // Row 1: Server Control (slots 0-3)
-        setItem(0, createReloadServerButton());
-        setItem(1, createRestartServerButton());
-        setItem(2, createStopServerButton());
-        setItem(3, createClearEntitiesButton());
+        // Pyramid layout - Row 2 center (slot 13)
+        setItem(13, createStopServerButton());
 
-        // Row 2: Economy & Language (slots 9-11)
-        setItem(9, createEconomyProviderButton());
-        setItem(11, createLanguageButton());
+        // Row 3 (slots 21-23)
+        setItem(21, createRestartServerButton());
+        setItem(22, createReloadServerButton());
+        setItem(23, createSaveWorldButton());
 
-        // Row 3: Tools.yml (slots 18-19)
-        setItem(18, createToolsYmlButton());
+        // Row 4 (slots 29-33)
+        setItem(29, createConfigManagerButton());
+        setItem(30, createToolsYmlButton());
+        setItem(31, createCommandRegistrationButton());
+        setItem(32, createLanguageButton());
+        setItem(33, createConfigYmlButton());
 
-        // Row 4: Config Manager & Game Rules (slots 27-28)
-        setItem(27, createConfigManagerButton());
-        setItem(28, createGameRulesButton());
+        // Row 5 (slots 37-38)
+        setItem(37, createWhitelistButton());
+        setItem(38, createGameRulesButton());
 
-        // Row 5: Command Registration, Save World, Whitelist (slots 36-38)
-        setItem(36, createCommandRegistrationButton());
-        setItem(37, createSaveWorldButton());
-        setItem(38, createWhitelistButton());
+        // Row 6 (slots 42-43)
+        setItem(42, createEconomyProviderButton());
+        setItem(43, createClearEntitiesButton());
 
-        // Row 6: Config.yml (slots 45-46) + Back button (slot 49)
-        setItem(45, createConfigYmlButton());
+        // Back button (slot 49)
         setItem(49, createBackButton());
     }
 
@@ -88,12 +88,16 @@ public class ServerManagerGui extends BaseGui {
         boolean vaultEnabled = plugin.getConfig().getBoolean("economy.vault-provider", false);
 
         String status = vaultEnabled ? "&aON" : "&cOFF";
-        String title = TranslationManager.translate("ServerManager", "economy_provider_title", "&6Economy Provider: " + status);
+        String action = vaultEnabled ? "Disabilita" : "Abilita";
+
+        String title = TranslationManager.translate("ServerManager", "economy_provider_title", "&6Economy Provider: {status}")
+            .replace("{status}", status);
         String lore = TranslationManager.translate("ServerManager", "economy_provider_lore",
-            "&7Usa questo plugin come provider\n&7economico principale con Vault\n&e&lClick: &7" + (vaultEnabled ? "Disabilita" : "Abilita"));
+            "&7Usa questo plugin come provider\n&7economico principale con Vault\n&e&lClick: &7{action}")
+            .replace("{action}", action);
 
         Material material = vaultEnabled ? Material.EMERALD : Material.COAL;
-        return createItem(material, title, lore);
+        return createItem(material, title, lore.split("\n"));
     }
 
     private ItemStack createLanguageButton() {
@@ -102,9 +106,10 @@ public class ServerManagerGui extends BaseGui {
 
         String title = TranslationManager.translate("ServerManager", "language_title", "&bLANGUAGE");
         String lore = TranslationManager.translate("ServerManager", "language_lore",
-            "&7Lingua corrente: &e" + currentLang + "\n&7Click per cambiare lingua");
+            "&7Lingua corrente: &e{lang}\n&7Click per cambiare lingua")
+            .replace("{lang}", currentLang);
 
-        return createItem(Material.BOOK, title, lore);
+        return createItem(Material.BOOK, title, lore.split("\n"));
     }
 
     private ItemStack createToolsYmlButton() {
@@ -146,12 +151,16 @@ public class ServerManagerGui extends BaseGui {
         boolean whitelistEnabled = Bukkit.hasWhitelist();
 
         String status = whitelistEnabled ? "&aON" : "&cOFF";
-        String title = TranslationManager.translate("ServerManager", "whitelist_title", "&fWHITELIST: " + status);
+        String action = whitelistEnabled ? "Disabilita" : "Abilita";
+
+        String title = TranslationManager.translate("ServerManager", "whitelist_title", "&fWHITELIST: {status}")
+            .replace("{status}", status);
         String lore = TranslationManager.translate("ServerManager", "whitelist_lore",
-            "&e&lLEFT: &7" + (whitelistEnabled ? "Disabilita" : "Abilita") + " whitelist\n&c&lSHIFT+RIGHT: &7Modifica whitelist");
+            "&e&lLEFT: &7{action} whitelist\n&c&lSHIFT+RIGHT: &7Modifica whitelist")
+            .replace("{action}", action);
 
         Material material = whitelistEnabled ? Material.LIME_DYE : Material.GRAY_DYE;
-        return createItem(material, title, lore);
+        return createItem(material, title, lore.split("\n"));
     }
 
     private ItemStack createConfigYmlButton() {
@@ -175,19 +184,19 @@ public class ServerManagerGui extends BaseGui {
         Player clicker = (Player) event.getWhoClicked();
 
         switch (slot) {
-            case 0: handleReloadServer(clicker); break;
-            case 1: handleRestartServer(clicker); break;
-            case 2: handleStopServer(clicker); break;
-            case 3: handleClearEntities(clicker); break;
-            case 9: handleEconomyProviderToggle(clicker); break;
-            case 11: handleLanguageSwitch(clicker); break;
-            case 18: handleToolsYml(event, clicker); break;
-            case 27: handleConfigManager(clicker); break;
-            case 28: handleGameRules(clicker); break;
-            case 36: handleCommandRegistration(clicker); break;
-            case 37: handleSaveWorld(clicker); break;
-            case 38: handleWhitelist(event, clicker); break;
-            case 45: handleConfigYml(event, clicker); break;
+            case 13: handleStopServer(clicker); break;
+            case 21: handleRestartServer(clicker); break;
+            case 22: handleReloadServer(clicker); break;
+            case 23: handleSaveWorld(clicker); break;
+            case 29: handleConfigManager(clicker); break;
+            case 30: handleToolsYml(event, clicker); break;
+            case 31: handleCommandRegistration(clicker); break;
+            case 32: handleLanguageSwitch(clicker); break;
+            case 33: handleConfigYml(event, clicker); break;
+            case 37: handleWhitelist(event, clicker); break;
+            case 38: handleGameRules(clicker); break;
+            case 42: handleEconomyProviderToggle(clicker); break;
+            case 43: handleClearEntities(clicker); break;
             case 49: handleBack(clicker); break;
         }
     }
@@ -270,8 +279,8 @@ public class ServerManagerGui extends BaseGui {
             "&6Economy Provider " + status + "&6. Riavvia il server per applicare.");
         clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
 
-        // Refresh button
-        refreshSlot(9, createEconomyProviderButton());
+        // Refresh button at new position (slot 42)
+        refreshSlot(42, createEconomyProviderButton());
     }
 
     private void handleLanguageSwitch(Player clicker) {
@@ -296,8 +305,8 @@ public class ServerManagerGui extends BaseGui {
             "&bLingua cambiata in: &e" + newLang + " &b- Traduzioni applicate immediatamente!");
         clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
 
-        // Refresh button
-        refreshSlot(11, createLanguageButton());
+        // Refresh button at new position (slot 32)
+        refreshSlot(32, createLanguageButton());
     }
 
     private void handleToolsYml(InventoryClickEvent event, Player clicker) {
@@ -376,8 +385,8 @@ public class ServerManagerGui extends BaseGui {
                 "&fWhitelist " + status);
             clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
 
-            // Refresh button
-            refreshSlot(38, createWhitelistButton());
+            // Refresh button at new position (slot 37)
+            refreshSlot(37, createWhitelistButton());
         }
     }
 
