@@ -50,7 +50,8 @@ public class PlayerListGui extends BaseGui {
     @Override
     protected void setupNavigationButtons() {
         int itemsPerPage = 45;
-        int totalPlayers = onlinePlayers.size();
+        // Handle case where onlinePlayers is not yet initialized (called from super constructor)
+        int totalPlayers = (onlinePlayers != null) ? onlinePlayers.size() : Bukkit.getOnlinePlayers().size();
 
         // Server Manager button (slot 45)
         String serverManagerTitle = TranslationManager.translate("PlayerListGui", "server_manager_title", "&6Server Manager");
