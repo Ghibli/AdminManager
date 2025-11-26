@@ -43,8 +43,9 @@ public class ServerManagerGui extends BaseGui {
         // Row 3: Tools.yml (slots 18-19)
         setItem(18, createToolsYmlButton());
 
-        // Row 4: Config Manager (slots 27)
+        // Row 4: Config Manager & Game Rules (slots 27-28)
         setItem(27, createConfigManagerButton());
+        setItem(28, createGameRulesButton());
 
         // Row 5: Command Registration, Save World, Whitelist (slots 36-38)
         setItem(36, createCommandRegistrationButton());
@@ -120,6 +121,13 @@ public class ServerManagerGui extends BaseGui {
         return createItem(Material.WRITABLE_BOOK, title, lore);
     }
 
+    private ItemStack createGameRulesButton() {
+        String title = TranslationManager.translate("ServerManager", "game_rules_title", "&6Game Rules");
+        String lore = TranslationManager.translate("ServerManager", "game_rules_lore",
+            "&7Gestisci le regole del server\n&e&lLEFT: &7Apri GUI game rules");
+        return createItem(Material.COMPARATOR, title, lore.split("\n"));
+    }
+
     private ItemStack createCommandRegistrationButton() {
         String title = TranslationManager.translate("ServerManager", "command_registration_title", "&aCommand Registration");
         String lore = TranslationManager.translate("ServerManager", "command_registration_lore",
@@ -175,6 +183,7 @@ public class ServerManagerGui extends BaseGui {
             case 11: handleLanguageSwitch(clicker); break;
             case 18: handleToolsYml(event, clicker); break;
             case 27: handleConfigManager(clicker); break;
+            case 28: handleGameRules(clicker); break;
             case 36: handleCommandRegistration(clicker); break;
             case 37: handleSaveWorld(clicker); break;
             case 38: handleWhitelist(event, clicker); break;
@@ -324,6 +333,14 @@ public class ServerManagerGui extends BaseGui {
         Bukkit.getScheduler().runTask(
             Bukkit.getPluginManager().getPlugin("AdminManager"),
             () -> new CommandRegistrationGui(clicker).open()
+        );
+    }
+
+    private void handleGameRules(Player clicker) {
+        // Don't close inventory - open Game Rules GUI directly
+        Bukkit.getScheduler().runTask(
+            Bukkit.getPluginManager().getPlugin("AdminManager"),
+            () -> new GameRulesGui(clicker).open()
         );
     }
 

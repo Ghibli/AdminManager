@@ -53,6 +53,10 @@ command_registration_title: "&aCommand Registration"
 command_registration_lore: "&e&lLEFT: &7Apri GUI comandi"
 command_registration_message: "&aApertura Command Registration..."
 
+# Game Rules
+game_rules_title: "&6Game Rules"
+game_rules_lore: "&7Gestisci le regole del server\n&e&lLEFT: &7Apri GUI game rules"
+
 # Save World
 save_world_title: "&eSAVE WORLD"
 save_world_lore: "&e&lLEFT: &7Salva tutti i mondi"

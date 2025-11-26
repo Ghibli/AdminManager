@@ -1,0 +1,79 @@
+# GameRules GUI Translations (Italian)
+
+title: "&6&lGame Rules"
+back_button_title: "&cIndietro"
+back_button_lore: "&7Torna a Server Manager"
+
+# Messages
+rule_toggled: "&6Regola &e{rule} {status} &6in tutti i mondi"
+rule_not_boolean: "&cQuesta regola non è un toggle. Valore corrente: &e{value}"
+
+# Game Rules with descriptions
+rule_doFireTick_title: "&fdoFireTick"
+rule_doFireTick_description: "&7Il fuoco si propaga e si consuma"
+
+rule_mobGriefing_title: "&fmobGriefing"
+rule_mobGriefing_description: "&7I mob possono danneggiare i blocchi"
+
+rule_keepInventory_title: "&fkeepInventory"
+rule_keepInventory_description: "&7Mantieni inventario alla morte"
+
+rule_doMobSpawning_title: "&fdoMobSpawning"
+rule_doMobSpawning_description: "&7I mob possono spawnare naturalmente"
+
+rule_doMobLoot_title: "&fdoMobLoot"
+rule_doMobLoot_description: "&7I mob droppano oggetti alla morte"
+
+rule_doTileDrops_title: "&fdoTileDrops"
+rule_doTileDrops_description: "&7I blocchi droppano quando rotti"
+
+rule_doEntityDrops_title: "&fdoEntityDrops"
+rule_doEntityDrops_description: "&7Le entità droppano oggetti"
+
+rule_commandBlockOutput_title: "&fcommandBlockOutput"
+rule_commandBlockOutput_description: "&7Mostra output dei command block"
+
+rule_naturalRegeneration_title: "&fnaturalRegeneration"
+rule_naturalRegeneration_description: "&7Rigenerazione naturale vita"
+
+rule_doDaylightCycle_title: "&fdoDaylightCycle"
+rule_doDaylightCycle_description: "&7Il ciclo giorno/notte avanza"
+
+rule_doWeatherCycle_title: "&fdoWeatherCycle"
+rule_doWeatherCycle_description: "&7Il tempo atmosferico cambia"
+
+rule_pvp_title: "&fpvp"
+rule_pvp_description: "&7I giocatori possono combattere"
+
+rule_fallDamage_title: "&ffallDamage"
+rule_fallDamage_description: "&7Danni da caduta attivi"
+
+rule_fireDamage_title: "&ffireDamage"
+rule_fireDamage_description: "&7Danni da fuoco attivi"
+
+rule_drowningDamage_title: "&fdrowningDamage"
+rule_drowningDamage_description: "&7Danni da annegamento attivi"
+
+rule_announceAdvancements_title: "&fannounceAdvancements"
+rule_announceAdvancements_description: "&7Annuncia progressi in chat"
+
+rule_showDeathMessages_title: "&fshowDeathMessages"
+rule_showDeathMessages_description: "&7Mostra messaggi di morte"
+
+rule_doImmediateRespawn_title: "&fdoImmediateRespawn"
+rule_doImmediateRespawn_description: "&7Respawn immediato senza schermata"
+
+rule_doInsomnia_title: "&fdoInsomnia"
+rule_doInsomnia_description: "&7I phantom spawnano di notte"
+
+rule_doPatrolSpawning_title: "&fdoPatrolSpawning"
+rule_doPatrolSpawning_description: "&7Le pattuglie di pillager spawnano"
+
+rule_doTraderSpawning_title: "&fdoTraderSpawning"
+rule_doTraderSpawning_description: "&7I commercianti erranti spawnano"
+
+rule_forgiveDeadPlayers_title: "&fforgiveDeadPlayers"
+rule_forgiveDeadPlayers_description: "&7I mob dimenticano i giocatori morti"
+
+rule_universalAnger_title: "&funiversalAnger"
+rule_universalAnger_description: "&7I mob attaccano tutti i giocatori"
