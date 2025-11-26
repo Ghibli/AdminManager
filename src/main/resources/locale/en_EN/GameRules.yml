@@ -77,3 +77,60 @@ rule_forgiveDeadPlayers_description: "&7Mobs forget dead players"
 
 rule_universalAnger_title: "&funiversalAnger"
 rule_universalAnger_description: "&7Angry mobs attack all players"
+
+rule_blockExplosionDropDecay_title: "&fblockExplosionDropDecay"
+rule_blockExplosionDropDecay_description: "&7Block explosion drop decay"
+
+rule_disableElytraMovementCheck_title: "&fdisableElytraMovementCheck"
+rule_disableElytraMovementCheck_description: "&7Disable elytra movement check"
+
+rule_disableRaids_title: "&fdisableRaids"
+rule_disableRaids_description: "&7Disable raids"
+
+rule_doLimitedCrafting_title: "&fdoLimitedCrafting"
+rule_doLimitedCrafting_description: "&7Craft only unlocked recipes"
+
+rule_doVinesSpread_title: "&fdoVinesSpread"
+rule_doVinesSpread_description: "&7Vines spread to nearby blocks"
+
+rule_doWardenSpawning_title: "&fdoWardenSpawning"
+rule_doWardenSpawning_description: "&7Warden can spawn"
+
+rule_freezeDamage_title: "&ffreezeDamage"
+rule_freezeDamage_description: "&7Freeze damage enabled"
+
+rule_globalSoundEvents_title: "&fglobalSoundEvents"
+rule_globalSoundEvents_description: "&7Global sound events enabled"
+
+rule_lavaDamage_title: "&flavaDamage"
+rule_lavaDamage_description: "&7Lava damage enabled"
+
+rule_logAdminCommands_title: "&flogAdminCommands"
+rule_logAdminCommands_description: "&7Log admin commands to console"
+
+rule_maxCommandChainLength_title: "&fmaxCommandChainLength"
+rule_maxCommandChainLength_description: "&7Max command chain length"
+
+rule_maxEntityCramming_title: "&fmaxEntityCramming"
+rule_maxEntityCramming_description: "&7Max entities per block"
+
+rule_mobExplosionDropDecay_title: "&fmobExplosionDropDecay"
+rule_mobExplosionDropDecay_description: "&7Mob explosion drop decay"
+
+rule_playersSleepingPercentage_title: "&fplayersSleepingPercentage"
+rule_playersSleepingPercentage_description: "&7% of players needed to skip night"
+
+rule_randomTickSpeed_title: "&frandomTickSpeed"
+rule_randomTickSpeed_description: "&7Random tick speed (crops, etc)"
+
+rule_reducedDebugInfo_title: "&freducedDebugInfo"
+rule_reducedDebugInfo_description: "&7Reduce debug info (F3)"
+
+rule_sendCommandFeedback_title: "&fsendCommandFeedback"
+rule_sendCommandFeedback_description: "&7Show command feedback in chat"
+
+rule_spawnRadius_title: "&fspawnRadius"
+rule_spawnRadius_description: "&7Radius around world spawn"
+
+rule_tntExplosionDropDecay_title: "&ftntExplosionDropDecay"
+rule_tntExplosionDropDecay_description: "&7TNT explosion drop decay"

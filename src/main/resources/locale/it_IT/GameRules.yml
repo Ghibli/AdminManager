@@ -77,3 +77,60 @@ rule_forgiveDeadPlayers_description: "&7I mob dimenticano i giocatori morti"
 
 rule_universalAnger_title: "&funiversalAnger"
 rule_universalAnger_description: "&7I mob attaccano tutti i giocatori"
+
+rule_blockExplosionDropDecay_title: "&fblockExplosionDropDecay"
+rule_blockExplosionDropDecay_description: "&7Decay drop da esplosioni blocchi"
+
+rule_disableElytraMovementCheck_title: "&fdisableElytraMovementCheck"
+rule_disableElytraMovementCheck_description: "&7Disabilita controllo movimento elitre"
+
+rule_disableRaids_title: "&fdisableRaids"
+rule_disableRaids_description: "&7Disabilita le incursioni"
+
+rule_doLimitedCrafting_title: "&fdoLimitedCrafting"
+rule_doLimitedCrafting_description: "&7Crafting solo ricette sbloccate"
+
+rule_doVinesSpread_title: "&fdoVinesSpread"
+rule_doVinesSpread_description: "&7Le piante rampicanti si diffondono"
+
+rule_doWardenSpawning_title: "&fdoWardenSpawning"
+rule_doWardenSpawning_description: "&7Il Guardiano può spawnare"
+
+rule_freezeDamage_title: "&ffreezeDamage"
+rule_freezeDamage_description: "&7Danni da congelamento attivi"
+
+rule_globalSoundEvents_title: "&fglobalSoundEvents"
+rule_globalSoundEvents_description: "&7Eventi sonori globali attivi"
+
+rule_lavaDamage_title: "&flavaDamage"
+rule_lavaDamage_description: "&7Danni da lava attivi"
+
+rule_logAdminCommands_title: "&flogAdminCommands"
+rule_logAdminCommands_description: "&7Registra comandi admin nei log"
+
+rule_maxCommandChainLength_title: "&fmaxCommandChainLength"
+rule_maxCommandChainLength_description: "&7Lunghezza max catena comandi"
+
+rule_maxEntityCramming_title: "&fmaxEntityCramming"
+rule_maxEntityCramming_description: "&7Numero max entità per blocco"
+
+rule_mobExplosionDropDecay_title: "&fmobExplosionDropDecay"
+rule_mobExplosionDropDecay_description: "&7Decay drop da esplosioni mob"
+
+rule_playersSleepingPercentage_title: "&fplayersSleepingPercentage"
+rule_playersSleepingPercentage_description: "&7% giocatori per saltare la notte"
+
+rule_randomTickSpeed_title: "&frandomTickSpeed"
+rule_randomTickSpeed_description: "&7Velocità tick casuali (crop, etc)"
+
+rule_reducedDebugInfo_title: "&freducedDebugInfo"
+rule_reducedDebugInfo_description: "&7Riduce info debug (F3)"
+
+rule_sendCommandFeedback_title: "&fsendCommandFeedback"
+rule_sendCommandFeedback_description: "&7Mostra feedback comandi in chat"
+
+rule_spawnRadius_title: "&fspawnRadius"
+rule_spawnRadius_description: "&7Raggio spawn punto principale"
+
+rule_tntExplosionDropDecay_title: "&ftntExplosionDropDecay"
+rule_tntExplosionDropDecay_description: "&7Decay drop da esplosioni TNT"
