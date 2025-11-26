@@ -22,7 +22,7 @@ public class GameRulesGui extends BaseGui {
         put("doFireTick", Material.FLINT_AND_STEEL);
         put("mobGriefing", Material.CREEPER_HEAD);
         put("keepInventory", Material.CHEST);
-        put("doMobSpawning", Material.SPAWN_EGG);
+        put("doMobSpawning", Material.ZOMBIE_SPAWN_EGG);
         put("doMobLoot", Material.DIAMOND);
         put("doTileDrops", Material.GRASS_BLOCK);
         put("doEntityDrops", Material.ITEM_FRAME);
@@ -38,8 +38,8 @@ public class GameRulesGui extends BaseGui {
         put("showDeathMessages", Material.SKELETON_SKULL);
         put("doImmediateRespawn", Material.RED_BED);
         put("doInsomnia", Material.PHANTOM_MEMBRANE);
-        put("doPatrolSpawning", Material.PILLAGER_SPAWN_EGG);
-        put("doTraderSpawning", Material.WANDERING_TRADER_SPAWN_EGG);
+        put("doPatrolSpawning", Material.CROSSBOW);
+        put("doTraderSpawning", Material.LEAD);
         put("forgiveDeadPlayers", Material.TOTEM_OF_UNDYING);
         put("universalAnger", Material.FIRE_CHARGE);
     }};
