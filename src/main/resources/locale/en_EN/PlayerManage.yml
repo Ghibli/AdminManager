@@ -91,33 +91,6 @@ give_item_no_item: "&cYou must hold an item in your hand!"
 give_item_message: "&aGave {amount}x {item} to {player}"
 give_item_notification: "&aYou received {amount}x {item}!"
 
-#Kick messages
-kick_title: "&cKick"
-kick_lore: "&7Kick {player} from server"
-kick_message: "&e{player} &chas been kicked from the server"
-kick_reason: "&cYou have been kicked from the server for violating the rules"
-kick_failure: "&e{player} &cis not online!"
-
-#Ban messages
-ban_title: "&4Ban"
-ban_lore: "&7Ban {player} from server"
-ban_message: "&4{player} has been banned from the server"
-ban_reason: "&cYou have been banned from the server for &lSERIOUSLY &cviolating the rules!"
-ban_failure: "&e{player} &cis not online!"
-source: "Banned by {player} via Admin Manager"
-
-#Mute messages
-mute_title: "&aMute"
-mute_lore: "&7Mute {player}"
-mute_unmute_title: "&cUnmute"
-mute_unmute_lore: "&7Unmute {player}"
-mute_message: "&c{player} has been muted"
-unmute_message: "&a{player} is no longer muted"
-mute_notification: "&cYou have been muted!"
-unmute_notification: "&aYou have been unmuted!"
-mute_chat_message: "&cYou are muted and cannot talk!"
-mute_notify_message: "&e{player} tried to talk but is muted!"
-
 #Inventory
 inventory_title: "&9View Inventory"
 inventory_lore: "&7View {player}'s inventory"

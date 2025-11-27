@@ -91,33 +91,6 @@ give_item_no_item: "&cDevi tenere un item in mano!"
 give_item_message: "&aDato {amount}x {item} a {player}"
 give_item_notification: "&aHai ricevuto {amount}x {item}!"
 
-#Messaggi Kick dal server
-kick_title: "&cEspelli"
-kick_lore: "&7Espelli {player} dal server"
-kick_message: "&e{player} &cè stato espulso dal server"
-kick_reason: "&cSei stato espulso dal server per violazione del regolamento"
-kick_failure: "&e{player} &cnon è online!"
-
-#Messaggi Ban dal server
-ban_title: "&4Ban"
-ban_lore: "&7Banna {player} dal server"
-ban_message: "&4{player} è stato bannato dal server"
-ban_reason: "&cSei stato bannato dal server per aver &lGRAVEMENTE &cviolato il regolamento!"
-ban_failure: "&e{player} &cnon è online!"
-source: "Bannato da {player} tramite Admin Manager"
-
-#Messaggi Mute
-mute_title: "&aMuta"
-mute_lore: "&7Muta {player}"
-mute_unmute_title: "&cRimuovi mute"
-mute_unmute_lore: "&7Rimuovi il mute da {player}"
-mute_message: "&c{player} è stato mutato"
-unmute_message: "&a{player} non è più mutato"
-mute_notification: "&cSei stato mutato!"
-unmute_notification: "&aSei stato smutato!"
-mute_chat_message: "&cSei mutato e non puoi parlare!"
-mute_notify_message: "&e{player} ha tentato di parlare ma è mutato!"
-
 #Inventario
 inventory_title: "&9Visualizza Inventario"
 inventory_lore: "&7Visualizza l'inventario di {player}"
