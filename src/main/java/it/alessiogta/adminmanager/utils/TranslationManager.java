@@ -49,7 +49,8 @@ public class TranslationManager {
                 "CommandRegistration.yml",
                 "ConfigManager.yml",
                 "WhitelistEditor.yml",
-                "GameRules.yml"
+                "GameRules.yml",
+                "WorldSelector.yml"
             };
 
             for (String guiFile : guiFiles) {

@@ -1,0 +1,14 @@
+# WorldSelector GUI Translations (English)
+
+title: "&6&lWorld Selector"
+back_button_title: "&cBack"
+back_button_lore: "&7Return to Server Manager"
+
+# World button
+world_title: "&e{world}"
+world_lore: "&7Environment: &f{env}\n&7Players: &f{players}\n&7Game Rules: &f{rules}\n\n&e&lClick: &7Configure game rules"
+
+# Environment types
+env_normal: "Overworld"
+env_nether: "Nether"
+env_end: "End"

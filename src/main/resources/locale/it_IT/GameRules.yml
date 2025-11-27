@@ -1,11 +1,12 @@
 # GameRules GUI Translations (Italian)
 
-title: "&6&lGame Rules"
+title: "&6&lGame Rules - {world}"
 back_button_title: "&cIndietro"
-back_button_lore: "&7Torna a Server Manager"
+back_button_lore: "&7Torna a World Selector"
 
 # Messages
 rule_toggled: "&6Regola &e{rule} {status} &6in tutti i mondi"
+rule_toggled_single: "&6Regola &e{rule} {status} &6in &e{world}"
 rule_not_boolean: "&cQuesta regola non è un toggle. Valore corrente: &e{value}"
 
 # Game Rules with descriptions

@@ -349,10 +349,10 @@ public class ServerManagerGui extends BaseGui {
     }
 
     private void handleGameRules(Player clicker) {
-        // Don't close inventory - open Game Rules GUI directly
+        // Don't close inventory - open World Selector GUI
         Bukkit.getScheduler().runTask(
             Bukkit.getPluginManager().getPlugin("AdminManager"),
-            () -> new GameRulesGui(clicker).open()
+            () -> new WorldSelectorGui(clicker).open()
         );
     }
 

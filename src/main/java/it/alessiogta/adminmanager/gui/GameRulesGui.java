@@ -15,6 +15,7 @@ import java.util.Map;
 public class GameRulesGui extends BaseGui {
 
     private final Player admin;
+    private final World targetWorld;
     private final Map<Integer, GameRule<?>> slotToRule = new HashMap<>();
 
     // Game rules with their materials
@@ -63,9 +64,11 @@ public class GameRulesGui extends BaseGui {
         put("universalAnger", Material.FIRE_CHARGE);
     }};
 
-    public GameRulesGui(Player admin) {
-        super(admin, TranslationManager.translate("GameRules", "title", "&6&lGame Rules"), 1);
+    public GameRulesGui(Player admin, World world) {
+        super(admin, TranslationManager.translate("GameRules", "title", "&6&lGame Rules - {world}")
+            .replace("{world}", world.getName()), 1);
         this.admin = admin;
+        this.targetWorld = world;
         setupGuiItems();
     }
 
@@ -75,8 +78,6 @@ public class GameRulesGui extends BaseGui {
     }
 
     private void setupGuiItems() {
-        World world = Bukkit.getWorlds().get(0); // Main world
-
         // Setup game rule buttons
         int slot = 0;
         for (Map.Entry<String, Material> entry : RULE_MATERIALS.entrySet()) {
@@ -85,9 +86,9 @@ public class GameRulesGui extends BaseGui {
             String ruleName = entry.getKey();
             GameRule<?> rule = GameRule.getByName(ruleName);
 
-            if (rule != null && world.getGameRuleValue(rule) != null) {
+            if (rule != null && targetWorld.getGameRuleValue(rule) != null) {
                 slotToRule.put(slot, rule);
-                setItem(slot, createGameRuleButton(ruleName, rule, entry.getValue(), world));
+                setItem(slot, createGameRuleButton(ruleName, rule, entry.getValue(), targetWorld));
                 slot++;
             }
         }
@@ -127,7 +128,7 @@ public class GameRulesGui extends BaseGui {
 
     private ItemStack createBackButton() {
         String title = TranslationManager.translate("GameRules", "back_button_title", "&cIndietro");
-        String lore = TranslationManager.translate("GameRules", "back_button_lore", "&7Torna a Server Manager");
+        String lore = TranslationManager.translate("GameRules", "back_button_lore", "&7Torna a World Selector");
         return createItem(Material.DARK_OAK_DOOR, title, lore);
     }
 
@@ -150,29 +151,27 @@ public class GameRulesGui extends BaseGui {
 
     private void handleGameRuleToggle(int slot, Player clicker) {
         GameRule<?> rule = slotToRule.get(slot);
-        World world = Bukkit.getWorlds().get(0); // Main world
-        Object currentValue = world.getGameRuleValue(rule);
+        Object currentValue = targetWorld.getGameRuleValue(rule);
 
         // Toggle boolean rules
         if (currentValue instanceof Boolean) {
             boolean newValue = !(Boolean) currentValue;
 
-            // Apply to all worlds
-            for (World w : Bukkit.getWorlds()) {
-                w.setGameRule((GameRule<Boolean>) rule, newValue);
-            }
+            // Apply to target world only
+            targetWorld.setGameRule((GameRule<Boolean>) rule, newValue);
 
             String status = newValue ? "&aabilitata" : "&cdisabilitata";
-            String message = TranslationManager.translate("GameRules", "rule_toggled",
-                "&6Regola &e{rule} " + status + " &6in tutti i mondi")
-                .replace("{rule}", rule.getName());
+            String message = TranslationManager.translate("GameRules", "rule_toggled_single",
+                "&6Regola &e{rule} " + status + " &6in &e{world}")
+                .replace("{rule}", rule.getName())
+                .replace("{world}", targetWorld.getName());
             clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
 
             // Refresh button
             String ruleName = rule.getName();
             Material material = RULE_MATERIALS.get(ruleName);
             if (material != null) {
-                refreshSlot(slot, createGameRuleButton(ruleName, rule, material, world));
+                refreshSlot(slot, createGameRuleButton(ruleName, rule, material, targetWorld));
             }
         } else {
             // For non-boolean rules, send info message
@@ -184,10 +183,10 @@ public class GameRulesGui extends BaseGui {
     }
 
     private void handleBack(Player clicker) {
-        // Don't close inventory - open ServerManagerGui directly
+        // Don't close inventory - open WorldSelectorGui
         Bukkit.getScheduler().runTask(
             Bukkit.getPluginManager().getPlugin("AdminManager"),
-            () -> new ServerManagerGui(clicker).open()
+            () -> new WorldSelectorGui(clicker).open()
         );
     }
 
