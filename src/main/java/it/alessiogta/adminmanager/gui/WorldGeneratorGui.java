@@ -8,10 +8,29 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class WorldGeneratorGui extends BaseGui {
 
     private final Player admin;
+
+    // Static tracking for players awaiting chat input
+    public static final Map<UUID, InputData> awaitingInput = new HashMap<>();
+
+    public enum InputType {
+        WORLD_NAME,
+        SEED
+    }
+
+    public static class InputData {
+        public InputType type;
+        public WorldGeneratorGui gui;
+
+        public InputData(InputType type, WorldGeneratorGui gui) {
+            this.type = type;
+            this.gui = gui;
+        }
+    }
 
     // Current configuration
     private String worldName = "custom_world";
@@ -197,22 +216,17 @@ public class WorldGeneratorGui extends BaseGui {
 
     private void handleWorldNameInput(Player clicker) {
         clicker.closeInventory();
+
         String message = TranslationManager.translate("WorldGenerator", "name_input",
             "&eInserisci il nome del mondo in chat &7(senza spazi):");
         clicker.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
 
-        // TODO: Implement chat listener for name input
-        // For now, use default name with timestamp
-        worldName = "custom_" + System.currentTimeMillis();
+        String cancelMessage = TranslationManager.translate("WorldGenerator", "cancel_input",
+            "&7Scrivi &c'annulla' &7per annullare");
+        clicker.sendMessage(ChatColor.translateAlternateColorCodes('&', cancelMessage));
 
-        Bukkit.getScheduler().runTaskLater(
-            Bukkit.getPluginManager().getPlugin("AdminManager"),
-            () -> {
-                new WorldGeneratorGui(clicker).open();
-                refreshAllSlots();
-            },
-            20L
-        );
+        // Register player as awaiting input
+        awaitingInput.put(clicker.getUniqueId(), new InputData(InputType.WORLD_NAME, this));
     }
 
     private void handleEnvironmentToggle(Player clicker) {
@@ -245,21 +259,17 @@ public class WorldGeneratorGui extends BaseGui {
 
     private void handleSeedInput(Player clicker) {
         clicker.closeInventory();
+
         String message = TranslationManager.translate("WorldGenerator", "seed_input",
             "&eInserisci il seed in chat &7(numero o testo):");
         clicker.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
 
-        // TODO: Implement chat listener for seed input
-        seed = String.valueOf(System.currentTimeMillis());
+        String cancelMessage = TranslationManager.translate("WorldGenerator", "cancel_input",
+            "&7Scrivi &c'annulla' &7per annullare");
+        clicker.sendMessage(ChatColor.translateAlternateColorCodes('&', cancelMessage));
 
-        Bukkit.getScheduler().runTaskLater(
-            Bukkit.getPluginManager().getPlugin("AdminManager"),
-            () -> {
-                new WorldGeneratorGui(clicker).open();
-                refreshAllSlots();
-            },
-            20L
-        );
+        // Register player as awaiting input
+        awaitingInput.put(clicker.getUniqueId(), new InputData(InputType.SEED, this));
     }
 
     private void handleSeedReset(Player clicker) {
@@ -416,6 +426,15 @@ public class WorldGeneratorGui extends BaseGui {
             case HARD: return "Hard";
             default: return "Normal";
         }
+    }
+
+    // Public setters for chat input
+    public void setWorldName(String name) {
+        this.worldName = name;
+    }
+
+    public void setSeed(String seed) {
+        this.seed = seed;
     }
 
     @Override

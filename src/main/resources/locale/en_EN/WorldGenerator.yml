@@ -48,3 +48,10 @@ generating: "&a&lGENERATING WORLD: &eCreating &6{name}&e..."
 success: "&a&lSUCCESS: &eWorld &6{name} &ecreated successfully!"
 error: "&c&lERROR: &eCould not create the world!"
 world_exists: "&c&lERROR: &eA world with this name already exists!"
+
+# Chat input
+cancel_input: "&7Type &c'cancel' &7to cancel"
+input_cancelled: "&cInput cancelled."
+invalid_name: "&c&lERROR: &eName can only contain letters, numbers and underscores!"
+name_set: "&aWorld name set: &e{name}"
+seed_set: "&aSeed set: &e{seed}"

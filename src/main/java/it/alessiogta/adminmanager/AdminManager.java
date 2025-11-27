@@ -3,6 +3,7 @@ package it.alessiogta.adminmanager;
 import it.alessiogta.adminmanager.commands.AdminManagerCommand;
 import it.alessiogta.adminmanager.commands.AdminManagerTabCompleter;
 import it.alessiogta.adminmanager.listeners.PlayerControlListener;
+import it.alessiogta.adminmanager.listeners.WorldGeneratorChatListener;
 import it.alessiogta.adminmanager.utils.EconomyManager;
 import it.alessiogta.adminmanager.utils.TranslationManager;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -44,6 +45,7 @@ public class AdminManager extends JavaPlugin {
         // Registrazione degli eventi
         HandlerList.unregisterAll(this); // Evita registrazioni multiple
         getServer().getPluginManager().registerEvents(new PlayerControlListener(), this);
+        getServer().getPluginManager().registerEvents(new WorldGeneratorChatListener(), this);
     }
 
     @Override
