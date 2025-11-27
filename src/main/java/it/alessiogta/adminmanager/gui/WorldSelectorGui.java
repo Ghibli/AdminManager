@@ -41,6 +41,9 @@ public class WorldSelectorGui extends BaseGui {
             slotIndex++;
         }
 
+        // Create World button at slot 45
+        setItem(45, createCreateWorldButton());
+
         setupNavigationButtons();
     }
 
@@ -106,6 +109,13 @@ public class WorldSelectorGui extends BaseGui {
         return createItem(Material.DARK_OAK_DOOR, title, lore);
     }
 
+    private ItemStack createCreateWorldButton() {
+        String title = TranslationManager.translate("WorldSelector", "create_world_title", "&a&lCrea Nuovo Mondo");
+        String loreText = TranslationManager.translate("WorldSelector", "create_world_lore",
+            "&7Configura e genera un nuovo mondo\n&7Overworld, Nether o End personalizzati\n\n&e&lClick: &7Apri World Generator");
+        return createItem(Material.GRASS_BLOCK, title, loreText.split("\n"));
+    }
+
     @Override
     public void handleClick(InventoryClickEvent event) {
         int slot = event.getRawSlot();
@@ -114,6 +124,12 @@ public class WorldSelectorGui extends BaseGui {
         if (slot == 49) {
             // Back button
             handleBack(clicker);
+            return;
+        }
+
+        if (slot == 45) {
+            // Create World button
+            handleCreateWorld(clicker);
             return;
         }
 
@@ -142,6 +158,14 @@ public class WorldSelectorGui extends BaseGui {
         Bukkit.getScheduler().runTask(
             Bukkit.getPluginManager().getPlugin("AdminManager"),
             () -> new ServerManagerGui(clicker).open()
+        );
+    }
+
+    private void handleCreateWorld(Player clicker) {
+        // Open WorldGeneratorGui
+        Bukkit.getScheduler().runTask(
+            Bukkit.getPluginManager().getPlugin("AdminManager"),
+            () -> new WorldGeneratorGui(clicker).open()
         );
     }
 

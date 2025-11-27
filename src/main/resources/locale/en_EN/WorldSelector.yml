@@ -12,3 +12,7 @@ world_lore: "&7Environment: &f{env}\n&7Players: &f{players}\n&7Game Rules: &f{ru
 env_normal: "Overworld"
 env_nether: "Nether"
 env_end: "End"
+
+# Create World button
+create_world_title: "&a&lCreate New World"
+create_world_lore: "&7Configure and generate a new world\n&7Custom Overworld, Nether or End\n\n&e&lClick: &7Open World Generator"

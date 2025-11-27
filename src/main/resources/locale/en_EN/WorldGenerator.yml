@@ -1,0 +1,50 @@
+# WorldGenerator GUI Translations (English)
+
+title: "&6&lWorld Generator"
+back_button_title: "&cBack"
+back_button_lore: "&7Return to World Selector"
+
+# Info panel
+info_title: "&e&lCurrent Configuration"
+info_lore: "&7Name: &f{name}\n&7Environment: &f{env}\n&7Type: &f{type}\n&7Seed: &f{seed}\n&7Structures: &f{struct}\n&7Difficulty: &f{diff}\n&7Keep Spawn: &f{spawn}"
+
+# World Name
+name_title: "&eWorld Name"
+name_lore: "&7Current: &f{name}\n\n&e&lClick: &7Enter name in chat"
+name_input: "&eEnter the world name in chat &7(no spaces):"
+
+# Environment
+env_title: "&eEnvironment"
+env_lore: "&7Current: &f{env}\n\n&7• Normal (Overworld)\n&7• Nether\n&7• The End\n\n&e&lClick: &7Change environment"
+
+# World Type
+type_title: "&eWorld Type"
+type_lore: "&7Current: &f{type}\n\n&7• Normal\n&7• Flat\n&7• Large Biomes\n&7• Amplified\n\n&e&lClick: &7Change type"
+
+# Seed
+seed_title: "&eSeed"
+seed_lore: "&7Current: &f{seed}\n\n&e&lClick: &7Enter seed in chat\n&e&lShift+Click: &7Reset (Random)"
+seed_input: "&eEnter the seed in chat &7(number or text):"
+seed_reset: "&aSeed reset! &7A random world will be generated."
+
+# Structures
+struct_title: "&eGenerate Structures"
+struct_lore: "&7Status: {status}\n\n&7Villages, temples, strongholds, etc.\n\n&e&lClick: &7Toggle"
+
+# Difficulty
+diff_title: "&eDifficulty"
+diff_lore: "&7Current: &f{diff}\n\n&7• Peaceful\n&7• Easy\n&7• Normal\n&7• Hard\n\n&e&lClick: &7Change difficulty"
+
+# Keep Spawn
+spawn_title: "&eKeep Spawn Loaded"
+spawn_lore: "&7Status: {status}\n\n&7Keep spawn loaded in memory\n\n&e&lClick: &7Toggle"
+
+# Generate
+generate_title: "&a&l⚡ GENERATE WORLD"
+generate_lore: "&7Create the world with\n&7current configuration\n\n&c&lWARNING: &7Make sure the name\n&7doesn't already exist!\n\n&e&lClick: &7Generate!"
+
+# Messages
+generating: "&a&lGENERATING WORLD: &eCreating &6{name}&e..."
+success: "&a&lSUCCESS: &eWorld &6{name} &ecreated successfully!"
+error: "&c&lERROR: &eCould not create the world!"
+world_exists: "&c&lERROR: &eA world with this name already exists!"

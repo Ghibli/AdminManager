@@ -1,0 +1,50 @@
+# WorldGenerator GUI Translations (Italian)
+
+title: "&6&lWorld Generator"
+back_button_title: "&cIndietro"
+back_button_lore: "&7Torna a World Selector"
+
+# Info panel
+info_title: "&e&lConfigurazione Corrente"
+info_lore: "&7Nome: &f{name}\n&7Environment: &f{env}\n&7Tipo: &f{type}\n&7Seed: &f{seed}\n&7Strutture: &f{struct}\n&7Difficoltà: &f{diff}\n&7Keep Spawn: &f{spawn}"
+
+# World Name
+name_title: "&eNome Mondo"
+name_lore: "&7Corrente: &f{name}\n\n&e&lClick: &7Inserisci nome in chat"
+name_input: "&eInserisci il nome del mondo in chat &7(senza spazi):"
+
+# Environment
+env_title: "&eEnvironment"
+env_lore: "&7Corrente: &f{env}\n\n&7• Normal (Overworld)\n&7• Nether\n&7• The End\n\n&e&lClick: &7Cambia environment"
+
+# World Type
+type_title: "&eTipo Mondo"
+type_lore: "&7Corrente: &f{type}\n\n&7• Normal\n&7• Flat\n&7• Large Biomes\n&7• Amplified\n\n&e&lClick: &7Cambia tipo"
+
+# Seed
+seed_title: "&eSeed"
+seed_lore: "&7Corrente: &f{seed}\n\n&e&lClick: &7Inserisci seed in chat\n&e&lShift+Click: &7Reset (Random)"
+seed_input: "&eInserisci il seed in chat &7(numero o testo):"
+seed_reset: "&aSeed resettato! &7Verrà generato un mondo random."
+
+# Structures
+struct_title: "&eGenera Strutture"
+struct_lore: "&7Status: {status}\n\n&7Villaggi, templi, fortezze, ecc.\n\n&e&lClick: &7Toggle"
+
+# Difficulty
+diff_title: "&eDifficoltà"
+diff_lore: "&7Corrente: &f{diff}\n\n&7• Peaceful\n&7• Easy\n&7• Normal\n&7• Hard\n\n&e&lClick: &7Cambia difficoltà"
+
+# Keep Spawn
+spawn_title: "&eKeep Spawn Loaded"
+spawn_lore: "&7Status: {status}\n\n&7Mantieni spawn caricato in memoria\n\n&e&lClick: &7Toggle"
+
+# Generate
+generate_title: "&a&l⚡ GENERA MONDO"
+generate_lore: "&7Crea il mondo con la\n&7configurazione corrente\n\n&c&lWARNING: &7Verifica che il nome\n&7non esista già!\n\n&e&lClick: &7Genera!"
+
+# Messages
+generating: "&a&lGENERAZIONE MONDO: &eCreazione di &6{name}&e..."
+success: "&a&lSUCCESS: &eMondo &6{name} &ecreato con successo!"
+error: "&c&lERRORE: &eImpossibile creare il mondo!"
+world_exists: "&c&lERRORE: &eEsiste già un mondo con questo nome!"

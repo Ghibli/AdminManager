@@ -50,7 +50,8 @@ public class TranslationManager {
                 "ConfigManager.yml",
                 "WhitelistEditor.yml",
                 "GameRules.yml",
-                "WorldSelector.yml"
+                "WorldSelector.yml",
+                "WorldGenerator.yml"
             };
 
             for (String guiFile : guiFiles) {
