@@ -29,12 +29,20 @@ public class WorldSelectorGui extends BaseGui {
     private void setupGuiItems() {
         List<World> worlds = Bukkit.getWorlds();
 
-        // Display worlds starting from slot 10 for better centering
-        int[] slots = {10, 12, 14, 16}; // Centered slots for up to 4 worlds
+        // Display worlds in multiple rows (21 slots total = 3 rows x 7 slots)
+        // Row 2: slots 10-16
+        // Row 3: slots 19-25
+        // Row 4: slots 28-34
+        int[] slots = {
+            10, 11, 12, 13, 14, 15, 16,  // Row 2 (7 slots)
+            19, 20, 21, 22, 23, 24, 25,  // Row 3 (7 slots)
+            28, 29, 30, 31, 32, 33, 34   // Row 4 (7 slots)
+        };
+
         int slotIndex = 0;
 
         for (World world : worlds) {
-            if (slotIndex >= slots.length) break; // Max 4 worlds in first row
+            if (slotIndex >= slots.length) break; // Max 21 worlds
 
             int slot = slots[slotIndex];
             setItem(slot, createWorldButton(world));
@@ -135,7 +143,11 @@ public class WorldSelectorGui extends BaseGui {
 
         // Check if clicked slot has a world
         List<World> worlds = Bukkit.getWorlds();
-        int[] slots = {10, 12, 14, 16};
+        int[] slots = {
+            10, 11, 12, 13, 14, 15, 16,  // Row 2 (7 slots)
+            19, 20, 21, 22, 23, 24, 25,  // Row 3 (7 slots)
+            28, 29, 30, 31, 32, 33, 34   // Row 4 (7 slots)
+        };
 
         for (int i = 0; i < slots.length && i < worlds.size(); i++) {
             if (slot == slots[i]) {
@@ -171,6 +183,8 @@ public class WorldSelectorGui extends BaseGui {
 
     @Override
     public void open() {
+        // Refresh world list before opening (in case new worlds were created)
+        setupGuiItems();
         inventory = build();
         admin.openInventory(inventory);
     }
