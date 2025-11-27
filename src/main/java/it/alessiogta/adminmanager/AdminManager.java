@@ -70,39 +70,73 @@ public class AdminManager extends JavaPlugin {
     }
 
     private void loadCustomWorlds() {
-        // Load custom worlds from config
-        java.util.List<String> customWorlds = getConfig().getStringList("custom-worlds");
+        getLogger().info("Scansione e caricamento mondi custom...");
 
-        if (customWorlds.isEmpty()) {
+        // Get world container directory
+        java.io.File worldContainer = getServer().getWorldContainer();
+        java.io.File[] folders = worldContainer.listFiles();
+
+        if (folders == null) {
+            getLogger().warning("Impossibile leggere la directory dei mondi!");
             return;
         }
 
-        getLogger().info("Caricamento " + customWorlds.size() + " mondi custom...");
+        // Default worlds that Bukkit loads automatically - skip these
+        java.util.Set<String> defaultWorlds = new java.util.HashSet<>();
+        defaultWorlds.add("world");
+        defaultWorlds.add("world_nether");
+        defaultWorlds.add("world_the_end");
 
-        for (String worldName : customWorlds) {
+        // Get current custom worlds list from config
+        java.util.List<String> configWorlds = getConfig().getStringList("custom-worlds");
+        java.util.Set<String> discoveredWorlds = new java.util.HashSet<>();
+        int loadedCount = 0;
+        int skippedCount = 0;
+
+        // Scan all folders in world container
+        for (java.io.File folder : folders) {
+            // Skip if not a directory
+            if (!folder.isDirectory()) {
+                continue;
+            }
+
+            String worldName = folder.getName();
+
+            // Skip default Bukkit worlds
+            if (defaultWorlds.contains(worldName)) {
+                continue;
+            }
+
+            // Skip common non-world folders
+            if (worldName.equals("plugins") || worldName.equals("logs") ||
+                worldName.equals("cache") || worldName.startsWith(".")) {
+                continue;
+            }
+
+            // Check if this is a valid Minecraft world (has level.dat)
+            java.io.File levelDat = new java.io.File(folder, "level.dat");
+            if (!levelDat.exists()) {
+                continue; // Not a valid world folder
+            }
+
+            // Valid world found!
+            discoveredWorlds.add(worldName);
+
+            // Check if already loaded
+            if (getServer().getWorld(worldName) != null) {
+                getLogger().info("Mondo '" + worldName + "' già caricato.");
+                skippedCount++;
+                continue;
+            }
+
+            // Load the world
             try {
-                // Check if world already loaded
-                if (getServer().getWorld(worldName) != null) {
-                    getLogger().info("Mondo '" + worldName + "' già caricato.");
-                    continue;
-                }
-
-                // Check if world folder exists
-                java.io.File worldFolder = new java.io.File(getServer().getWorldContainer(), worldName);
-                if (!worldFolder.exists()) {
-                    getLogger().warning("Cartella del mondo '" + worldName + "' non trovata! Rimuovo dalla lista.");
-                    customWorlds.remove(worldName);
-                    getConfig().set("custom-worlds", customWorlds);
-                    saveConfig();
-                    continue;
-                }
-
-                // Load the world
                 org.bukkit.WorldCreator creator = new org.bukkit.WorldCreator(worldName);
                 org.bukkit.World world = creator.createWorld();
 
                 if (world != null) {
-                    getLogger().info("Mondo custom '" + worldName + "' caricato con successo!");
+                    getLogger().info("Mondo '" + worldName + "' caricato con successo!");
+                    loadedCount++;
                 } else {
                     getLogger().warning("Impossibile caricare il mondo '" + worldName + "'");
                 }
@@ -111,6 +145,23 @@ public class AdminManager extends JavaPlugin {
                 e.printStackTrace();
             }
         }
+
+        // Update config with all discovered worlds
+        if (!discoveredWorlds.isEmpty()) {
+            // Convert set to sorted list for cleaner config
+            java.util.List<String> sortedWorlds = new java.util.ArrayList<>(discoveredWorlds);
+            java.util.Collections.sort(sortedWorlds);
+
+            // Only update config if the list changed
+            if (!sortedWorlds.equals(configWorlds)) {
+                getConfig().set("custom-worlds", sortedWorlds);
+                saveConfig();
+                getLogger().info("Config aggiornato con " + sortedWorlds.size() + " mondi trovati.");
+            }
+        }
+
+        getLogger().info("Scansione completata: " + loadedCount + " mondi caricati, " +
+                        skippedCount + " già presenti, " + discoveredWorlds.size() + " totali trovati.");
     }
 
     public static AdminManager getInstance() {
