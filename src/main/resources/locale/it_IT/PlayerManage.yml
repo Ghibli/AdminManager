@@ -132,6 +132,24 @@ clear_enderchest_message: "&5EnderChest di {player} cancellato"
 inventory_cleared_notification: "&cIl tuo inventario è stato cancellato!"
 enderchest_cleared_notification: "&5Il tuo enderchest è stato cancellato!"
 
+#Inventory GUI Buttons
+inventory_back_button_title: "&c&lIndietro"
+inventory_back_button_lore: "&7Torna a Gestione Giocatore"
+inventory_clear_button_title: "&c&lCancella Inventario"
+inventory_clear_button_lore: "&7Cancella tutti gli oggetti\n&7dall'inventario di &e{player}\n&7\n&cQuesta azione è irreversibile!"
+inventory_refresh_button_title: "&a&lAggiorna"
+inventory_refresh_button_lore: "&7Aggiorna la vista dell'inventario"
+inventory_view_only_message: "&eQuesto è un inventario in sola lettura. Usa il pulsante Cancella per rimuovere oggetti."
+
+#EnderChest GUI Buttons
+enderchest_back_button_title: "&c&lIndietro"
+enderchest_back_button_lore: "&7Torna a Gestione Giocatore"
+enderchest_clear_button_title: "&5&lCancella EnderChest"
+enderchest_clear_button_lore: "&7Cancella tutti gli oggetti\n&7dall'enderchest di &e{player}\n&7\n&cQuesta azione è irreversibile!"
+enderchest_refresh_button_title: "&a&lAggiorna"
+enderchest_refresh_button_lore: "&7Aggiorna la vista dell'enderchest"
+enderchest_view_only_message: "&eQuesto è un enderchest in sola lettura. Usa il pulsante Cancella per rimuovere oggetti."
+
 #Gamemode Toggle
 gamemode_toggle_title: "&eModalità di Gioco"
 gamemode_toggle_lore: "&7Clicca per cambiare"

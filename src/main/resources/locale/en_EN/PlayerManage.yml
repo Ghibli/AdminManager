@@ -132,6 +132,24 @@ clear_enderchest_message: "&5Cleared enderchest of {player}"
 inventory_cleared_notification: "&cYour inventory has been cleared!"
 enderchest_cleared_notification: "&5Your enderchest has been cleared!"
 
+#Inventory GUI Buttons
+inventory_back_button_title: "&c&lBack"
+inventory_back_button_lore: "&7Return to Player Management"
+inventory_clear_button_title: "&c&lClear Inventory"
+inventory_clear_button_lore: "&7Clear all items from\n&e{player}&7's inventory\n&7\n&cThis cannot be undone!"
+inventory_refresh_button_title: "&a&lRefresh"
+inventory_refresh_button_lore: "&7Update inventory view"
+inventory_view_only_message: "&eThis is a view-only inventory. Use the clear button to remove items."
+
+#EnderChest GUI Buttons
+enderchest_back_button_title: "&c&lBack"
+enderchest_back_button_lore: "&7Return to Player Management"
+enderchest_clear_button_title: "&5&lClear EnderChest"
+enderchest_clear_button_lore: "&7Clear all items from\n&e{player}&7's enderchest\n&7\n&cThis cannot be undone!"
+enderchest_refresh_button_title: "&a&lRefresh"
+enderchest_refresh_button_lore: "&7Update enderchest view"
+enderchest_view_only_message: "&eThis is a view-only enderchest. Use the clear button to remove items."
+
 #Gamemode Toggle
 gamemode_toggle_title: "&eGamemode"
 gamemode_toggle_lore: "&7Click to cycle"

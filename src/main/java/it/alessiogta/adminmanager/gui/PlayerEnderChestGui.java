@@ -4,6 +4,7 @@ import it.alessiogta.adminmanager.utils.TranslationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -13,10 +14,12 @@ import java.util.Arrays;
 
 public class PlayerEnderChestGui extends BaseGui {
 
+    private final Player admin;
     private final Player targetPlayer;
 
     public PlayerEnderChestGui(Player player, Player targetPlayer) {
         super(player, "§5§lEnderChest §8- §e" + targetPlayer.getName(), 1);
+        this.admin = player;
         this.targetPlayer = targetPlayer;
     }
 
@@ -42,12 +45,15 @@ public class PlayerEnderChestGui extends BaseGui {
     }
 
     private ItemStack createBackButton() {
+        String title = TranslationManager.translate("PlayerManage", "enderchest_back_button_title", "&c&lBack");
+        String lore = TranslationManager.translate("PlayerManage", "enderchest_back_button_lore", "&7Return to Player Management");
+
         ItemStack item = new ItemStack(Material.DARK_OAK_DOOR);
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {
-            meta.setDisplayName("§c§lBack");
-            meta.setLore(Arrays.asList("§7Return to Player Management"));
+            meta.setDisplayName(org.bukkit.ChatColor.translateAlternateColorCodes('&', title));
+            meta.setLore(Arrays.asList(org.bukkit.ChatColor.translateAlternateColorCodes('&', lore)));
             item.setItemMeta(meta);
         }
 
@@ -55,17 +61,23 @@ public class PlayerEnderChestGui extends BaseGui {
     }
 
     private ItemStack createClearButton() {
+        String title = TranslationManager.translate("PlayerManage", "enderchest_clear_button_title", "&5&lClear EnderChest");
+        String loreText = TranslationManager.translate("PlayerManage", "enderchest_clear_button_lore",
+            "&7Clear all items from\n&e{player}&7's enderchest\n&7\n&cThis cannot be undone!")
+            .replace("{player}", targetPlayer.getName());
+
         ItemStack item = new ItemStack(Material.BARRIER);
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {
-            meta.setDisplayName("§5§lClear EnderChest");
-            meta.setLore(Arrays.asList(
-                "§7Clear all items from",
-                "§e" + targetPlayer.getName() + "§7's enderchest",
-                "§7",
-                "§cThis cannot be undone!"
-            ));
+            meta.setDisplayName(org.bukkit.ChatColor.translateAlternateColorCodes('&', title));
+
+            String[] loreLines = loreText.split("\n");
+            java.util.List<String> loreList = new java.util.ArrayList<>();
+            for (String line : loreLines) {
+                loreList.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', line));
+            }
+            meta.setLore(loreList);
             item.setItemMeta(meta);
         }
 
@@ -73,12 +85,15 @@ public class PlayerEnderChestGui extends BaseGui {
     }
 
     private ItemStack createRefreshButton() {
+        String title = TranslationManager.translate("PlayerManage", "enderchest_refresh_button_title", "&a&lRefresh");
+        String lore = TranslationManager.translate("PlayerManage", "enderchest_refresh_button_lore", "&7Update enderchest view");
+
         ItemStack item = new ItemStack(Material.ARROW);
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {
-            meta.setDisplayName("§a§lRefresh");
-            meta.setLore(Arrays.asList("§7Update enderchest view"));
+            meta.setDisplayName(org.bukkit.ChatColor.translateAlternateColorCodes('&', title));
+            meta.setLore(Arrays.asList(org.bukkit.ChatColor.translateAlternateColorCodes('&', lore)));
             item.setItemMeta(meta);
         }
 
@@ -128,9 +143,27 @@ public class PlayerEnderChestGui extends BaseGui {
         } else if (slot < 27) {
             // Allow interaction with enderchest items
             event.setCancelled(true);
-            clicker.sendMessage("§eThis is a view-only enderchest. Use the clear button to remove items.");
+
+            String message = TranslationManager.translate("PlayerManage", "enderchest_view_only_message",
+                "&eThis is a view-only enderchest. Use the clear button to remove items.");
+            clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
         } else {
             event.setCancelled(true);
         }
+    }
+
+    @Override
+    public void open() {
+        // Re-register event listener if it was unregistered
+        try {
+            HandlerList.unregisterAll(this);
+            Bukkit.getPluginManager().registerEvents(this, Bukkit.getPluginManager().getPlugin("AdminManager"));
+        } catch (Exception e) {
+            // Already registered or other error - continue
+        }
+
+        // Build and open inventory
+        inventory = build();
+        admin.openInventory(inventory);
     }
 }
