@@ -3,13 +3,18 @@ package it.alessiogta.adminmanager.gui;
 import it.alessiogta.adminmanager.utils.TranslationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GameRulesGui extends BaseGui {
@@ -93,6 +98,12 @@ public class GameRulesGui extends BaseGui {
             }
         }
 
+        // Reset World button at slot 45 (only for Nether and End)
+        if (targetWorld.getEnvironment() == World.Environment.NETHER ||
+            targetWorld.getEnvironment() == World.Environment.THE_END) {
+            setItem(45, createResetWorldButton());
+        }
+
         // Back button at slot 49
         setItem(49, createBackButton());
     }
@@ -132,6 +143,21 @@ public class GameRulesGui extends BaseGui {
         return createItem(Material.DARK_OAK_DOOR, title, lore);
     }
 
+    private ItemStack createResetWorldButton() {
+        String worldType = targetWorld.getEnvironment() == World.Environment.THE_END ? "End" : "Nether";
+        Material material = targetWorld.getEnvironment() == World.Environment.THE_END ?
+            Material.DRAGON_EGG : Material.NETHERRACK;
+
+        String title = TranslationManager.translate("GameRules", "reset_world_title", "&c&lReset {world}")
+            .replace("{world}", worldType);
+
+        String lore = TranslationManager.translate("GameRules", "reset_world_lore",
+            "&7Rigenera completamente il mondo\n&7Teletrasporta tutti i giocatori\n&7e resetta il mondo allo stato iniziale\n\n&c&lWARNING: &7Azione irreversibile!\n&e&lClick: &7Reset world")
+            .split("\n");
+
+        return createItem(material, title, lore);
+    }
+
     @Override
     public void handleClick(InventoryClickEvent event) {
         int slot = event.getRawSlot();
@@ -140,6 +166,13 @@ public class GameRulesGui extends BaseGui {
         if (slot == 49) {
             // Back button
             handleBack(clicker);
+            return;
+        }
+
+        if (slot == 45 && (targetWorld.getEnvironment() == World.Environment.NETHER ||
+                          targetWorld.getEnvironment() == World.Environment.THE_END)) {
+            // Reset World button
+            handleResetWorld(clicker);
             return;
         }
 
@@ -188,6 +221,96 @@ public class GameRulesGui extends BaseGui {
             Bukkit.getPluginManager().getPlugin("AdminManager"),
             () -> new WorldSelectorGui(clicker).open()
         );
+    }
+
+    private void handleResetWorld(Player clicker) {
+        String worldName = targetWorld.getName();
+        String worldType = targetWorld.getEnvironment() == World.Environment.THE_END ? "End" : "Nether";
+
+        clicker.closeInventory();
+
+        String startMessage = TranslationManager.translate("GameRules", "reset_world_start",
+            "&c&lRESET WORLD: &eInizio reset del mondo &6{world}&e...")
+            .replace("{world}", worldType);
+        clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', startMessage));
+
+        // Broadcast to all players
+        String broadcastMessage = TranslationManager.translate("GameRules", "reset_world_broadcast",
+            "&c&lWARNING: &eIl mondo &6{world} &everrà resettato tra &c3 secondi&e!")
+            .replace("{world}", worldType);
+        Bukkit.broadcastMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', broadcastMessage));
+
+        // Wait 3 seconds before reset
+        Bukkit.getScheduler().runTaskLater(
+            Bukkit.getPluginManager().getPlugin("AdminManager"),
+            () -> performWorldReset(worldName, worldType, clicker),
+            60L // 3 seconds (60 ticks)
+        );
+    }
+
+    private void performWorldReset(String worldName, String worldType, Player initiator) {
+        World world = Bukkit.getWorld(worldName);
+        if (world == null) {
+            initiator.sendMessage(org.bukkit.ChatColor.RED + "Errore: Mondo non trovato!");
+            return;
+        }
+
+        // 1. Teleport all players in this world to spawn
+        World mainWorld = Bukkit.getWorlds().get(0);
+        Location spawn = mainWorld.getSpawnLocation();
+
+        List<Player> playersInWorld = world.getPlayers();
+        for (Player player : playersInWorld) {
+            player.teleport(spawn);
+            String tpMessage = TranslationManager.translate("GameRules", "reset_world_teleported",
+                "&6Sei stato teletrasportato allo spawn perché il &c{world} &6sta per essere resettato!")
+                .replace("{world}", worldType);
+            player.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', tpMessage));
+        }
+
+        // 2. Save the world
+        world.save();
+
+        // 3. Unload the world
+        boolean unloaded = Bukkit.unloadWorld(world, false);
+        if (!unloaded) {
+            initiator.sendMessage(org.bukkit.ChatColor.RED + "Errore: Impossibile unload del mondo!");
+            return;
+        }
+
+        // 4. Delete world folder
+        File worldFolder = world.getWorldFolder();
+        try {
+            deleteWorldFolder(worldFolder);
+
+            String successMessage = TranslationManager.translate("GameRules", "reset_world_success",
+                "&a&lSUCCESS: &eIl mondo &6{world} &eè stato resettato! Verrà rigenerato al prossimo accesso.")
+                .replace("{world}", worldType);
+            Bukkit.broadcastMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', successMessage));
+
+        } catch (IOException e) {
+            String errorMessage = TranslationManager.translate("GameRules", "reset_world_error",
+                "&c&lERRORE: &eNon è stato possibile eliminare il mondo. Controlla i permessi del server.")
+                .replace("{world}", worldType);
+            initiator.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', errorMessage));
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteWorldFolder(File path) throws IOException {
+        if (path.exists()) {
+            File[] files = path.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isDirectory()) {
+                        deleteWorldFolder(file);
+                    } else {
+                        Files.delete(file.toPath());
+                    }
+                }
+            }
+            Files.delete(path.toPath());
+        }
     }
 
     private void refreshSlot(int slot, ItemStack item) {

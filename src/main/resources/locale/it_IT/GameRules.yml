@@ -9,6 +9,15 @@ rule_toggled: "&6Regola &e{rule} {status} &6in tutti i mondi"
 rule_toggled_single: "&6Regola &e{rule} {status} &6in &e{world}"
 rule_not_boolean: "&cQuesta regola non è un toggle. Valore corrente: &e{value}"
 
+# Reset World
+reset_world_title: "&c&lReset {world}"
+reset_world_lore: "&7Rigenera completamente il mondo\n&7Teletrasporta tutti i giocatori\n&7e resetta il mondo allo stato iniziale\n\n&c&lWARNING: &7Azione irreversibile!\n&e&lClick: &7Reset world"
+reset_world_start: "&c&lRESET WORLD: &eInizio reset del mondo &6{world}&e..."
+reset_world_broadcast: "&c&lWARNING: &eIl mondo &6{world} &everrà resettato tra &c3 secondi&e!"
+reset_world_teleported: "&6Sei stato teletrasportato allo spawn perché il &c{world} &6sta per essere resettato!"
+reset_world_success: "&a&lSUCCESS: &eIl mondo &6{world} &eè stato resettato! Verrà rigenerato al prossimo accesso."
+reset_world_error: "&c&lERRORE: &eNon è stato possibile eliminare il mondo. Controlla i permessi del server."
+
 # Game Rules with descriptions
 rule_doFireTick_title: "&fdoFireTick"
 rule_doFireTick_description: "&7Il fuoco si propaga e si consuma"
