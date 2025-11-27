@@ -3,6 +3,7 @@ package it.alessiogta.adminmanager.gui;
 import it.alessiogta.adminmanager.utils.TranslationManager;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -448,6 +449,14 @@ public class WorldGeneratorGui extends BaseGui {
 
     @Override
     public void open() {
+        // Re-register event listener if it was unregistered
+        try {
+            HandlerList.unregisterAll(this);
+            Bukkit.getPluginManager().registerEvents(this, Bukkit.getPluginManager().getPlugin("AdminManager"));
+        } catch (Exception e) {
+            // Already registered or other error - continue
+        }
+
         // Rebuild items with current configuration before opening
         setupGuiItems();
         inventory = build();

@@ -19,3 +19,7 @@ spawn_command: ""
 permissions:
   use: adminmanager.use
   reload: adminmanager.reload
+
+# Lista dei mondi custom creati tramite WorldGenerator
+# Questi mondi verranno caricati automaticamente all'avvio del server
+custom-worlds: []
