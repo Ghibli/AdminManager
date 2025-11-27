@@ -42,6 +42,9 @@ public class AdminManager extends JavaPlugin {
         // Inizializzazione delle GUI
         initializeGui();
 
+        // Caricamento mondi custom
+        loadCustomWorlds();
+
         // Registrazione degli eventi
         HandlerList.unregisterAll(this); // Evita registrazioni multiple
         getServer().getPluginManager().registerEvents(new PlayerControlListener(), this);
@@ -65,6 +68,51 @@ public class AdminManager extends JavaPlugin {
         // Inizializzazione di eventuali GUI prefabbricate o statiche
         // GuiManager.registerGui("example", new ExampleGui(...));
     }
+
+    private void loadCustomWorlds() {
+        // Load custom worlds from config
+        java.util.List<String> customWorlds = getConfig().getStringList("custom-worlds");
+
+        if (customWorlds.isEmpty()) {
+            return;
+        }
+
+        getLogger().info("Caricamento " + customWorlds.size() + " mondi custom...");
+
+        for (String worldName : customWorlds) {
+            try {
+                // Check if world already loaded
+                if (getServer().getWorld(worldName) != null) {
+                    getLogger().info("Mondo '" + worldName + "' già caricato.");
+                    continue;
+                }
+
+                // Check if world folder exists
+                java.io.File worldFolder = new java.io.File(getServer().getWorldContainer(), worldName);
+                if (!worldFolder.exists()) {
+                    getLogger().warning("Cartella del mondo '" + worldName + "' non trovata! Rimuovo dalla lista.");
+                    customWorlds.remove(worldName);
+                    getConfig().set("custom-worlds", customWorlds);
+                    saveConfig();
+                    continue;
+                }
+
+                // Load the world
+                org.bukkit.WorldCreator creator = new org.bukkit.WorldCreator(worldName);
+                org.bukkit.World world = creator.createWorld();
+
+                if (world != null) {
+                    getLogger().info("Mondo custom '" + worldName + "' caricato con successo!");
+                } else {
+                    getLogger().warning("Impossibile caricare il mondo '" + worldName + "'");
+                }
+            } catch (Exception e) {
+                getLogger().severe("Errore durante il caricamento del mondo '" + worldName + "': " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static AdminManager getInstance() {
         return instance;
     }

@@ -349,6 +349,15 @@ public class WorldGeneratorGui extends BaseGui {
                                 newWorld.setDifficulty(difficulty);
                                 newWorld.setKeepSpawnInMemory(keepSpawnLoaded);
 
+                                // Save world name to config for auto-loading on restart
+                                org.bukkit.plugin.Plugin plugin = Bukkit.getPluginManager().getPlugin("AdminManager");
+                                java.util.List<String> customWorlds = plugin.getConfig().getStringList("custom-worlds");
+                                if (!customWorlds.contains(worldName)) {
+                                    customWorlds.add(worldName);
+                                    plugin.getConfig().set("custom-worlds", customWorlds);
+                                    plugin.saveConfig();
+                                }
+
                                 String success = TranslationManager.translate("WorldGenerator", "success",
                                     "&a&lSUCCESS: &eMondo &6{name} &ecreato con successo!")
                                     .replace("{name}", worldName);
@@ -439,6 +448,8 @@ public class WorldGeneratorGui extends BaseGui {
 
     @Override
     public void open() {
+        // Rebuild items with current configuration before opening
+        setupGuiItems();
         inventory = build();
         admin.openInventory(inventory);
     }
