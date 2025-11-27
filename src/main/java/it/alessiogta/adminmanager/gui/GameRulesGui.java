@@ -151,11 +151,10 @@ public class GameRulesGui extends BaseGui {
         String title = TranslationManager.translate("GameRules", "reset_world_title", "&c&lReset {world}")
             .replace("{world}", worldType);
 
-        String lore = TranslationManager.translate("GameRules", "reset_world_lore",
-            "&7Rigenera completamente il mondo\n&7Teletrasporta tutti i giocatori\n&7e resetta il mondo allo stato iniziale\n\n&c&lWARNING: &7Azione irreversibile!\n&e&lClick: &7Reset world")
-            .split("\n");
+        String loreText = TranslationManager.translate("GameRules", "reset_world_lore",
+            "&7Rigenera completamente il mondo\n&7Teletrasporta tutti i giocatori\n&7e resetta il mondo allo stato iniziale\n\n&c&lWARNING: &7Azione irreversibile!\n&e&lClick: &7Reset world");
 
-        return createItem(material, title, lore);
+        return createItem(material, title, loreText.split("\n"));
     }
 
     @Override
