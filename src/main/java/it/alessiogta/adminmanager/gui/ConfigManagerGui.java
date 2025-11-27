@@ -61,9 +61,10 @@ public class ConfigManagerGui extends BaseGui {
         String currentLang = plugin.getConfig().getString("language", "it_IT");
 
         String title = TranslationManager.translate("ConfigManager", "translations_title", "&bTranslations");
-        String lore = TranslationManager.translate("ConfigManager", "translations_lore",
-            "&7Lingua corrente: &e" + currentLang + "\n\n&e&lLEFT: &7Switch language");
-        return createItem(Material.BOOK, title, lore.split("\n"));
+        String loreText = TranslationManager.translate("ConfigManager", "translations_lore",
+            "&7Lingua corrente: &e{lang}\n\n&e&lLEFT: &7Switch language")
+            .replace("{lang}", currentLang);
+        return createItem(Material.BOOK, title, loreText.split("\n"));
     }
 
     private ItemStack createPlayerDataButton() {
@@ -75,13 +76,15 @@ public class ConfigManagerGui extends BaseGui {
         }
 
         String title = TranslationManager.translate("ConfigManager", "player_data_title", "&6Player Data");
-        String lore = TranslationManager.translate("ConfigManager", "player_data_lore",
-            "&7File salvati: &e" + playerCount + "\n\n&e&lLEFT: &7View details");
-        return createItem(Material.CHEST, title, lore.split("\n"));
+        String loreText = TranslationManager.translate("ConfigManager", "player_data_lore",
+            "&7File salvati: &e{count}\n\n&e&lLEFT: &7View details")
+            .replace("{count}", String.valueOf(playerCount));
+        return createItem(Material.CHEST, title, loreText.split("\n"));
     }
 
     private ItemStack createGuiConfigButton(String guiName) {
-        String title = TranslationManager.translate("ConfigManager", "gui_config_title", "&d" + guiName + ".yml");
+        String title = TranslationManager.translate("ConfigManager", "gui_config_title", "&d{gui}.yml")
+            .replace("{gui}", guiName);
         String lore = TranslationManager.translate("ConfigManager", "gui_config_lore",
             "&7Configurazione GUI\n\n&e&lLEFT: &7Reload");
         return createItem(Material.WRITABLE_BOOK, title, lore.split("\n"));
@@ -166,7 +169,8 @@ public class ConfigManagerGui extends BaseGui {
         TranslationManager.reloadTranslations(newLang);
 
         String message = TranslationManager.translate("ConfigManager", "language_changed",
-            "&bLingua cambiata in: &e" + newLang + " &b- Traduzioni applicate immediatamente!");
+            "&bLingua cambiata in: &e{lang} &b- Traduzioni applicate immediatamente!")
+            .replace("{lang}", newLang);
         clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
 
         // Refresh button
@@ -184,9 +188,10 @@ public class ConfigManagerGui extends BaseGui {
         int index = slot - 19;
         if (index >= 0 && index < guiNames.length) {
             String guiName = guiNames[index];
-            clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                TranslationManager.translate("ConfigManager", "gui_config_reloaded",
-                    "&d" + guiName + ".yml ricaricato!")));
+            String message = TranslationManager.translate("ConfigManager", "gui_config_reloaded",
+                "&d{gui}.yml ricaricato!")
+                .replace("{gui}", guiName);
+            clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
         }
     }
 
