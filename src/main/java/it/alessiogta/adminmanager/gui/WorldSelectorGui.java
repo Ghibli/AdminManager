@@ -2,17 +2,24 @@ package it.alessiogta.adminmanager.gui;
 
 import it.alessiogta.adminmanager.utils.TranslationManager;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class WorldSelectorGui extends BaseGui {
 
     private final Player admin;
+
+    // Static map to track pending teleports (admin UUID -> target world)
+    public static final Map<UUID, World> pendingTeleports = new HashMap<>();
 
     public WorldSelectorGui(Player admin) {
         super(admin, TranslationManager.translate("WorldSelector", "title", "&6&lWorld Selector"), 1);
@@ -63,7 +70,7 @@ public class WorldSelectorGui extends BaseGui {
             .replace("{world}", worldName);
 
         String lore = TranslationManager.translate("WorldSelector", "world_lore",
-            "&7Environment: &f{env}\n&7Players: &f{players}\n&7Game Rules: &f{rules}\n\n&e&lClick: &7Configure game rules")
+            "&7Environment: &f{env}\n&7Players: &f{players}\n&7Game Rules: &f{rules}\n\n&e&lLEFT: &7Game Rules\n&e&lRIGHT: &7Teleport here\n&e&lSHIFT+RIGHT: &7Teleport player")
             .replace("{env}", getEnvironmentName(world.getEnvironment()))
             .replace("{players}", String.valueOf(world.getPlayers().size()))
             .replace("{rules}", String.valueOf(getActiveRulesCount(world)));
@@ -151,18 +158,73 @@ public class WorldSelectorGui extends BaseGui {
 
         for (int i = 0; i < slots.length && i < worlds.size(); i++) {
             if (slot == slots[i]) {
-                handleWorldClick(worlds.get(i), clicker);
+                handleWorldClick(worlds.get(i), clicker, event);
                 return;
             }
         }
     }
 
-    private void handleWorldClick(World world, Player clicker) {
-        // Open GameRulesGui for the selected world
+    private void handleWorldClick(World world, Player clicker, InventoryClickEvent event) {
+        // Left click = Game Rules
+        if (event.isLeftClick()) {
+            openGameRulesGui(world, clicker);
+        }
+        // Right click = Teleport yourself
+        else if (event.isRightClick() && !event.isShiftClick()) {
+            teleportToWorld(world, clicker, clicker);
+        }
+        // Shift + Right click = Select player to teleport
+        else if (event.isRightClick() && event.isShiftClick()) {
+            openPlayerSelectorForTeleport(world, clicker);
+        }
+    }
+
+    private void openGameRulesGui(World world, Player clicker) {
         Bukkit.getScheduler().runTask(
             Bukkit.getPluginManager().getPlugin("AdminManager"),
             () -> new GameRulesGui(clicker, world).open()
         );
+    }
+
+    private void teleportToWorld(World world, Player teleporter, Player admin) {
+        Location spawn = world.getSpawnLocation();
+
+        Bukkit.getScheduler().runTask(
+            Bukkit.getPluginManager().getPlugin("AdminManager"),
+            () -> {
+                teleporter.teleport(spawn);
+
+                String message = TranslationManager.translate("WorldSelector", "teleport_success",
+                    "&aTeleported to &e{world}&a!")
+                    .replace("{world}", world.getName());
+                admin.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+
+                // If teleporting another player, notify them
+                if (!teleporter.equals(admin)) {
+                    String playerMessage = TranslationManager.translate("WorldSelector", "teleport_notification",
+                        "&aYou have been teleported to &e{world}&a by &6{admin}")
+                        .replace("{world}", world.getName())
+                        .replace("{admin}", admin.getName());
+                    teleporter.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
+                }
+            }
+        );
+    }
+
+    private void openPlayerSelectorForTeleport(World world, Player admin) {
+        // Store the world for this admin
+        pendingTeleports.put(admin.getUniqueId(), world);
+
+        // Open player list GUI
+        Bukkit.getScheduler().runTask(
+            Bukkit.getPluginManager().getPlugin("AdminManager"),
+            () -> new PlayerListGui(admin, 1).open()
+        );
+
+        String message = TranslationManager.translate("WorldSelector", "select_player_to_teleport",
+            "&eSelect a player to teleport to &6{world}")
+            .replace("{world}", world.getName());
+        admin.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
     }
 
     private void handleBack(Player clicker) {

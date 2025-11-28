@@ -133,20 +133,46 @@ public class PlayerListGui extends BaseGui {
                     Player clicker = (Player) event.getWhoClicked();
                     clicker.closeInventory();
 
-                    // Usa runTask invece di runTaskLater per eseguire immediatamente nel tick successivo
-                    Bukkit.getScheduler().runTask(
-                        Bukkit.getPluginManager().getPlugin("AdminManager"),
-                        () -> {
-                            try {
-                                PlayerManage gui = new PlayerManage(clicker, target);
-                                gui.open();
-                            } catch (Exception e) {
-                                Bukkit.getLogger().severe("[AdminManager] Errore critico nell'apertura PlayerManage:");
-                                e.printStackTrace();
-                                clicker.sendMessage(ChatColor.RED + "Errore nell'apertura della GUI! Controlla i log del server.");
+                    // Check if there's a pending world teleport for this admin
+                    if (WorldSelectorGui.pendingTeleports.containsKey(clicker.getUniqueId())) {
+                        org.bukkit.World targetWorld = WorldSelectorGui.pendingTeleports.remove(clicker.getUniqueId());
+
+                        // Teleport the selected player to the world
+                        Bukkit.getScheduler().runTask(
+                            Bukkit.getPluginManager().getPlugin("AdminManager"),
+                            () -> {
+                                org.bukkit.Location spawn = targetWorld.getSpawnLocation();
+                                target.teleport(spawn);
+
+                                String message = TranslationManager.translate("WorldSelector", "teleport_player_success",
+                                    "&aTeleported &e{player}&a to &e{world}&a!")
+                                    .replace("{player}", target.getName())
+                                    .replace("{world}", targetWorld.getName());
+                                clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+
+                                String playerMessage = TranslationManager.translate("WorldSelector", "teleport_notification",
+                                    "&aYou have been teleported to &e{world}&a by &6{admin}")
+                                    .replace("{world}", targetWorld.getName())
+                                    .replace("{admin}", clicker.getName());
+                                target.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
                             }
-                        }
-                    );
+                        );
+                    } else {
+                        // No pending teleport - open PlayerManage normally
+                        Bukkit.getScheduler().runTask(
+                            Bukkit.getPluginManager().getPlugin("AdminManager"),
+                            () -> {
+                                try {
+                                    PlayerManage gui = new PlayerManage(clicker, target);
+                                    gui.open();
+                                } catch (Exception e) {
+                                    Bukkit.getLogger().severe("[AdminManager] Errore critico nell'apertura PlayerManage:");
+                                    e.printStackTrace();
+                                    clicker.sendMessage(ChatColor.RED + "Errore nell'apertura della GUI! Controlla i log del server.");
+                                }
+                            }
+                        );
+                    }
 
                 } catch (Exception e) {
                     Bukkit.getLogger().severe("[AdminManager] Errore nel click su player head:");

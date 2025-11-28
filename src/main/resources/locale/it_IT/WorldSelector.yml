@@ -6,12 +6,18 @@ back_button_lore: "&7Torna a Server Manager"
 
 # World button
 world_title: "&e{world}"
-world_lore: "&7Environment: &f{env}\n&7Players: &f{players}\n&7Game Rules: &f{rules}\n\n&e&lClick: &7Configura game rules"
+world_lore: "&7Environment: &f{env}\n&7Players: &f{players}\n&7Game Rules: &f{rules}\n\n&e&lLEFT: &7Game Rules\n&e&lRIGHT: &7Teletrasportati qui\n&e&lSHIFT+RIGHT: &7Teletrasporta player"
 
 # Environment types
 env_normal: "Overworld"
 env_nether: "Nether"
 env_end: "End"
+
+# Teleport messages
+teleport_success: "&aTeletrasportato in &e{world}&a!"
+teleport_player_success: "&aTeletrasportato &e{player}&a in &e{world}&a!"
+teleport_notification: "&aSei stato teletrasportato in &e{world}&a da &6{admin}"
+select_player_to_teleport: "&eSeleziona un player da teletrasportare in &6{world}"
 
 # Create World button
 create_world_title: "&a&lCrea Nuovo Mondo"
