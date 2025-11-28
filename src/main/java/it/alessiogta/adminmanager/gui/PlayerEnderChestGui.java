@@ -128,14 +128,21 @@ public class PlayerEnderChestGui extends BaseGui {
                 targetPlayer.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', playerMessage));
             }
 
-            // Refresh view - don't close inventory to preserve cursor position
+            // Close current inventory to properly unregister listener
+            clicker.closeInventory();
+
+            // Refresh view
             Bukkit.getScheduler().runTask(
                 Bukkit.getPluginManager().getPlugin("AdminManager"),
                 () -> new PlayerEnderChestGui(clicker, targetPlayer).open()
             );
         } else if (slot == 35) {
-            // Refresh button - don't close inventory to preserve cursor position
+            // Refresh button
             event.setCancelled(true);
+
+            // Close current inventory to properly unregister listener
+            clicker.closeInventory();
+
             Bukkit.getScheduler().runTask(
                 Bukkit.getPluginManager().getPlugin("AdminManager"),
                 () -> new PlayerEnderChestGui(clicker, targetPlayer).open()
