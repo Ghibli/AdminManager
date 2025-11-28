@@ -15,7 +15,7 @@ public class ConfigManagerGui extends BaseGui {
     private final Player admin;
 
     public ConfigManagerGui(Player admin) {
-        super(admin, TranslationManager.translate("ConfigManager", "title", "&dConfig Manager"), 1);
+        super(admin, TranslationManager.translate("ConfigManager", "title", "&d&lSimple Admin Config Manager"), 1);
         this.admin = admin;
         setupGuiItems();
     }
@@ -26,17 +26,26 @@ public class ConfigManagerGui extends BaseGui {
     }
 
     private void setupGuiItems() {
-        // Row 2: Config files
+        // Row 2: Main config files
         setItem(10, createConfigYmlButton());
-        setItem(11, createToolsYmlButton());
         setItem(12, createTranslationsButton());
         setItem(13, createPlayerDataButton());
 
-        // Row 3: GUI configs
-        setItem(19, createGuiConfigButton("PlayerListGui"));
-        setItem(20, createGuiConfigButton("PlayerManage"));
-        setItem(21, createGuiConfigButton("ServerManager"));
-        setItem(22, createGuiConfigButton("ArmorCreator"));
+        // Row 3: GUI configs (7 slots: 19-25)
+        setItem(19, createGuiConfigButton("ArmorCreator", Material.DIAMOND_CHESTPLATE));
+        setItem(20, createGuiConfigButton("CommandRegistration", Material.COMMAND_BLOCK));
+        setItem(21, createGuiConfigButton("ConfigManager", Material.WRITABLE_BOOK));
+        setItem(22, createGuiConfigButton("EconomyManager", Material.GOLD_INGOT));
+        setItem(23, createGuiConfigButton("GameRules", Material.BOOK));
+        setItem(24, createGuiConfigButton("PlayerListGui", Material.PLAYER_HEAD));
+        setItem(25, createGuiConfigButton("PlayerManage", Material.DIAMOND_SWORD));
+
+        // Row 4: More GUI configs (7 slots: 28-34)
+        setItem(28, createGuiConfigButton("ServerManager", Material.COMMAND_BLOCK));
+        setItem(29, createGuiConfigButton("SpeedControl", Material.FEATHER));
+        setItem(30, createGuiConfigButton("WhitelistEditor", Material.PAPER));
+        setItem(31, createGuiConfigButton("WorldGenerator", Material.GRASS_BLOCK));
+        setItem(32, createGuiConfigButton("WorldSelector", Material.COMPASS));
 
         // Back button at slot 49
         setItem(49, createBackButton());
@@ -82,12 +91,12 @@ public class ConfigManagerGui extends BaseGui {
         return createItem(Material.CHEST, title, loreText.split("\n"));
     }
 
-    private ItemStack createGuiConfigButton(String guiName) {
+    private ItemStack createGuiConfigButton(String guiName, Material icon) {
         String title = TranslationManager.translate("ConfigManager", "gui_config_title", "&d{gui}.yml")
             .replace("{gui}", guiName);
         String lore = TranslationManager.translate("ConfigManager", "gui_config_lore",
             "&7Configurazione GUI\n\n&e&lLEFT: &7Reload");
-        return createItem(Material.WRITABLE_BOOK, title, lore.split("\n"));
+        return createItem(icon, title, lore.split("\n"));
     }
 
     private ItemStack createBackButton() {
@@ -103,13 +112,24 @@ public class ConfigManagerGui extends BaseGui {
 
         switch (slot) {
             case 10: handleConfigYml(event, clicker); break;
-            case 11: handleToolsYml(event, clicker); break;
             case 12: handleTranslations(clicker); break;
             case 13: handlePlayerData(clicker); break;
+            // GUI configs row 3 (19-25)
             case 19:
             case 20:
             case 21:
-            case 22: handleGuiConfig(slot, clicker); break;
+            case 22:
+            case 23:
+            case 24:
+            case 25:
+            // GUI configs row 4 (28-32)
+            case 28:
+            case 29:
+            case 30:
+            case 31:
+            case 32:
+                handleGuiConfig(slot, clicker);
+                break;
             case 49: handleBack(clicker); break;
         }
     }
@@ -184,10 +204,29 @@ public class ConfigManagerGui extends BaseGui {
     }
 
     private void handleGuiConfig(int slot, Player clicker) {
-        String[] guiNames = {"PlayerListGui", "PlayerManage", "ServerManager", "ArmorCreator"};
-        int index = slot - 19;
-        if (index >= 0 && index < guiNames.length) {
-            String guiName = guiNames[index];
+        // Map slots to GUI names
+        String guiName = null;
+        switch (slot) {
+            case 19: guiName = "ArmorCreator"; break;
+            case 20: guiName = "CommandRegistration"; break;
+            case 21: guiName = "ConfigManager"; break;
+            case 22: guiName = "EconomyManager"; break;
+            case 23: guiName = "GameRules"; break;
+            case 24: guiName = "PlayerListGui"; break;
+            case 25: guiName = "PlayerManage"; break;
+            case 28: guiName = "ServerManager"; break;
+            case 29: guiName = "SpeedControl"; break;
+            case 30: guiName = "WhitelistEditor"; break;
+            case 31: guiName = "WorldGenerator"; break;
+            case 32: guiName = "WorldSelector"; break;
+        }
+
+        if (guiName != null) {
+            // Reload translations for this GUI
+            TranslationManager.reloadTranslations(
+                Bukkit.getPluginManager().getPlugin("AdminManager").getConfig().getString("language", "it_IT")
+            );
+
             String message = TranslationManager.translate("ConfigManager", "gui_config_reloaded",
                 "&d{gui}.yml ricaricato!")
                 .replace("{gui}", guiName);
