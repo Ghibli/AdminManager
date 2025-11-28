@@ -10,9 +10,8 @@ reload_server_lore: "&7Ricarica tutti i plugin del server"
 reload_server_message: "&aRicaricamento server in corso..."
 
 restart_server_title: "&eRESTART SERVER"
-restart_server_lore: "&7Riavvia completamente il server\n&c&lATTENZIONE: Richiede script esterno!"
+restart_server_lore: "&7Riavvia completamente il server\n&c&lATTENZIONE: Azione irreversibile!"
 restart_server_message: "&eRiavvio server in corso..."
-restart_file_not_found: "&cFile di riavvio non trovato: {file}"
 
 stop_server_title: "&cSTOP SERVER"
 stop_server_lore: "&7Arresta il server\n&c&lATTENZIONE: Azione irreversibile!"

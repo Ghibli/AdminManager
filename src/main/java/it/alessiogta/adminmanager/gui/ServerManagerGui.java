@@ -212,27 +212,17 @@ public class ServerManagerGui extends BaseGui {
     }
 
     private void handleRestartServer(Player clicker) {
-        String restartFile = Bukkit.getPluginManager().getPlugin("AdminManager").getConfig().getString("restart-script", "start.bat");
-        File file = new File(restartFile);
+        clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
+            TranslationManager.translate("ServerManager", "restart_server_message", "&eRiavvio server in corso...")));
 
-        if (file.exists()) {
-            clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                TranslationManager.translate("ServerManager", "restart_server_message", "&eRiavvio server in corso...")));
+        Bukkit.broadcastMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
+            "&c&lSERVER RESTART - Il server verrà riavviato tra 5 secondi!"));
 
-            Bukkit.broadcastMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                "&c&lSERVER RESTART - Il server verrà riavviato tra 5 secondi!"));
-
-            Bukkit.getScheduler().runTaskLater(
-                Bukkit.getPluginManager().getPlugin("AdminManager"),
-                () -> {
-                    Bukkit.spigot().restart();
-                },
-                100L // 5 seconds
-            );
-        } else {
-            clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                TranslationManager.translate("ServerManager", "restart_file_not_found", "&cFile di riavvio non trovato: " + restartFile)));
-        }
+        Bukkit.getScheduler().runTaskLater(
+            Bukkit.getPluginManager().getPlugin("AdminManager"),
+            () -> Bukkit.spigot().restart(),
+            100L // 5 seconds
+        );
     }
 
     private void handleStopServer(Player clicker) {

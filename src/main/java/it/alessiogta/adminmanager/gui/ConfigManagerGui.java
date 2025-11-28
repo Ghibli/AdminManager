@@ -77,11 +77,16 @@ public class ConfigManagerGui extends BaseGui {
     }
 
     private ItemStack createPlayerDataButton() {
-        Plugin plugin = Bukkit.getPluginManager().getPlugin("AdminManager");
-        File playerDataFolder = new File(plugin.getDataFolder(), "playerdata");
+        // Count player data files from Bukkit's world/playerdata/ folder
+        File worldContainer = Bukkit.getWorldContainer();
+        File playerDataFolder = new File(worldContainer, "world/playerdata");
         int playerCount = 0;
+
         if (playerDataFolder.exists() && playerDataFolder.isDirectory()) {
-            playerCount = playerDataFolder.listFiles().length;
+            File[] files = playerDataFolder.listFiles((dir, name) -> name.endsWith(".dat"));
+            if (files != null) {
+                playerCount = files.length;
+            }
         }
 
         String title = TranslationManager.translate("ConfigManager", "player_data_title", "&6Player Data");

@@ -10,9 +10,8 @@ reload_server_lore: "&7Reload all server plugins"
 reload_server_message: "&aReloading server..."
 
 restart_server_title: "&eRESTART SERVER"
-restart_server_lore: "&7Completely restart the server\n&c&lWARNING: Requires external script!"
+restart_server_lore: "&7Completely restart the server\n&c&lWARNING: Irreversible action!"
 restart_server_message: "&eRestarting server..."
-restart_file_not_found: "&cRestart file not found: {file}"
 
 stop_server_title: "&cSTOP SERVER"
 stop_server_lore: "&7Stop the server\n&c&lWARNING: Irreversible action!"
