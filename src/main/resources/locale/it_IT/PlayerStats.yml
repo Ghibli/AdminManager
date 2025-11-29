@@ -4,13 +4,18 @@ title: "&a&lStatistiche: {player}"
 back_button_title: "&cIndietro"
 back_button_lore: "&7Torna ai dettagli giocatore"
 
-# Navigation
-previous_page: "&ePagina precedente"
-next_page: "&ePagina successiva"
+# Category buttons
+category_lore: "&7Statistiche: &e{count}\n\n&e&lClick: &7Visualizza dettagli"
 
-# Info
-info_title: "&6Info"
-info_lore: "&7Totale statistiche: &e{count}\n&7Pagina: &e{page}&7/&e{maxPage}"
+category_custom_title: "&eGenerali"
+category_mined_title: "&eBlocchi Scavati"
+category_killed_title: "&eMob Uccisi"
+category_killed_by_title: "&eUcciso Da"
+category_crafted_title: "&eItem Craftati"
+category_used_title: "&eItem Usati"
+category_broken_title: "&eStrumenti Rotti"
+category_picked_up_title: "&eItem Raccolti"
+category_dropped_title: "&eItem Droppati"
 
 # No stats
 no_stats_title: "&cNessuna statistica"

@@ -4,13 +4,18 @@ title: "&a&lStatistics: {player}"
 back_button_title: "&cBack"
 back_button_lore: "&7Return to player details"
 
-# Navigation
-previous_page: "&ePrevious page"
-next_page: "&eNext page"
+# Category buttons
+category_lore: "&7Statistics: &e{count}\n\n&e&lClick: &7View details"
 
-# Info
-info_title: "&6Info"
-info_lore: "&7Total statistics: &e{count}\n&7Page: &e{page}&7/&e{maxPage}"
+category_custom_title: "&eGeneral"
+category_mined_title: "&eBlocks Mined"
+category_killed_title: "&eMobs Killed"
+category_killed_by_title: "&eKilled By"
+category_crafted_title: "&eItems Crafted"
+category_used_title: "&eItems Used"
+category_broken_title: "&eTools Broken"
+category_picked_up_title: "&eItems Picked Up"
+category_dropped_title: "&eItems Dropped"
 
 # No stats
 no_stats_title: "&cNo statistics"

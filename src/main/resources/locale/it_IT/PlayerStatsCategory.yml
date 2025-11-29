@@ -1,0 +1,17 @@
+# PlayerStatsCategory GUI Translations (Italian)
+
+title: "&a&l{category}: {player}"
+back_button_title: "&cIndietro"
+back_button_lore: "&7Torna alle categorie"
+
+# Navigation
+previous_page: "&ePagina precedente"
+next_page: "&ePagina successiva"
+
+# Info
+info_title: "&6Info"
+info_lore: "&7Totale statistiche: &e{count}\n&7Pagina: &e{page}&7/&e{maxPage}"
+
+# No stats
+no_stats_title: "&cNessuna statistica"
+no_stats_lore: "&7Nessuna statistica in questa categoria."
