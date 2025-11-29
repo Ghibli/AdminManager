@@ -3,6 +3,7 @@ package it.alessiogta.adminmanager.gui;
 import it.alessiogta.adminmanager.utils.TranslationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -77,21 +78,24 @@ public class ConfigManagerGui extends BaseGui {
     }
 
     private ItemStack createPlayerDataButton() {
-        // Count player data files from Bukkit's world/playerdata/ folder
-        File worldContainer = Bukkit.getWorldContainer();
-        File playerDataFolder = new File(worldContainer, "world/playerdata");
+        // Count player data files from Bukkit's main world playerdata folder (dynamic)
         int playerCount = 0;
 
-        if (playerDataFolder.exists() && playerDataFolder.isDirectory()) {
-            File[] files = playerDataFolder.listFiles((dir, name) -> name.endsWith(".dat"));
-            if (files != null) {
-                playerCount = files.length;
+        if (!Bukkit.getWorlds().isEmpty()) {
+            World mainWorld = Bukkit.getWorlds().get(0);
+            File playerDataFolder = new File(mainWorld.getWorldFolder(), "playerdata");
+
+            if (playerDataFolder.exists() && playerDataFolder.isDirectory()) {
+                File[] files = playerDataFolder.listFiles((dir, name) -> name.endsWith(".dat"));
+                if (files != null) {
+                    playerCount = files.length;
+                }
             }
         }
 
         String title = TranslationManager.translate("ConfigManager", "player_data_title", "&6Player Data");
         String loreText = TranslationManager.translate("ConfigManager", "player_data_lore",
-            "&7File salvati: &e{count}\n\n&e&lLEFT: &7View details")
+            "&7Giocatori registrati: &e{count}\n\n&e&lLEFT: &7Visualizza dettagli")
             .replace("{count}", String.valueOf(playerCount));
         return createItem(Material.CHEST, title, loreText.split("\n"));
     }
@@ -203,9 +207,11 @@ public class ConfigManagerGui extends BaseGui {
     }
 
     private void handlePlayerData(Player clicker) {
-        clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-            TranslationManager.translate("ConfigManager", "player_data_message", "&6Visualizzazione dati player...")));
-        // Future: could open a detailed view
+        // Open PlayerDataGui
+        Bukkit.getScheduler().runTask(
+            Bukkit.getPluginManager().getPlugin("AdminManager"),
+            () -> new PlayerDataGui(clicker, 1).open()
+        );
     }
 
     private void handleGuiConfig(int slot, Player clicker) {

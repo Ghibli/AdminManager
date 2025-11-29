@@ -15,7 +15,7 @@ translations_title: "&bTranslations"
 translations_lore: "&7Current language: &e{lang}\n\n&e&lLEFT: &7Switch language"
 
 player_data_title: "&6Player Data"
-player_data_lore: "&7Saved files: &e{count}\n\n&e&lLEFT: &7View details"
+player_data_lore: "&7Registered players: &e{count}\n\n&e&lLEFT: &7View details"
 
 gui_config_title: "&d{gui}.yml"
 gui_config_lore: "&7GUI configuration\n\n&e&lLEFT: &7Reload"

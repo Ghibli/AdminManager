@@ -1,0 +1,17 @@
+# PlayerData GUI Translations (Italian)
+
+title: "&6&lPlayer Data"
+
+# Navigation
+back_button_title: "&cIndietro"
+back_button_lore: "&7Torna a Config Manager"
+previous_page: "&ePagina precedente"
+next_page: "&ePagina successiva"
+
+# Info
+info_title: "&6Info"
+info_lore: "&7Totale giocatori: &e{count}\n&7Pagina: &e{page}&7/&e{maxPage}"
+
+# Player item
+player_lore: "&e&lLEFT: &7Visualizza dettagli"
+player_info_message: "&6Dati giocatore &e{player}&6:\n&7UUID: &f{uuid}\n&7File: &f{file}"
