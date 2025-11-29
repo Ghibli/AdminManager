@@ -98,8 +98,12 @@ public abstract class BaseGui implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        // Use title check - inventory might not be initialized yet
-        if (event.getView().getTitle().equals(title) && event.getWhoClicked() == player) {
+        // Use inventory instance check when available, fallback to title during initialization
+        boolean isThisInventory = (inventory != null)
+            ? event.getInventory().equals(inventory)
+            : (event.getView().getTitle().equals(title) && event.getWhoClicked() == player);
+
+        if (isThisInventory) {
             event.setCancelled(true); // Rende le icone immobili
             handleClick(event); // Permette di gestire i clic personalizzati
         }
@@ -108,7 +112,12 @@ public abstract class BaseGui implements Listener {
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         // Deregistra questo listener quando l'inventario viene chiuso
-        if (event.getView().getTitle().equals(title) && event.getPlayer() == player) {
+        // Use inventory instance check when available
+        boolean isThisInventory = (inventory != null)
+            ? event.getInventory().equals(inventory)
+            : (event.getView().getTitle().equals(title) && event.getPlayer() == player);
+
+        if (isThisInventory) {
             HandlerList.unregisterAll(this);
         }
     }
