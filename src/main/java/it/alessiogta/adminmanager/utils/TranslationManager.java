@@ -44,6 +44,7 @@ public class TranslationManager {
                 "PlayerManage.yml",
                 "PlayerData.yml",
                 "PlayerDataDetail.yml",
+                "PlayerStats.yml",
                 "ServerManager.yml",
                 "SpeedControl.yml",
                 "EconomyManager.yml",

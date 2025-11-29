@@ -62,6 +62,9 @@ public class PlayerDataDetailGui extends BaseGui {
             setItem(22, createOfflineInfoItem());
         }
 
+        // Statistics button (slot 30) - Available for both online and offline
+        setItem(30, createStatsButton());
+
         // Back button (slot 49)
         setItem(49, createBackButton());
     }
@@ -193,6 +196,13 @@ public class PlayerDataDetailGui extends BaseGui {
         return createItem(Material.BARRIER, title, lore.split("\n"));
     }
 
+    private ItemStack createStatsButton() {
+        String title = TranslationManager.translate("PlayerDataDetail", "stats_title", "&aStatistiche");
+        String lore = TranslationManager.translate("PlayerDataDetail", "stats_lore",
+            "&7Visualizza le statistiche del giocatore\n&7Blocchi rotti, mob uccisi, ecc.");
+        return createItem(Material.WRITABLE_BOOK, title, lore.split("\n"));
+    }
+
     private ItemStack createBackButton() {
         String title = TranslationManager.translate("PlayerDataDetail", "back_button_title", "&cIndietro");
         String lore = TranslationManager.translate("PlayerDataDetail", "back_button_lore", "&7Torna alla lista player data");
@@ -204,11 +214,18 @@ public class PlayerDataDetailGui extends BaseGui {
         int slot = event.getRawSlot();
         Player clicker = (Player) event.getWhoClicked();
 
+        // Statistics and back button work for both online and offline
+        if (slot == 30) {
+            handleStats(clicker);
+            return;
+        }
+        if (slot == 49) {
+            handleBack(clicker);
+            return;
+        }
+
+        // Online player actions only
         if (!targetPlayer.isOnline()) {
-            // Offline player - only back button works
-            if (slot == 49) {
-                handleBack(clicker);
-            }
             return;
         }
 
@@ -220,7 +237,6 @@ public class PlayerDataDetailGui extends BaseGui {
             case 21: handleTeleportHere(clicker, onlineTarget); break;
             case 23: handleViewInventory(clicker, onlineTarget); break;
             case 25: handleManage(clicker, onlineTarget); break;
-            case 49: handleBack(clicker); break;
         }
     }
 
@@ -270,6 +286,14 @@ public class PlayerDataDetailGui extends BaseGui {
         Bukkit.getScheduler().runTask(
             Bukkit.getPluginManager().getPlugin("AdminManager"),
             () -> new PlayerManage(admin, target).open()
+        );
+    }
+
+    private void handleStats(Player clicker) {
+        // Open PlayerStatsGui
+        Bukkit.getScheduler().runTask(
+            Bukkit.getPluginManager().getPlugin("AdminManager"),
+            () -> new PlayerStatsGui(clicker, targetPlayer, previousPage).open()
         );
     }
 

@@ -34,6 +34,10 @@ manage_lore: "&7Apri il menu di gestione completo"
 offline_info_title: "&cGiocatore Offline"
 offline_info_lore: "&7Il giocatore non è attualmente\n&7connesso al server.\n\n&7Le azioni sono limitate."
 
+# Statistics
+stats_title: "&aStatistiche"
+stats_lore: "&7Visualizza le statistiche del giocatore\n&7Blocchi rotti, mob uccisi, ecc."
+
 # Messages
 teleported_to: "&aTeletrasportato a &e{player}"
 teleported_here: "&e{player} &ateletrasportato da te"

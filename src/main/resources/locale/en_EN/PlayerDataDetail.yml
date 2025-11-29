@@ -34,6 +34,10 @@ manage_lore: "&7Open full management menu"
 offline_info_title: "&cPlayer Offline"
 offline_info_lore: "&7The player is not currently\n&7connected to the server.\n\n&7Actions are limited."
 
+# Statistics
+stats_title: "&aStatistics"
+stats_lore: "&7View player statistics\n&7Blocks broken, mobs killed, etc."
+
 # Messages
 teleported_to: "&aTeleported to &e{player}"
 teleported_here: "&e{player} &ateleported to you"

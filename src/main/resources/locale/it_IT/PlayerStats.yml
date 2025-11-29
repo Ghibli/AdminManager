@@ -1,0 +1,9 @@
+# PlayerStats GUI Translations (Italian)
+
+title: "&a&lStatistiche: {player}"
+back_button_title: "&cIndietro"
+back_button_lore: "&7Torna ai dettagli giocatore"
+
+# No stats
+no_stats_title: "&cNessuna statistica"
+no_stats_lore: "&7Il giocatore non ha ancora\n&7generato statistiche."
