@@ -36,6 +36,11 @@ public class CommandRegistrationGui extends BaseGui {
 
     @Override
     protected void setupNavigationButtons() {
+        // Skip if not initialized yet (called from BaseGui constructor)
+        if (allCommandNames == null) {
+            return;
+        }
+
         int itemsPerPage = 45;
         int totalCommands = allCommandNames.size();
 
