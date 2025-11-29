@@ -26,7 +26,7 @@ public class PlayerStatsCategoryGui extends BaseGui {
     private final List<StatEntry> categoryStats;
 
     public PlayerStatsCategoryGui(Player admin, OfflinePlayer targetPlayer, String category, int returnPage, int currentPage) {
-        super(admin, formatTitle(targetPlayer, category), currentPage);
+        super(admin, formatTitle(targetPlayer, category, currentPage), currentPage);
         this.admin = admin;
         this.targetPlayer = targetPlayer;
         this.category = category;
@@ -43,13 +43,14 @@ public class PlayerStatsCategoryGui extends BaseGui {
         this(admin, targetPlayer, category, returnPage, 1);
     }
 
-    private static String formatTitle(OfflinePlayer targetPlayer, String category) {
+    private static String formatTitle(OfflinePlayer targetPlayer, String category, int page) {
         String playerName = targetPlayer.getName() != null ? targetPlayer.getName() : "Unknown";
         String categoryName = formatCategoryName(category.replace("minecraft:", ""));
         String baseTitle = TranslationManager.translate("PlayerStatsCategory", "title", "&a&l{category}: {player}")
             .replace("{category}", categoryName)
             .replace("{player}", playerName);
-        return ChatColor.translateAlternateColorCodes('&', baseTitle);
+        // Add page number to make each page unique for listener identification
+        return ChatColor.translateAlternateColorCodes('&', baseTitle) + " §8[" + page + "]";
     }
 
     @Override
