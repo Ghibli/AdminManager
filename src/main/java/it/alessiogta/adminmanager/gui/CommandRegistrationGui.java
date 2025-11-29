@@ -73,13 +73,13 @@ public class CommandRegistrationGui extends BaseGui {
         Plugin plugin = Bukkit.getPluginManager().getPlugin("AdminManager");
         boolean enabled = plugin.getConfig().getBoolean("commands." + command + ".enabled", true);
 
-        String status = enabled ? "&aEnabled" : "&cDisabled";
-        String statusColor = enabled ? "&a" : "&c";
+        String status = enabled ? "&a→ Enabled" : "&c→ Disabled";
 
         String title = TranslationManager.translate("CommandRegistration", "command_" + command + "_title",
             "&f/" + command);
         String lore = TranslationManager.translate("CommandRegistration", "command_" + command + "_lore",
-            statusColor + "→ " + status + "\n\n&e&lLEFT: &7Toggle");
+            "{status}\n\n&e&lLEFT: &7Toggle")
+            .replace("{status}", status);
 
         return createItem(material, title, lore.split("\n"));
     }

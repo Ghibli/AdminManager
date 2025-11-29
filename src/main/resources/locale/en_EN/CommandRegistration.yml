@@ -8,11 +8,20 @@ back_button_lore: "&7Return to Server Manager"
 command_toggled: "&fCommand &e/{command} {status}"
 
 # Commands
+command_banlist_title: "&f/banlist"
+command_banlist_lore: "{status}\n\n&e&lLEFT: &7Toggle"
+
 command_player_title: "&f/player"
 command_player_lore: "{status}\n\n&e&lLEFT: &7Toggle"
 
+command_unban_title: "&f/unban"
+command_unban_lore: "{status}\n\n&e&lLEFT: &7Toggle"
+
 command_god_title: "&f/god"
 command_god_lore: "{status}\n\n&e&lLEFT: &7Toggle"
+
+command_kickall_title: "&f/kickall"
+command_kickall_lore: "{status}\n\n&e&lLEFT: &7Toggle"
 
 command_gamemode_title: "&f/gamemode"
 command_gamemode_lore: "{status}\n\n&e&lLEFT: &7Toggle"
