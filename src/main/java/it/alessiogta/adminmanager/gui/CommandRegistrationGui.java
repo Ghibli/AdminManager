@@ -17,10 +17,12 @@ public class CommandRegistrationGui extends BaseGui {
 
     private final Player admin;
     private final Map<Integer, String> slotToCommand = new HashMap<>();
+    private final Map<String, Command> serverCommands;
 
     public CommandRegistrationGui(Player admin) {
         super(admin, TranslationManager.translate("CommandRegistration", "title", "&aCommand Registration"), 1);
         this.admin = admin;
+        this.serverCommands = getServerCommands();
         setupGuiItems();
     }
 
@@ -32,11 +34,8 @@ public class CommandRegistrationGui extends BaseGui {
     private void setupGuiItems() {
         Plugin plugin = Bukkit.getPluginManager().getPlugin("AdminManager");
 
-        // Get all registered commands from the server
-        Map<String, Command> commands = getServerCommands();
-
         // Filter and sort commands
-        List<String> commandNames = new ArrayList<>(commands.keySet());
+        List<String> commandNames = new ArrayList<>(serverCommands.keySet());
         commandNames.sort(String::compareToIgnoreCase);
 
         // Initialize commands config if not exists
@@ -53,7 +52,7 @@ public class CommandRegistrationGui extends BaseGui {
             if (slot >= 45) break;
 
             slotToCommand.put(slot, command);
-            setItem(slot, createCommandButton(command, commands.get(command)));
+            setItem(slot, createCommandButton(command, serverCommands.get(command)));
             slot++;
         }
 
@@ -195,9 +194,9 @@ public class CommandRegistrationGui extends BaseGui {
             "&fComando &e/" + command + " " + status);
         clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
 
-        // Refresh button
-        Material material = COMMAND_MATERIALS.get(command);
-        refreshSlot(slot, createCommandButton(command, material));
+        // Refresh button with updated status
+        Command commandObj = serverCommands.get(command);
+        refreshSlot(slot, createCommandButton(command, commandObj));
     }
 
     private void handleBack(Player clicker) {
