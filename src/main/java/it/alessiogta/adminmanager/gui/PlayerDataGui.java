@@ -82,7 +82,8 @@ public class PlayerDataGui extends BaseGui {
     @Override
     protected void setupNavigationButtons() {
         int itemsPerPage = 45;
-        int totalPlayers = playerDataList.size();
+        // Handle case where playerDataList is not yet initialized (called from super constructor)
+        int totalPlayers = (playerDataList != null) ? playerDataList.size() : 0;
 
         // Back to Config Manager button (slot 45)
         String backTitle = TranslationManager.translate("PlayerData", "back_button_title", "&cIndietro");
