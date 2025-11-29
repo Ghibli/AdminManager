@@ -30,27 +30,26 @@ public class ServerManagerGui extends BaseGui {
     }
 
     private void setupGuiItems() {
-        // Row 2: Server controls
-        setItem(9, createStopServerButton());
-        setItem(10, createRestartServerButton());
+        // Row 2: Server controls & Management
+        setItem(10, createStopServerButton());
+        setItem(11, createRestartServerButton());
+        setItem(13, createPlayerDataButton());
         setItem(15, createWhitelistButton());
         setItem(16, createGameRulesButton());
 
-        // Row 3: World & Entity management
-        setItem(18, createReloadServerButton());
-        setItem(19, createSaveWorldButton());
+        // Row 3: World & Server operations
+        setItem(19, createReloadServerButton());
+        setItem(20, createSaveWorldButton());
         setItem(24, createEconomyProviderButton());
         setItem(25, createClearEntitiesButton());
 
-        // Row 4: Config files
-        setItem(29, createConfigManagerButton());
+        // Row 4: Additional tools (if needed)
         setItem(30, createToolsYmlButton());
         setItem(31, createCommandRegistrationButton());
         setItem(32, createLanguageButton());
-        setItem(33, createConfigYmlButton());
 
-        // Row 5: Player data
-        setItem(40, createPlayerDataButton());
+        // Row 5: Config Manager
+        setItem(40, createConfigManagerButton());
 
         // Back button (slot 49)
         setItem(49, createBackButton());
@@ -162,13 +161,6 @@ public class ServerManagerGui extends BaseGui {
         return createItem(material, title, lore.split("\n"));
     }
 
-    private ItemStack createConfigYmlButton() {
-        String title = TranslationManager.translate("ServerManager", "config_yml_title", "&eConfig.yml");
-        String lore = TranslationManager.translate("ServerManager", "config_yml_lore",
-            "&e&lLEFT: &7Ricarica config\n&c&lSHIFT+RIGHT: &7Ripristina defaults");
-        return createItem(Material.PAPER, title, lore);
-    }
-
     private ItemStack createPlayerDataButton() {
         // Count player data files from Bukkit's main world playerdata folder (dynamic)
         int playerCount = 0;
@@ -206,20 +198,19 @@ public class ServerManagerGui extends BaseGui {
         Player clicker = (Player) event.getWhoClicked();
 
         switch (slot) {
-            case 9: handleStopServer(clicker); break;
-            case 10: handleRestartServer(clicker); break;
+            case 10: handleStopServer(clicker); break;
+            case 11: handleRestartServer(clicker); break;
+            case 13: handlePlayerData(clicker); break;
             case 15: handleWhitelist(event, clicker); break;
             case 16: handleGameRules(clicker); break;
-            case 18: handleReloadServer(clicker); break;
-            case 19: handleSaveWorld(clicker); break;
+            case 19: handleReloadServer(clicker); break;
+            case 20: handleSaveWorld(clicker); break;
             case 24: handleEconomyProviderToggle(clicker); break;
             case 25: handleClearEntities(clicker); break;
-            case 29: handleConfigManager(clicker); break;
             case 30: handleToolsYml(event, clicker); break;
             case 31: handleCommandRegistration(clicker); break;
             case 32: handleLanguageSwitch(clicker); break;
-            case 33: handleConfigYml(event, clicker); break;
-            case 40: handlePlayerData(clicker); break;
+            case 40: handleConfigManager(clicker); break;
             case 49: handleBack(clicker); break;
         }
     }
@@ -400,30 +391,6 @@ public class ServerManagerGui extends BaseGui {
 
             // Refresh button at new position (slot 15)
             refreshSlot(15, createWhitelistButton());
-        }
-    }
-
-    private void handleConfigYml(InventoryClickEvent event, Player clicker) {
-        Plugin plugin = Bukkit.getPluginManager().getPlugin("AdminManager");
-
-        if (event.isShiftClick() && event.isRightClick()) {
-            // Restore defaults - delete and recreate config.yml
-            File configFile = new File(plugin.getDataFolder(), "config.yml");
-            if (configFile.exists()) {
-                configFile.delete();
-            }
-
-            // Save default file and reload
-            plugin.saveDefaultConfig();
-            plugin.reloadConfig();
-
-            clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                TranslationManager.translate("ServerManager", "config_yml_restore", "&cConfig.yml ripristinato ai valori predefiniti!")));
-        } else {
-            // Reload config
-            plugin.reloadConfig();
-            clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                TranslationManager.translate("ServerManager", "config_yml_reload", "&aConfig.yml ricaricato!")));
         }
     }
 
