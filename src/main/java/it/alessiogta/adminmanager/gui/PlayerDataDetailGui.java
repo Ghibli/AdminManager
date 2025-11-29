@@ -62,8 +62,8 @@ public class PlayerDataDetailGui extends BaseGui {
             setItem(22, createOfflineInfoItem());
         }
 
-        // Statistics button (slot 30) - Available for both online and offline
-        setItem(30, createStatsButton());
+        // Statistics button (slot 31) - Available for both online and offline (centered)
+        setItem(31, createStatsButton());
 
         // Back button (slot 49)
         setItem(49, createBackButton());
@@ -215,7 +215,7 @@ public class PlayerDataDetailGui extends BaseGui {
         Player clicker = (Player) event.getWhoClicked();
 
         // Statistics and back button work for both online and offline
-        if (slot == 30) {
+        if (slot == 31) {
             handleStats(clicker);
             return;
         }
