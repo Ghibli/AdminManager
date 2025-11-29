@@ -179,14 +179,13 @@ public class PlayerDataGui extends BaseGui {
     }
 
     private void handlePlayerDataClick(PlayerDataInfo info, Player clicker) {
-        // For now, just show info in chat
-        String message = TranslationManager.translate("PlayerData", "player_info_message",
-            "&6Dati giocatore &e{player}&6:\n&7UUID: &f{uuid}\n&7File: &f{file}")
-            .replace("{player}", info.playerName != null ? info.playerName : "Unknown")
-            .replace("{uuid}", info.uuid.toString())
-            .replace("{file}", info.uuid.toString() + ".dat");
+        // Open PlayerDataDetailGui with detailed info and actions
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(info.uuid);
 
-        clicker.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+        Bukkit.getScheduler().runTask(
+            Bukkit.getPluginManager().getPlugin("AdminManager"),
+            () -> new PlayerDataDetailGui(clicker, offlinePlayer, getPage()).open()
+        );
     }
 
     private void handleBack(Player clicker) {

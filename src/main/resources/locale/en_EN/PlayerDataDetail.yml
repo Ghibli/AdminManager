@@ -1,0 +1,40 @@
+# PlayerDataDetail GUI Translations (English)
+
+title: "&6&lData: {player}"
+back_button_title: "&cBack"
+back_button_lore: "&7Return to player data list"
+
+# Info Items
+info_title: "&6Information"
+info_lore: "&7UUID: &f{uuid}\n&7Has played before: {played}"
+
+status_title: "&6Status: {status}"
+status_online: "&7Player is currently online"
+status_offline: "&7Player is offline"
+
+time_title: "&6Time"
+first_played: "&7First joined: &f{date}"
+last_played: "&7Last seen: &f{date}"
+time_since: "&7Time since: &f{time}"
+
+# Action Buttons (Online)
+teleport_to_title: "&eTeleport to Player"
+teleport_to_lore: "&7Teleport to the player's location"
+
+teleport_here_title: "&eTeleport Here"
+teleport_here_lore: "&7Teleport the player to you"
+
+view_inventory_title: "&6View Inventory"
+view_inventory_lore: "&7Open the player's inventory"
+
+manage_title: "&dManage Player"
+manage_lore: "&7Open full management menu"
+
+# Offline Info
+offline_info_title: "&cPlayer Offline"
+offline_info_lore: "&7The player is not currently\n&7connected to the server.\n\n&7Actions are limited."
+
+# Messages
+teleported_to: "&aTeleported to &e{player}"
+teleported_here: "&e{player} &ateleported to you"
+you_were_teleported: "&aYou were teleported to &e{admin}"

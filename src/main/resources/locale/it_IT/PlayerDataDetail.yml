@@ -1,0 +1,40 @@
+# PlayerDataDetail GUI Translations (Italian)
+
+title: "&6&lDati: {player}"
+back_button_title: "&cIndietro"
+back_button_lore: "&7Torna alla lista player data"
+
+# Info Items
+info_title: "&6Informazioni"
+info_lore: "&7UUID: &f{uuid}\n&7Ha giocato prima: {played}"
+
+status_title: "&6Stato: {status}"
+status_online: "&7Il giocatore è attualmente connesso"
+status_offline: "&7Il giocatore è offline"
+
+time_title: "&6Tempo"
+first_played: "&7Primo accesso: &f{date}"
+last_played: "&7Ultimo accesso: &f{date}"
+time_since: "&7Tempo trascorso: &f{time}"
+
+# Action Buttons (Online)
+teleport_to_title: "&eTeleporta a giocatore"
+teleport_to_lore: "&7Teletrasportati alla posizione del giocatore"
+
+teleport_here_title: "&eTeleporta qui"
+teleport_here_lore: "&7Teletrasporta il giocatore da te"
+
+view_inventory_title: "&6Visualizza Inventario"
+view_inventory_lore: "&7Apri l'inventario del giocatore"
+
+manage_title: "&dGestisci Giocatore"
+manage_lore: "&7Apri il menu di gestione completo"
+
+# Offline Info
+offline_info_title: "&cGiocatore Offline"
+offline_info_lore: "&7Il giocatore non è attualmente\n&7connesso al server.\n\n&7Le azioni sono limitate."
+
+# Messages
+teleported_to: "&aTeletrasportato a &e{player}"
+teleported_here: "&e{player} &ateletrasportato da te"
+you_were_teleported: "&aSei stato teletrasportato da &e{admin}"

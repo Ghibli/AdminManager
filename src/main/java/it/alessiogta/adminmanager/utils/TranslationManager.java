@@ -42,6 +42,8 @@ public class TranslationManager {
             String[] guiFiles = {
                 "PlayerListGui.yml",
                 "PlayerManage.yml",
+                "PlayerData.yml",
+                "PlayerDataDetail.yml",
                 "ServerManager.yml",
                 "SpeedControl.yml",
                 "EconomyManager.yml",
