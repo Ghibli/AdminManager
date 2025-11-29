@@ -189,10 +189,10 @@ public class PlayerDataGui extends BaseGui {
     }
 
     private void handleBack(Player clicker) {
-        // Don't close inventory - open ConfigManagerGui directly
+        // Don't close inventory - open ServerManagerGui directly
         Bukkit.getScheduler().runTask(
             Bukkit.getPluginManager().getPlugin("AdminManager"),
-            () -> new ConfigManagerGui(clicker).open()
+            () -> new ServerManagerGui(clicker).open()
         );
     }
 

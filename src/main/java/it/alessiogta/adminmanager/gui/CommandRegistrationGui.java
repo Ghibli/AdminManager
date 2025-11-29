@@ -186,9 +186,8 @@ public class CommandRegistrationGui extends BaseGui {
             handleBack(clicker);
             return;
         } else if (slot == 47 && getPage() > 1) {
-            // Previous page - close inventory and deregister listener
+            // Previous page - deregister listener (inventory closes automatically)
             org.bukkit.event.HandlerList.unregisterAll(this);
-            clicker.closeInventory();
             Bukkit.getScheduler().runTask(
                 Bukkit.getPluginManager().getPlugin("AdminManager"),
                 () -> new CommandRegistrationGui(clicker, category, getPage() - 1).open()
@@ -201,9 +200,8 @@ public class CommandRegistrationGui extends BaseGui {
             // Next page
             int itemsPerPage = 45;
             if (allCommandNames.size() > getPage() * itemsPerPage) {
-                // Close inventory and deregister listener to prevent multiple listeners
+                // Deregister listener (inventory closes automatically)
                 org.bukkit.event.HandlerList.unregisterAll(this);
-                clicker.closeInventory();
                 Bukkit.getScheduler().runTask(
                     Bukkit.getPluginManager().getPlugin("AdminManager"),
                     () -> new CommandRegistrationGui(clicker, category, getPage() + 1).open()
@@ -240,9 +238,8 @@ public class CommandRegistrationGui extends BaseGui {
     }
 
     private void handleBack(Player clicker) {
-        // Deregister listener and close inventory before returning to CommandCategoryGui
+        // Deregister listener (inventory closes automatically when new one opens)
         org.bukkit.event.HandlerList.unregisterAll(this);
-        clicker.closeInventory();
         Bukkit.getScheduler().runTask(
             Bukkit.getPluginManager().getPlugin("AdminManager"),
             () -> new CommandCategoryGui(clicker).open()

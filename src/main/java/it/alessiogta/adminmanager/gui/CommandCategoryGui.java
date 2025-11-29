@@ -82,9 +82,8 @@ public class CommandCategoryGui extends BaseGui {
     }
 
     private void handleCategoryClick(CommandCategory category, Player clicker) {
-        // Deregister listener and open CommandRegistrationGui filtered by category
+        // Deregister listener (inventory closes automatically)
         org.bukkit.event.HandlerList.unregisterAll(this);
-        clicker.closeInventory();
         Bukkit.getScheduler().runTask(
             Bukkit.getPluginManager().getPlugin("AdminManager"),
             () -> new CommandRegistrationGui(clicker, category, 1).open()
@@ -92,9 +91,8 @@ public class CommandCategoryGui extends BaseGui {
     }
 
     private void handleBack(Player clicker) {
-        // Deregister listener and return to ServerManagerGui
+        // Deregister listener (inventory closes automatically)
         org.bukkit.event.HandlerList.unregisterAll(this);
-        clicker.closeInventory();
         Bukkit.getScheduler().runTask(
             Bukkit.getPluginManager().getPlugin("AdminManager"),
             () -> new ServerManagerGui(clicker).open()
