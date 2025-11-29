@@ -40,12 +40,18 @@ public class ConfigManagerGui extends BaseGui {
         setItem(24, createGuiConfigButton("PlayerListGui", Material.PLAYER_HEAD));
         setItem(25, createGuiConfigButton("PlayerManage", Material.DIAMOND_SWORD));
 
-        // Row 4: More GUI configs (7 slots: 28-34)
+        // Row 4: More GUI configs (5 slots: 28-32)
         setItem(28, createGuiConfigButton("ServerManager", Material.COMMAND_BLOCK));
         setItem(29, createGuiConfigButton("SpeedControl", Material.FEATHER));
         setItem(30, createGuiConfigButton("WhitelistEditor", Material.PAPER));
         setItem(31, createGuiConfigButton("WorldGenerator", Material.GRASS_BLOCK));
         setItem(32, createGuiConfigButton("WorldSelector", Material.COMPASS));
+
+        // Row 5: Player Data GUI configs (4 slots: 37-40)
+        setItem(37, createGuiConfigButton("PlayerData", Material.CHEST));
+        setItem(38, createGuiConfigButton("PlayerDataDetail", Material.PLAYER_HEAD));
+        setItem(39, createGuiConfigButton("PlayerStats", Material.BOOK));
+        setItem(40, createGuiConfigButton("PlayerStatsCategory", Material.WRITABLE_BOOK));
 
         // Back button at slot 49
         setItem(49, createBackButton());
@@ -112,6 +118,11 @@ public class ConfigManagerGui extends BaseGui {
             case 30:
             case 31:
             case 32:
+            // GUI configs row 5 (37-40) - Player Data GUIs
+            case 37:
+            case 38:
+            case 39:
+            case 40:
                 handleGuiConfig(slot, clicker);
                 break;
             case 49: handleBack(clicker); break;
@@ -197,6 +208,10 @@ public class ConfigManagerGui extends BaseGui {
             case 30: guiName = "WhitelistEditor"; break;
             case 31: guiName = "WorldGenerator"; break;
             case 32: guiName = "WorldSelector"; break;
+            case 37: guiName = "PlayerData"; break;
+            case 38: guiName = "PlayerDataDetail"; break;
+            case 39: guiName = "PlayerStats"; break;
+            case 40: guiName = "PlayerStatsCategory"; break;
         }
 
         if (guiName != null) {
