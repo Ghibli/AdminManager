@@ -18,46 +18,80 @@ public class CommandRegistrationGui extends BaseGui {
     private final Player admin;
     private final Map<Integer, String> slotToCommand = new HashMap<>();
     private final Map<String, Command> serverCommands;
+    private final List<String> allCommandNames;
 
-    public CommandRegistrationGui(Player admin) {
-        super(admin, TranslationManager.translate("CommandRegistration", "title", "&aCommand Registration"), 1);
+    public CommandRegistrationGui(Player admin, int page) {
+        super(admin, TranslationManager.translate("CommandRegistration", "title", "&aCommand Registration"), page);
         this.admin = admin;
         this.serverCommands = getServerCommands();
+        this.allCommandNames = new ArrayList<>(serverCommands.keySet());
+        this.allCommandNames.sort(String::compareToIgnoreCase);
         setupGuiItems();
+    }
+
+    // Convenience constructor for first page
+    public CommandRegistrationGui(Player admin) {
+        this(admin, 1);
     }
 
     @Override
     protected void setupNavigationButtons() {
-        // Disable BaseGui's automatic navigation buttons
+        int itemsPerPage = 45;
+        int totalCommands = allCommandNames.size();
+
+        // Previous page (slot 47)
+        if (getPage() > 1) {
+            String prevTitle = TranslationManager.translate("CommandRegistration", "previous_page", "&ePagina precedente");
+            setItem(47, createItem(Material.ARROW, prevTitle));
+        }
+
+        // Info button (slot 49)
+        int maxPage = (int) Math.ceil(totalCommands / (double) itemsPerPage);
+        String infoTitle = TranslationManager.translate("CommandRegistration", "info_title", "&6Info");
+        String infoLore = TranslationManager.translate("CommandRegistration", "info_lore",
+            "&7Totale comandi: &e{count}\n&7Pagina: &e{page}&7/&e{maxPage}")
+            .replace("{count}", String.valueOf(totalCommands))
+            .replace("{page}", String.valueOf(getPage()))
+            .replace("{maxPage}", String.valueOf(maxPage));
+        setItem(49, createItem(Material.BOOK, infoTitle, infoLore.split("\n")));
+
+        // Next page (slot 51)
+        if (totalCommands > getPage() * itemsPerPage) {
+            String nextTitle = TranslationManager.translate("CommandRegistration", "next_page", "&ePagina successiva");
+            setItem(51, createItem(Material.ARROW, nextTitle));
+        }
+
+        // Back button (slot 45)
+        setItem(45, createBackButton());
     }
 
     private void setupGuiItems() {
         Plugin plugin = Bukkit.getPluginManager().getPlugin("AdminManager");
 
-        // Filter and sort commands
-        List<String> commandNames = new ArrayList<>(serverCommands.keySet());
-        commandNames.sort(String::compareToIgnoreCase);
-
         // Initialize commands config if not exists
-        for (String command : commandNames) {
+        for (String command : allCommandNames) {
             if (!plugin.getConfig().contains("commands." + command + ".enabled")) {
                 plugin.getConfig().set("commands." + command + ".enabled", true);
             }
         }
         plugin.saveConfig();
 
-        // Setup command buttons (max 45 slots)
-        int slot = 0;
-        for (String command : commandNames) {
-            if (slot >= 45) break;
+        // Calculate pagination
+        int itemsPerPage = 45;
+        int startIndex = (getPage() - 1) * itemsPerPage;
+        int endIndex = Math.min(startIndex + itemsPerPage, allCommandNames.size());
 
+        // Setup command buttons for current page
+        int slot = 0;
+        for (int i = startIndex; i < endIndex; i++) {
+            String command = allCommandNames.get(i);
             slotToCommand.put(slot, command);
             setItem(slot, createCommandButton(command, serverCommands.get(command)));
             slot++;
         }
 
-        // Back button at slot 49
-        setItem(49, createBackButton());
+        // Setup navigation buttons
+        setupNavigationButtons();
     }
 
     /**
@@ -168,9 +202,30 @@ public class CommandRegistrationGui extends BaseGui {
         int slot = event.getRawSlot();
         Player clicker = (Player) event.getWhoClicked();
 
-        if (slot == 49) {
+        // Navigation buttons
+        if (slot == 45) {
             // Back button
             handleBack(clicker);
+            return;
+        } else if (slot == 47 && getPage() > 1) {
+            // Previous page
+            Bukkit.getScheduler().runTask(
+                Bukkit.getPluginManager().getPlugin("AdminManager"),
+                () -> new CommandRegistrationGui(clicker, getPage() - 1).open()
+            );
+            return;
+        } else if (slot == 49) {
+            // Info button - do nothing
+            return;
+        } else if (slot == 51) {
+            // Next page
+            int itemsPerPage = 45;
+            if (allCommandNames.size() > getPage() * itemsPerPage) {
+                Bukkit.getScheduler().runTask(
+                    Bukkit.getPluginManager().getPlugin("AdminManager"),
+                    () -> new CommandRegistrationGui(clicker, getPage() + 1).open()
+                );
+            }
             return;
         }
 

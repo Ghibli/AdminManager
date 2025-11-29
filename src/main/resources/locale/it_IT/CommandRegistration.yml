@@ -4,6 +4,12 @@ title: "&aCommand Registration"
 back_button_title: "&cIndietro"
 back_button_lore: "&7Torna a Server Manager"
 
+# Pagination
+previous_page: "&ePagina precedente"
+next_page: "&ePagina successiva"
+info_title: "&6Info"
+info_lore: "&7Totale comandi: &e{count}\n&7Pagina: &e{page}&7/&e{maxPage}"
+
 # Command toggle message
 command_toggled: "&fComando &e/{command} {status}"
 
