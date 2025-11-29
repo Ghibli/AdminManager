@@ -233,7 +233,12 @@ public class PlayerStatsGui extends BaseGui {
             // Remove "minecraft:" prefix and convert to uppercase
             String materialName = statKey.replace("minecraft:", "").toUpperCase();
             Material material = Material.getMaterial(materialName);
-            return (material != null) ? material : fallback;
+
+            // Check if material exists AND is a valid item (not just a block)
+            if (material != null && material.isItem()) {
+                return material;
+            }
+            return fallback;
         } catch (Exception e) {
             return fallback;
         }
@@ -275,21 +280,30 @@ public class PlayerStatsGui extends BaseGui {
     }
 
     private ItemStack createStatItem(StatEntry stat) {
-        ItemStack item = new ItemStack(stat.material);
-        org.bukkit.inventory.meta.ItemMeta meta = item.getItemMeta();
+        try {
+            ItemStack item = new ItemStack(stat.material);
+            org.bukkit.inventory.meta.ItemMeta meta = item.getItemMeta();
 
-        if (meta != null) {
-            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&e" + stat.name));
+            if (meta != null) {
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&e" + stat.name));
 
-            List<String> lore = new ArrayList<>();
-            lore.add(ChatColor.translateAlternateColorCodes('&', "&7Valore: &f" + stat.value));
-            lore.add(ChatColor.translateAlternateColorCodes('&', "&8Categoria: " + stat.category.replace("minecraft:", "")));
-            meta.setLore(lore);
+                List<String> lore = new ArrayList<>();
+                lore.add(ChatColor.translateAlternateColorCodes('&', "&7Valore: &f" + stat.value));
+                lore.add(ChatColor.translateAlternateColorCodes('&', "&8Categoria: " + stat.category.replace("minecraft:", "")));
+                meta.setLore(lore);
 
-            item.setItemMeta(meta);
+                item.setItemMeta(meta);
+            }
+
+            return item;
+        } catch (Exception e) {
+            // Fallback to PAPER if material is invalid
+            Bukkit.getLogger().warning("[AdminManager] Invalid material for stat: " + stat.name +
+                " (" + stat.material + "), using PAPER fallback");
+            return createItem(Material.PAPER, "&e" + stat.name,
+                "&7Valore: &f" + stat.value,
+                "&8Categoria: " + stat.category.replace("minecraft:", ""));
         }
-
-        return item;
     }
 
     @Override
