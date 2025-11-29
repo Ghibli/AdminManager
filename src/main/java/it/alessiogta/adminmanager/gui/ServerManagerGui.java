@@ -345,10 +345,10 @@ public class ServerManagerGui extends BaseGui {
     }
 
     private void handleCommandRegistration(Player clicker) {
-        // Don't close inventory - open Command Registration GUI directly
+        // Don't close inventory - open Command Category GUI directly
         Bukkit.getScheduler().runTask(
             Bukkit.getPluginManager().getPlugin("AdminManager"),
-            () -> new CommandRegistrationGui(clicker).open()
+            () -> new CommandCategoryGui(clicker).open()
         );
     }
 

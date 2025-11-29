@@ -1,0 +1,33 @@
+# CommandCategory GUI Translations (Italian)
+
+title: "&6&lGestione Comandi"
+back_button_title: "&cIndietro"
+back_button_lore: "&7Torna a Server Manager"
+
+# Category: ADMIN
+category_admin_title: "&c&lAdmin"
+category_admin_lore: "&7Gestisci i comandi di tipo\n&eAdmin\n\n&e&lCLICK: &7Apri categoria"
+
+# Category: PLAYER
+category_player_title: "&b&lPlayer"
+category_player_lore: "&7Gestisci i comandi di tipo\n&ePlayer\n\n&e&lCLICK: &7Apri categoria"
+
+# Category: TELEPORT
+category_teleport_title: "&d&lTeleport"
+category_teleport_lore: "&7Gestisci i comandi di tipo\n&eTeleport\n\n&e&lCLICK: &7Apri categoria"
+
+# Category: WORLD
+category_world_title: "&a&lWorld"
+category_world_lore: "&7Gestisci i comandi di tipo\n&eWorld\n\n&e&lCLICK: &7Apri categoria"
+
+# Category: ECONOMY
+category_economy_title: "&6&lEconomy"
+category_economy_lore: "&7Gestisci i comandi di tipo\n&eEconomy\n\n&e&lCLICK: &7Apri categoria"
+
+# Category: UTILITY
+category_utility_title: "&7&lUtility"
+category_utility_lore: "&7Gestisci i comandi di tipo\n&eUtility\n\n&e&lCLICK: &7Apri categoria"
+
+# Category: OTHER
+category_other_title: "&8&lAltri"
+category_other_lore: "&7Gestisci gli altri comandi\n&enon categorizzati\n\n&e&lCLICK: &7Apri categoria"

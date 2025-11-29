@@ -19,19 +19,29 @@ public class CommandRegistrationGui extends BaseGui {
     private final Map<Integer, String> slotToCommand = new HashMap<>();
     private final Map<String, Command> serverCommands;
     private final List<String> allCommandNames;
+    private final CommandCategory category;
 
-    public CommandRegistrationGui(Player admin, int page) {
-        super(admin, TranslationManager.translate("CommandRegistration", "title", "&aCommand Registration"), page);
+    public CommandRegistrationGui(Player admin, CommandCategory category, int page) {
+        super(admin, TranslationManager.translate("CommandRegistration", "title_category", "&6&lComandi - {category}")
+            .replace("{category}", category.getDisplayName()), page);
         this.admin = admin;
+        this.category = category;
         this.serverCommands = getServerCommands();
-        this.allCommandNames = new ArrayList<>(serverCommands.keySet());
+
+        // Filter commands by category
+        this.allCommandNames = new ArrayList<>();
+        for (String command : serverCommands.keySet()) {
+            if (CommandCategory.categorize(command) == category) {
+                allCommandNames.add(command);
+            }
+        }
         this.allCommandNames.sort(String::compareToIgnoreCase);
         setupGuiItems();
     }
 
     // Convenience constructor for first page
-    public CommandRegistrationGui(Player admin) {
-        this(admin, 1);
+    public CommandRegistrationGui(Player admin, CommandCategory category) {
+        this(admin, category, 1);
     }
 
     @Override
@@ -154,51 +164,14 @@ public class CommandRegistrationGui extends BaseGui {
             "{status}" + description + "\n\n&e&lLEFT: &7Toggle")
             .replace("{status}", status);
 
-        // Choose icon based on command name
-        Material icon = getCommandIcon(command);
+        // Uniform icons: LIME_CONCRETE for enabled, RED_CONCRETE for disabled
+        Material icon = enabled ? Material.LIME_CONCRETE : Material.RED_CONCRETE;
         return createItem(icon, title, lore.split("\n"));
-    }
-
-    /**
-     * Get appropriate icon for a command based on its name
-     */
-    private Material getCommandIcon(String command) {
-        String cmd = command.toLowerCase();
-
-        // Common command icons
-        if (cmd.contains("ban") && !cmd.contains("unban")) return Material.BARRIER;
-        if (cmd.contains("unban")) return Material.IRON_BARS;
-        if (cmd.contains("kick")) return Material.TNT;
-        if (cmd.contains("player") || cmd.contains("pl")) return Material.PLAYER_HEAD;
-        if (cmd.contains("god") || cmd.contains("invincible")) return Material.GOLDEN_APPLE;
-        if (cmd.contains("gamemode") || cmd.contains("gm")) return Material.COMMAND_BLOCK;
-        if (cmd.contains("freeze")) return Material.ICE;
-        if (cmd.contains("fly")) return Material.ELYTRA;
-        if (cmd.contains("heal")) return Material.POTION;
-        if (cmd.contains("tp") || cmd.contains("teleport")) return Material.ENDER_PEARL;
-        if (cmd.contains("eco") || cmd.contains("money") || cmd.contains("pay")) return Material.EMERALD;
-        if (cmd.contains("vanish") || cmd.contains("v")) return Material.GLASS;
-        if (cmd.contains("world")) return Material.GRASS_BLOCK;
-        if (cmd.contains("time")) return Material.CLOCK;
-        if (cmd.contains("weather")) return Material.SNOWBALL;
-        if (cmd.contains("give")) return Material.CHEST;
-        if (cmd.contains("kill")) return Material.SKELETON_SKULL;
-        if (cmd.contains("admin") || cmd.contains("manage")) return Material.COMMAND_BLOCK;
-        if (cmd.contains("help") || cmd.contains("?")) return Material.BOOK;
-        if (cmd.contains("list")) return Material.WRITABLE_BOOK;
-        if (cmd.contains("msg") || cmd.contains("tell") || cmd.contains("whisper")) return Material.PAPER;
-        if (cmd.contains("warp")) return Material.COMPASS;
-        if (cmd.contains("home")) return Material.RED_BED;
-        if (cmd.contains("spawn")) return Material.RESPAWN_ANCHOR;
-        if (cmd.contains("back")) return Material.ARROW;
-
-        // Default icon
-        return Material.COMMAND_BLOCK;
     }
 
     private ItemStack createBackButton() {
         String title = TranslationManager.translate("CommandRegistration", "back_button_title", "&cIndietro");
-        String lore = TranslationManager.translate("CommandRegistration", "back_button_lore", "&7Torna a Server Manager");
+        String lore = TranslationManager.translate("CommandRegistration", "back_button_lore", "&7Torna alle categorie");
         return createItem(Material.DARK_OAK_DOOR, title, lore);
     }
 
@@ -218,7 +191,7 @@ public class CommandRegistrationGui extends BaseGui {
             clicker.closeInventory();
             Bukkit.getScheduler().runTask(
                 Bukkit.getPluginManager().getPlugin("AdminManager"),
-                () -> new CommandRegistrationGui(clicker, getPage() - 1).open()
+                () -> new CommandRegistrationGui(clicker, category, getPage() - 1).open()
             );
             return;
         } else if (slot == 49) {
@@ -233,7 +206,7 @@ public class CommandRegistrationGui extends BaseGui {
                 clicker.closeInventory();
                 Bukkit.getScheduler().runTask(
                     Bukkit.getPluginManager().getPlugin("AdminManager"),
-                    () -> new CommandRegistrationGui(clicker, getPage() + 1).open()
+                    () -> new CommandRegistrationGui(clicker, category, getPage() + 1).open()
                 );
             }
             return;
@@ -267,12 +240,12 @@ public class CommandRegistrationGui extends BaseGui {
     }
 
     private void handleBack(Player clicker) {
-        // Deregister listener and close inventory before returning to ServerManagerGui
+        // Deregister listener and close inventory before returning to CommandCategoryGui
         org.bukkit.event.HandlerList.unregisterAll(this);
         clicker.closeInventory();
         Bukkit.getScheduler().runTask(
             Bukkit.getPluginManager().getPlugin("AdminManager"),
-            () -> new ServerManagerGui(clicker).open()
+            () -> new CommandCategoryGui(clicker).open()
         );
     }
 

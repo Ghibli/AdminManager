@@ -1,8 +1,9 @@
 # CommandRegistration GUI Translations (Italian)
 
 title: "&aCommand Registration"
+title_category: "&6&lComandi - {category}"
 back_button_title: "&cIndietro"
-back_button_lore: "&7Torna a Server Manager"
+back_button_lore: "&7Torna alle categorie"
 
 # Pagination
 previous_page: "&ePagina precedente"

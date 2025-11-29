@@ -1,0 +1,33 @@
+# CommandCategory GUI Translations (English)
+
+title: "&6&lCommand Management"
+back_button_title: "&cBack"
+back_button_lore: "&7Return to Server Manager"
+
+# Category: ADMIN
+category_admin_title: "&c&lAdmin"
+category_admin_lore: "&7Manage commands of type\n&eAdmin\n\n&e&lCLICK: &7Open category"
+
+# Category: PLAYER
+category_player_title: "&b&lPlayer"
+category_player_lore: "&7Manage commands of type\n&ePlayer\n\n&e&lCLICK: &7Open category"
+
+# Category: TELEPORT
+category_teleport_title: "&d&lTeleport"
+category_teleport_lore: "&7Manage commands of type\n&eTeleport\n\n&e&lCLICK: &7Open category"
+
+# Category: WORLD
+category_world_title: "&a&lWorld"
+category_world_lore: "&7Manage commands of type\n&eWorld\n\n&e&lCLICK: &7Open category"
+
+# Category: ECONOMY
+category_economy_title: "&6&lEconomy"
+category_economy_lore: "&7Manage commands of type\n&eEconomy\n\n&e&lCLICK: &7Open category"
+
+# Category: UTILITY
+category_utility_title: "&7&lUtility"
+category_utility_lore: "&7Manage commands of type\n&eUtility\n\n&e&lCLICK: &7Open category"
+
+# Category: OTHER
+category_other_title: "&8&lOther"
+category_other_lore: "&7Manage other uncategorized\n&ecommands\n\n&e&lCLICK: &7Open category"
