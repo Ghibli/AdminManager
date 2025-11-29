@@ -69,7 +69,7 @@ public class GameRuleValueGui extends BaseGui {
         // Increment buttons
         setItem(23, createAdjustButton(1, Material.LIME_CONCRETE, "&a+1"));
         setItem(24, createAdjustButton(10, Material.GREEN_CONCRETE, "&2+10"));
-        setItem(25, createAdjustButton(100, Material.DARK_GREEN_CONCRETE, "&2+100"));
+        setItem(25, createAdjustButton(100, Material.EMERALD_BLOCK, "&2+100"));
 
         // Manual input button (slot 31)
         setItem(31, createManualInputButton());
@@ -210,7 +210,7 @@ public class GameRuleValueGui extends BaseGui {
         refreshSlot(21, createAdjustButton(-1, Material.YELLOW_CONCRETE, "&e-1"));
         refreshSlot(23, createAdjustButton(1, Material.LIME_CONCRETE, "&a+1"));
         refreshSlot(24, createAdjustButton(10, Material.GREEN_CONCRETE, "&2+10"));
-        refreshSlot(25, createAdjustButton(100, Material.DARK_GREEN_CONCRETE, "&2+100"));
+        refreshSlot(25, createAdjustButton(100, Material.EMERALD_BLOCK, "&2+100"));
     }
 
     private void handleConfirm(Player clicker) {
