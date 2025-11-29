@@ -25,6 +25,9 @@ public class PlayerDataGui extends BaseGui {
         this.admin = admin;
         this.playerDataList = loadPlayerData();
         setupPlayerDataItems();
+
+        // Rebuild navigation buttons now that playerDataList is loaded
+        setupNavigationButtons();
     }
 
     private static String formatTitle() {
