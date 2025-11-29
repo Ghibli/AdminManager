@@ -303,7 +303,8 @@ public class PlayerStatsCategoryGui extends BaseGui {
         if (slot == 45) { // Back
             handleBack(clicker);
         } else if (slot == 47 && getPage() > 1) { // Previous page
-            // Don't close inventory, just update the GUI
+            // Deregister current listener before opening new GUI to prevent multiple listeners
+            org.bukkit.event.HandlerList.unregisterAll(this);
             Bukkit.getScheduler().runTask(
                 Bukkit.getPluginManager().getPlugin("AdminManager"),
                 () -> {
@@ -314,7 +315,8 @@ public class PlayerStatsCategoryGui extends BaseGui {
         } else if (slot == 51) { // Next page
             int itemsPerPage = 45;
             if (categoryStats.size() > getPage() * itemsPerPage) {
-                // Don't close inventory, just update the GUI
+                // Deregister current listener before opening new GUI to prevent multiple listeners
+                org.bukkit.event.HandlerList.unregisterAll(this);
                 Bukkit.getScheduler().runTask(
                     Bukkit.getPluginManager().getPlugin("AdminManager"),
                     () -> {
@@ -327,6 +329,8 @@ public class PlayerStatsCategoryGui extends BaseGui {
     }
 
     private void handleBack(Player clicker) {
+        // Deregister current listener before returning to categories
+        org.bukkit.event.HandlerList.unregisterAll(this);
         // Return to PlayerStatsGui (categories)
         Bukkit.getScheduler().runTask(
             Bukkit.getPluginManager().getPlugin("AdminManager"),

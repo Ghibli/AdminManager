@@ -67,3 +67,7 @@ whitelist_title: "&fWHITELIST: {status}"
 whitelist_lore: "&e&lLEFT: &7{action} whitelist\n&c&lSHIFT+RIGHT: &7Edit whitelist"
 whitelist_toggled: "&fWhitelist {status}"
 whitelist_edit: "&fOpening whitelist editor..."
+
+# Player Data
+player_data_title: "&6Player Data"
+player_data_lore: "&7Registered players: &e{count}\n\n&e&lLEFT: &7View details"

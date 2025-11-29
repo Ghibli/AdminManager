@@ -30,7 +30,6 @@ public class ConfigManagerGui extends BaseGui {
         // Row 2: Main config files
         setItem(10, createConfigYmlButton());
         setItem(12, createTranslationsButton());
-        setItem(13, createPlayerDataButton());
 
         // Row 3: GUI configs (7 slots: 19-25)
         setItem(19, createGuiConfigButton("ArmorCreator", Material.DIAMOND_CHESTPLATE));
@@ -77,29 +76,6 @@ public class ConfigManagerGui extends BaseGui {
         return createItem(Material.BOOK, title, loreText.split("\n"));
     }
 
-    private ItemStack createPlayerDataButton() {
-        // Count player data files from Bukkit's main world playerdata folder (dynamic)
-        int playerCount = 0;
-
-        if (!Bukkit.getWorlds().isEmpty()) {
-            World mainWorld = Bukkit.getWorlds().get(0);
-            File playerDataFolder = new File(mainWorld.getWorldFolder(), "playerdata");
-
-            if (playerDataFolder.exists() && playerDataFolder.isDirectory()) {
-                File[] files = playerDataFolder.listFiles((dir, name) -> name.endsWith(".dat"));
-                if (files != null) {
-                    playerCount = files.length;
-                }
-            }
-        }
-
-        String title = TranslationManager.translate("ConfigManager", "player_data_title", "&6Player Data");
-        String loreText = TranslationManager.translate("ConfigManager", "player_data_lore",
-            "&7Giocatori registrati: &e{count}\n\n&e&lLEFT: &7Visualizza dettagli")
-            .replace("{count}", String.valueOf(playerCount));
-        return createItem(Material.CHEST, title, loreText.split("\n"));
-    }
-
     private ItemStack createGuiConfigButton(String guiName, Material icon) {
         String title = TranslationManager.translate("ConfigManager", "gui_config_title", "&d{gui}.yml")
             .replace("{gui}", guiName);
@@ -122,7 +98,6 @@ public class ConfigManagerGui extends BaseGui {
         switch (slot) {
             case 10: handleConfigYml(event, clicker); break;
             case 12: handleTranslations(clicker); break;
-            case 13: handlePlayerData(clicker); break;
             // GUI configs row 3 (19-25)
             case 19:
             case 20:
@@ -204,14 +179,6 @@ public class ConfigManagerGui extends BaseGui {
 
         // Refresh button
         refreshSlot(12, createTranslationsButton());
-    }
-
-    private void handlePlayerData(Player clicker) {
-        // Open PlayerDataGui
-        Bukkit.getScheduler().runTask(
-            Bukkit.getPluginManager().getPlugin("AdminManager"),
-            () -> new PlayerDataGui(clicker, 1).open()
-        );
     }
 
     private void handleGuiConfig(int slot, Player clicker) {

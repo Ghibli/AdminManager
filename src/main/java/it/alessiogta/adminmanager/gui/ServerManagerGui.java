@@ -49,7 +49,8 @@ public class ServerManagerGui extends BaseGui {
         setItem(37, createWhitelistButton());
         setItem(38, createGameRulesButton());
 
-        // Row 6 (slots 42-43)
+        // Row 6 (slots 40, 42-43)
+        setItem(40, createPlayerDataButton());
         setItem(42, createEconomyProviderButton());
         setItem(43, createClearEntitiesButton());
 
@@ -170,6 +171,29 @@ public class ServerManagerGui extends BaseGui {
         return createItem(Material.PAPER, title, lore);
     }
 
+    private ItemStack createPlayerDataButton() {
+        // Count player data files from Bukkit's main world playerdata folder (dynamic)
+        int playerCount = 0;
+
+        if (!Bukkit.getWorlds().isEmpty()) {
+            World mainWorld = Bukkit.getWorlds().get(0);
+            File playerDataFolder = new File(mainWorld.getWorldFolder(), "playerdata");
+
+            if (playerDataFolder.exists() && playerDataFolder.isDirectory()) {
+                File[] files = playerDataFolder.listFiles((dir, name) -> name.endsWith(".dat"));
+                if (files != null) {
+                    playerCount = files.length;
+                }
+            }
+        }
+
+        String title = TranslationManager.translate("ServerManager", "player_data_title", "&6Player Data");
+        String loreText = TranslationManager.translate("ServerManager", "player_data_lore",
+            "&7Giocatori registrati: &e{count}\n\n&e&lLEFT: &7Visualizza dettagli")
+            .replace("{count}", String.valueOf(playerCount));
+        return createItem(Material.CHEST, title, loreText.split("\n"));
+    }
+
     private ItemStack createBackButton() {
         String title = TranslationManager.translate("ServerManager", "back_button_title", "&cIndietro");
         String lore = TranslationManager.translate("ServerManager", "back_button_lore", "&7Torna alla lista giocatori");
@@ -195,6 +219,7 @@ public class ServerManagerGui extends BaseGui {
             case 33: handleConfigYml(event, clicker); break;
             case 37: handleWhitelist(event, clicker); break;
             case 38: handleGameRules(clicker); break;
+            case 40: handlePlayerData(clicker); break;
             case 42: handleEconomyProviderToggle(clicker); break;
             case 43: handleClearEntities(clicker); break;
             case 49: handleBack(clicker); break;
@@ -402,6 +427,14 @@ public class ServerManagerGui extends BaseGui {
             clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
                 TranslationManager.translate("ServerManager", "config_yml_reload", "&aConfig.yml ricaricato!")));
         }
+    }
+
+    private void handlePlayerData(Player clicker) {
+        // Open PlayerDataGui
+        Bukkit.getScheduler().runTask(
+            Bukkit.getPluginManager().getPlugin("AdminManager"),
+            () -> new PlayerDataGui(clicker, 1).open()
+        );
     }
 
     private void handleBack(Player clicker) {
