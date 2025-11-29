@@ -12,6 +12,7 @@ info_lore: "&7Totale comandi: &e{count}\n&7Pagina: &e{page}&7/&e{maxPage}"
 
 # Command toggle message
 command_toggled: "&fComando &e/{command} {status}"
+command_disabled: "&cQuesto comando è stato disabilitato dall'amministratore."
 
 # Commands
 command_banlist_title: "&f/banlist"

@@ -256,7 +256,9 @@ public class CommandRegistrationGui extends BaseGui {
 
         String status = !currentStatus ? "&aabilitato" : "&cdisabilitato";
         String message = TranslationManager.translate("CommandRegistration", "command_toggled",
-            "&fComando &e/" + command + " " + status);
+            "&fComando &e/{command} {status}")
+            .replace("{command}", command)
+            .replace("{status}", status);
         clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
 
         // Refresh button with updated status
