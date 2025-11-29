@@ -66,20 +66,22 @@ public class GameRuleChatListener implements Listener {
                 return;
             }
 
-            // Apply the value
-            data.world.setGameRule(data.rule, value);
-
-            String message = TranslationManager.translate("GameRuleValue", "input_success",
-                "&a&lSUCCESS: &eRegola &6{rule} &eimpostata a &6{value} &ein &6{world}")
-                .replace("{rule}", data.ruleName)
-                .replace("{value}", String.valueOf(value))
-                .replace("{world}", data.world.getName());
-            player.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
-
-            // Reopen GameRulesGui
+            // Apply the value in main thread (setGameRule must be called synchronously)
             Bukkit.getScheduler().runTask(
                 Bukkit.getPluginManager().getPlugin("AdminManager"),
-                () -> new GameRulesGui(player, data.world).open()
+                () -> {
+                    data.world.setGameRule(data.rule, value);
+
+                    String message = TranslationManager.translate("GameRuleValue", "input_success",
+                        "&a&lSUCCESS: &eRegola &6{rule} &eimpostata a &6{value} &ein &6{world}")
+                        .replace("{rule}", data.ruleName)
+                        .replace("{value}", String.valueOf(value))
+                        .replace("{world}", data.world.getName());
+                    player.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+
+                    // Reopen GameRulesGui
+                    new GameRulesGui(player, data.world).open();
+                }
             );
 
         } catch (NumberFormatException e) {
