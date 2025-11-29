@@ -1,0 +1,36 @@
+# GameRuleValue GUI - Italian Translation
+
+# GUI Title
+title: "&6&lModifica: {rule}"
+
+# Current Value Display
+current_value_title: "&6&lValore Corrente"
+current_value_lore: "&7Regola: &e{rule}\n&7Mondo: &e{world}\n\n&6→ &e{value}"
+
+# Preset Buttons
+preset_title: "&e{value}"
+preset_lore: "&7Imposta il valore a &e{value}\n\n&e&lCLICK: &7Imposta"
+
+# Adjustment Buttons
+adjust_title: "{delta}"
+adjust_lore: "&7Modifica il valore di &e{delta}\n&7Valore risultante: &e{result}\n\n&e&lCLICK: &7Modifica"
+
+# Manual Input
+manual_input_title: "&d&lInput Manuale"
+manual_input_lore: "&7Inserisci un valore personalizzato\n&7tramite chat\n\n&e&lCLICK: &7Attiva input"
+
+# Cancel Button
+cancel_title: "&cAnnulla"
+cancel_lore: "&7Annulla le modifiche\n&7e torna indietro"
+
+# Confirm Button
+confirm_title: "&a&lConferma"
+confirm_lore: "&7Applica il valore &e{value}\n&7al mondo &6{world}"
+
+# Messages
+value_applied: "&a&lSUCCESS: &eRegola &6{rule} &eimpostata a &6{value} &ein &6{world}"
+input_prompt: "&6Inserisci il valore per &e{rule} &6in chat\n&7Scrivi &ccancel &7per annullare"
+input_cancelled: "&cInput annullato. Torno alla GUI Game Rules..."
+input_negative: "&cErrore: Il valore deve essere >= 0. Riprova o scrivi &ecancel"
+input_success: "&a&lSUCCESS: &eRegola &6{rule} &eimpostata a &6{value} &ein &6{world}"
+input_invalid: "&cErrore: Devi inserire un numero valido. Riprova o scrivi &ecancel"

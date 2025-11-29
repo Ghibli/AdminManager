@@ -2,6 +2,7 @@ package it.alessiogta.adminmanager;
 
 import it.alessiogta.adminmanager.commands.AdminManagerCommand;
 import it.alessiogta.adminmanager.commands.AdminManagerTabCompleter;
+import it.alessiogta.adminmanager.gui.GameRuleChatListener;
 import it.alessiogta.adminmanager.listeners.PlayerControlListener;
 import it.alessiogta.adminmanager.listeners.WorldGeneratorChatListener;
 import it.alessiogta.adminmanager.utils.EconomyManager;
@@ -49,6 +50,7 @@ public class AdminManager extends JavaPlugin {
         HandlerList.unregisterAll(this); // Evita registrazioni multiple
         getServer().getPluginManager().registerEvents(new PlayerControlListener(), this);
         getServer().getPluginManager().registerEvents(new WorldGeneratorChatListener(), this);
+        getServer().getPluginManager().registerEvents(new GameRuleChatListener(), this);
     }
 
     @Override

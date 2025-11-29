@@ -112,8 +112,9 @@ public class GameRulesGui extends BaseGui {
         Object value = world.getGameRuleValue(rule);
         boolean enabled = false;
         String valueStr = "";
+        boolean isBoolean = value instanceof Boolean;
 
-        if (value instanceof Boolean) {
+        if (isBoolean) {
             enabled = (Boolean) value;
             valueStr = enabled ? "&aEnabled" : "&cDisabled";
         } else if (value instanceof Integer) {
@@ -130,9 +131,17 @@ public class GameRulesGui extends BaseGui {
         String description = TranslationManager.translate("GameRules", "rule_" + ruleName + "_description",
             "&7Game rule");
 
+        // Different lore for boolean vs numeric rules
+        String actionLore;
+        if (isBoolean) {
+            actionLore = "&e&lLEFT: &7Toggle";
+        } else {
+            actionLore = "&e&lLEFT: &7Modifica valore\n&e&lSHIFT+LEFT: &7Input manuale";
+        }
+
         String lore = description + "\n" +
                      statusColor + "→ " + valueStr + "\n\n" +
-                     "&e&lLEFT: &7Toggle";
+                     actionLore;
 
         return createItem(material, title, lore.split("\n"));
     }
@@ -161,6 +170,7 @@ public class GameRulesGui extends BaseGui {
     public void handleClick(InventoryClickEvent event) {
         int slot = event.getRawSlot();
         Player clicker = (Player) event.getWhoClicked();
+        boolean isShiftClick = event.isShiftClick();
 
         if (slot == 49) {
             // Back button
@@ -177,15 +187,16 @@ public class GameRulesGui extends BaseGui {
 
         // Check if clicked slot has a game rule
         if (slotToRule.containsKey(slot)) {
-            handleGameRuleToggle(slot, clicker);
+            handleGameRuleClick(slot, clicker, isShiftClick);
         }
     }
 
-    private void handleGameRuleToggle(int slot, Player clicker) {
+    private void handleGameRuleClick(int slot, Player clicker, boolean isShiftClick) {
         GameRule<?> rule = slotToRule.get(slot);
         Object currentValue = targetWorld.getGameRuleValue(rule);
+        String ruleName = rule.getName();
 
-        // Toggle boolean rules
+        // Handle boolean rules - simple toggle
         if (currentValue instanceof Boolean) {
             boolean newValue = !(Boolean) currentValue;
 
@@ -195,23 +206,54 @@ public class GameRulesGui extends BaseGui {
             String status = newValue ? "&aabilitata" : "&cdisabilitata";
             String message = TranslationManager.translate("GameRules", "rule_toggled_single",
                 "&6Regola &e{rule} " + status + " &6in &e{world}")
-                .replace("{rule}", rule.getName())
+                .replace("{rule}", ruleName)
                 .replace("{world}", targetWorld.getName());
             clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
 
             // Refresh button
-            String ruleName = rule.getName();
             Material material = RULE_MATERIALS.get(ruleName);
             if (material != null) {
                 refreshSlot(slot, createGameRuleButton(ruleName, rule, material, targetWorld));
             }
-        } else {
-            // For non-boolean rules, send info message
-            String message = TranslationManager.translate("GameRules", "rule_not_boolean",
-                "&cQuesta regola non è un toggle. Valore corrente: &e{value}")
+        }
+        // Handle integer rules
+        else if (currentValue instanceof Integer) {
+            if (isShiftClick) {
+                // Shift-click: Manual input via chat
+                handleManualInput(clicker, (GameRule<Integer>) rule, ruleName);
+            } else {
+                // Normal click: Open value editor GUI
+                handleValueEditor(clicker, (GameRule<Integer>) rule, ruleName);
+            }
+        }
+        // Unsupported rule type
+        else {
+            String message = TranslationManager.translate("GameRules", "rule_unsupported",
+                "&cTipo di regola non supportato. Valore corrente: &e{value}")
                 .replace("{value}", String.valueOf(currentValue));
             clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
         }
+    }
+
+    private void handleValueEditor(Player clicker, GameRule<Integer> rule, String ruleName) {
+        // Deregister current listener and open GameRuleValueGui
+        org.bukkit.event.HandlerList.unregisterAll(this);
+        Bukkit.getScheduler().runTask(
+            Bukkit.getPluginManager().getPlugin("AdminManager"),
+            () -> new GameRuleValueGui(clicker, targetWorld, rule, ruleName).open()
+        );
+    }
+
+    private void handleManualInput(Player clicker, GameRule<Integer> rule, String ruleName) {
+        // Register player for chat input
+        GameRuleChatListener.registerInput(clicker, targetWorld, rule, ruleName);
+
+        clicker.closeInventory();
+
+        String message = TranslationManager.translate("GameRules", "input_prompt",
+            "&6Inserisci il valore per &e{rule} &6in chat\n&7Scrivi &ccancel &7per annullare")
+            .replace("{rule}", ruleName);
+        clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
     }
 
     private void handleBack(Player clicker) {

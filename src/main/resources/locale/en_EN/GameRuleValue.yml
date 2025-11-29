@@ -1,0 +1,36 @@
+# GameRuleValue GUI - English Translation
+
+# GUI Title
+title: "&6&lEdit: {rule}"
+
+# Current Value Display
+current_value_title: "&6&lCurrent Value"
+current_value_lore: "&7Rule: &e{rule}\n&7World: &e{world}\n\n&6→ &e{value}"
+
+# Preset Buttons
+preset_title: "&e{value}"
+preset_lore: "&7Set value to &e{value}\n\n&e&lCLICK: &7Set"
+
+# Adjustment Buttons
+adjust_title: "{delta}"
+adjust_lore: "&7Adjust value by &e{delta}\n&7Resulting value: &e{result}\n\n&e&lCLICK: &7Adjust"
+
+# Manual Input
+manual_input_title: "&d&lManual Input"
+manual_input_lore: "&7Enter a custom value\n&7via chat\n\n&e&lCLICK: &7Activate input"
+
+# Cancel Button
+cancel_title: "&cCancel"
+cancel_lore: "&7Cancel changes\n&7and go back"
+
+# Confirm Button
+confirm_title: "&a&lConfirm"
+confirm_lore: "&7Apply value &e{value}\n&7to world &6{world}"
+
+# Messages
+value_applied: "&a&lSUCCESS: &eRule &6{rule} &eset to &6{value} &ein &6{world}"
+input_prompt: "&6Enter value for &e{rule} &6in chat\n&7Type &ccancel &7to abort"
+input_cancelled: "&cInput cancelled. Returning to Game Rules GUI..."
+input_negative: "&cError: Value must be >= 0. Try again or type &ecancel"
+input_success: "&a&lSUCCESS: &eRule &6{rule} &eset to &6{value} &ein &6{world}"
+input_invalid: "&cError: You must enter a valid number. Try again or type &ecancel"

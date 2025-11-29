@@ -8,6 +8,8 @@ back_button_lore: "&7Return to World Selector"
 rule_toggled: "&6Rule &e{rule} {status} &6in all worlds"
 rule_toggled_single: "&6Rule &e{rule} {status} &6in &e{world}"
 rule_not_boolean: "&cThis rule is not a toggle. Current value: &e{value}"
+rule_unsupported: "&cUnsupported rule type. Current value: &e{value}"
+input_prompt: "&6Enter value for &e{rule} &6in chat\n&7Type &ccancel &7to abort"
 
 # Reset World
 reset_world_title: "&c&lReset {world}"

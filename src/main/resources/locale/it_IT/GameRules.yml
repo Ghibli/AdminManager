@@ -8,6 +8,8 @@ back_button_lore: "&7Torna a World Selector"
 rule_toggled: "&6Regola &e{rule} {status} &6in tutti i mondi"
 rule_toggled_single: "&6Regola &e{rule} {status} &6in &e{world}"
 rule_not_boolean: "&cQuesta regola non è un toggle. Valore corrente: &e{value}"
+rule_unsupported: "&cTipo di regola non supportato. Valore corrente: &e{value}"
+input_prompt: "&6Inserisci il valore per &e{rule} &6in chat\n&7Scrivi &ccancel &7per annullare"
 
 # Reset World
 reset_world_title: "&c&lReset {world}"
