@@ -30,29 +30,27 @@ public class ServerManagerGui extends BaseGui {
     }
 
     private void setupGuiItems() {
-        // Pyramid layout - Row 2 center (slot 13)
-        setItem(13, createStopServerButton());
+        // Row 2: Server controls
+        setItem(9, createStopServerButton());
+        setItem(10, createRestartServerButton());
+        setItem(15, createWhitelistButton());
+        setItem(16, createGameRulesButton());
 
-        // Row 3 (slots 21-23)
-        setItem(21, createRestartServerButton());
-        setItem(22, createReloadServerButton());
-        setItem(23, createSaveWorldButton());
+        // Row 3: World & Entity management
+        setItem(18, createReloadServerButton());
+        setItem(19, createSaveWorldButton());
+        setItem(24, createEconomyProviderButton());
+        setItem(25, createClearEntitiesButton());
 
-        // Row 4 (slots 29-33)
+        // Row 4: Config files
         setItem(29, createConfigManagerButton());
         setItem(30, createToolsYmlButton());
         setItem(31, createCommandRegistrationButton());
         setItem(32, createLanguageButton());
         setItem(33, createConfigYmlButton());
 
-        // Row 5 (slots 37-38)
-        setItem(37, createWhitelistButton());
-        setItem(38, createGameRulesButton());
-
-        // Row 6 (slots 40, 42-43)
+        // Row 5: Player data
         setItem(40, createPlayerDataButton());
-        setItem(42, createEconomyProviderButton());
-        setItem(43, createClearEntitiesButton());
 
         // Back button (slot 49)
         setItem(49, createBackButton());
@@ -208,20 +206,20 @@ public class ServerManagerGui extends BaseGui {
         Player clicker = (Player) event.getWhoClicked();
 
         switch (slot) {
-            case 13: handleStopServer(clicker); break;
-            case 21: handleRestartServer(clicker); break;
-            case 22: handleReloadServer(clicker); break;
-            case 23: handleSaveWorld(clicker); break;
+            case 9: handleStopServer(clicker); break;
+            case 10: handleRestartServer(clicker); break;
+            case 15: handleWhitelist(event, clicker); break;
+            case 16: handleGameRules(clicker); break;
+            case 18: handleReloadServer(clicker); break;
+            case 19: handleSaveWorld(clicker); break;
+            case 24: handleEconomyProviderToggle(clicker); break;
+            case 25: handleClearEntities(clicker); break;
             case 29: handleConfigManager(clicker); break;
             case 30: handleToolsYml(event, clicker); break;
             case 31: handleCommandRegistration(clicker); break;
             case 32: handleLanguageSwitch(clicker); break;
             case 33: handleConfigYml(event, clicker); break;
-            case 37: handleWhitelist(event, clicker); break;
-            case 38: handleGameRules(clicker); break;
             case 40: handlePlayerData(clicker); break;
-            case 42: handleEconomyProviderToggle(clicker); break;
-            case 43: handleClearEntities(clicker); break;
             case 49: handleBack(clicker); break;
         }
     }
@@ -294,8 +292,8 @@ public class ServerManagerGui extends BaseGui {
             "&6Economy Provider " + status + "&6. Riavvia il server per applicare.");
         clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
 
-        // Refresh button at new position (slot 42)
-        refreshSlot(42, createEconomyProviderButton());
+        // Refresh button at new position (slot 24)
+        refreshSlot(24, createEconomyProviderButton());
     }
 
     private void handleLanguageSwitch(Player clicker) {
@@ -400,8 +398,8 @@ public class ServerManagerGui extends BaseGui {
                 "&fWhitelist " + status);
             clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
 
-            // Refresh button at new position (slot 37)
-            refreshSlot(37, createWhitelistButton());
+            // Refresh button at new position (slot 15)
+            refreshSlot(15, createWhitelistButton());
         }
     }
 
