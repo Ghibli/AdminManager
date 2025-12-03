@@ -43,13 +43,10 @@ public class ServerManagerGui extends BaseGui {
         setItem(24, createEconomyProviderButton());
         setItem(25, createClearEntitiesButton());
 
-        // Row 4: Additional tools (if needed)
+        // Row 4: Additional tools
         setItem(30, createToolsYmlButton());
         setItem(31, createCommandRegistrationButton());
-        setItem(32, createLanguageButton());
-
-        // Row 5: Config Manager
-        setItem(40, createConfigManagerButton());
+        setItem(32, createConfigManagerButton());
 
         // Back button (slot 49)
         setItem(49, createBackButton());
@@ -96,18 +93,6 @@ public class ServerManagerGui extends BaseGui {
 
         Material material = vaultEnabled ? Material.EMERALD : Material.COAL;
         return createItem(material, title, lore.split("\n"));
-    }
-
-    private ItemStack createLanguageButton() {
-        Plugin plugin = Bukkit.getPluginManager().getPlugin("AdminManager");
-        String currentLang = plugin.getConfig().getString("language", "it_IT");
-
-        String title = TranslationManager.translate("ServerManager", "language_title", "&bLANGUAGE");
-        String lore = TranslationManager.translate("ServerManager", "language_lore",
-            "&7Lingua corrente: &e{lang}\n&7Click per cambiare lingua")
-            .replace("{lang}", currentLang);
-
-        return createItem(Material.BOOK, title, lore.split("\n"));
     }
 
     private ItemStack createToolsYmlButton() {
@@ -209,8 +194,7 @@ public class ServerManagerGui extends BaseGui {
             case 25: handleClearEntities(clicker); break;
             case 30: handleToolsYml(event, clicker); break;
             case 31: handleCommandRegistration(clicker); break;
-            case 32: handleLanguageSwitch(clicker); break;
-            case 40: handleConfigManager(clicker); break;
+            case 32: handleConfigManager(clicker); break;
             case 49: handleBack(clicker); break;
         }
     }
@@ -285,32 +269,6 @@ public class ServerManagerGui extends BaseGui {
 
         // Refresh button at new position (slot 24)
         refreshSlot(24, createEconomyProviderButton());
-    }
-
-    private void handleLanguageSwitch(Player clicker) {
-        Plugin plugin = Bukkit.getPluginManager().getPlugin("AdminManager");
-        String currentLang = plugin.getConfig().getString("language", "it_IT");
-
-        // Cycle through available languages
-        String newLang;
-        switch (currentLang) {
-            case "it_IT": newLang = "en_EN"; break;
-            case "en_EN": newLang = "it_IT"; break;
-            default: newLang = "it_IT";
-        }
-
-        plugin.getConfig().set("language", newLang);
-        plugin.saveConfig();
-
-        // Reload translations immediately
-        TranslationManager.reloadTranslations(newLang);
-
-        String message = TranslationManager.translate("ServerManager", "language_changed",
-            "&bLingua cambiata in: &e" + newLang + " &b- Traduzioni applicate immediatamente!");
-        clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
-
-        // Refresh button at new position (slot 32)
-        refreshSlot(32, createLanguageButton());
     }
 
     private void handleToolsYml(InventoryClickEvent event, Player clicker) {
