@@ -72,3 +72,8 @@ give_button_lore: "&7Give the tool to:\n&e{player}"
 
 quick_give_title: "&2&lGive Base Tool"
 quick_give_lore: "&7Give a base tool without\n&7customizations to:\n&e{player}"
+
+# Chat input messages
+input_cancelled: "&cInput cancelled."
+name_set: "&aName set: &e{name}"
+lore_added: "&aLore line added"

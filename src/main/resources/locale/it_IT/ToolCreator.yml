@@ -72,3 +72,8 @@ give_button_lore: "&7Dai lo strumento a:\n&e{player}"
 
 quick_give_title: "&2&lDai Set Base"
 quick_give_lore: "&7Dai un set base senza\n&7personalizzazioni a:\n&e{player}"
+
+# Chat input messages
+input_cancelled: "&cInput annullato."
+name_set: "&aNome impostato: &e{name}"
+lore_added: "&aRiga aggiunta alla lore"

@@ -5,6 +5,7 @@ import it.alessiogta.adminmanager.commands.AdminManagerTabCompleter;
 import it.alessiogta.adminmanager.gui.GameRuleChatListener;
 import it.alessiogta.adminmanager.listeners.CommandBlockListener;
 import it.alessiogta.adminmanager.listeners.PlayerControlListener;
+import it.alessiogta.adminmanager.listeners.ToolCreatorChatListener;
 import it.alessiogta.adminmanager.listeners.WorldGeneratorChatListener;
 import it.alessiogta.adminmanager.utils.EconomyManager;
 import it.alessiogta.adminmanager.utils.TranslationManager;
@@ -53,6 +54,7 @@ public class AdminManager extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new WorldGeneratorChatListener(), this);
         getServer().getPluginManager().registerEvents(new GameRuleChatListener(), this);
         getServer().getPluginManager().registerEvents(new CommandBlockListener(), this);
+        getServer().getPluginManager().registerEvents(new ToolCreatorChatListener(), this);
     }
 
     @Override

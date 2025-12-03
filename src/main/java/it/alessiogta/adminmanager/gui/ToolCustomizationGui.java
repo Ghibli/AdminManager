@@ -1,5 +1,6 @@
 package it.alessiogta.adminmanager.gui;
 
+import it.alessiogta.adminmanager.listeners.ToolCreatorChatListener;
 import it.alessiogta.adminmanager.utils.TranslationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -364,9 +365,8 @@ public class ToolCustomizationGui extends BaseGui {
             "&6Scrivi il nome per lo strumento in chat\n&7Scrivi &ccancel &7per annullare")));
         clicker.closeInventory();
 
-        // Register chat listener (simplified - in real implementation use event listener)
-        // For now, we'll skip chat input implementation
-        admin.sendMessage("§e[Debug] Chat input for name not yet implemented - will be added with listener");
+        // Register chat listener
+        ToolCreatorChatListener.registerInput(clicker, this, ToolCreatorChatListener.InputType.NAME);
     }
 
     private void handleLoreClick(Player clicker, ClickType clickType) {
@@ -376,7 +376,9 @@ public class ToolCustomizationGui extends BaseGui {
                 TranslationManager.translate("ToolCreator", "lore_prompt",
                 "&6Scrivi una riga di lore in chat\n&7Scrivi &ccancel &7per annullare")));
             clicker.closeInventory();
-            admin.sendMessage("§e[Debug] Chat input for lore not yet implemented");
+
+            // Register chat listener
+            ToolCreatorChatListener.registerInput(clicker, this, ToolCreatorChatListener.InputType.LORE);
         } else if (clickType == ClickType.RIGHT) {
             // Remove last line
             if (!customLore.isEmpty()) {
@@ -582,6 +584,35 @@ public class ToolCustomizationGui extends BaseGui {
 
     @Override
     public void open() {
+        inventory = build();
+        admin.openInventory(inventory);
+    }
+
+    // ========== PUBLIC METHODS FOR CHAT LISTENER ==========
+
+    /**
+     * Set custom name for the tool (called by chat listener)
+     */
+    public void setCustomName(String name) {
+        this.customName = name;
+    }
+
+    /**
+     * Add a line to custom lore (called by chat listener)
+     */
+    public void addLoreLine(String line) {
+        this.customLore.add(line);
+    }
+
+    /**
+     * Reopen the GUI after chat input (called by chat listener)
+     */
+    public void reopen() {
+        // Unregister old listener
+        org.bukkit.event.HandlerList.unregisterAll(this);
+
+        // Rebuild and reopen
+        setupGuiItems();
         inventory = build();
         admin.openInventory(inventory);
     }

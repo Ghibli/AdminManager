@@ -94,7 +94,23 @@ public class ToolMaterialSelectorGui extends BaseGui {
             "&7Gli strumenti creati verranno\n&7dati a: &e{player}")
             .replace("{player}", targetPlayer.getName());
 
-        return createItem(Material.PLAYER_HEAD, title, lore.split("\n"));
+        ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
+        org.bukkit.inventory.meta.SkullMeta meta = (org.bukkit.inventory.meta.SkullMeta) playerHead.getItemMeta();
+
+        if (meta != null) {
+            meta.setOwningPlayer(targetPlayer);
+            meta.setDisplayName(org.bukkit.ChatColor.translateAlternateColorCodes('&', title));
+
+            java.util.List<String> loreList = new java.util.ArrayList<>();
+            for (String line : lore.split("\n")) {
+                loreList.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', line));
+            }
+            meta.setLore(loreList);
+
+            playerHead.setItemMeta(meta);
+        }
+
+        return playerHead;
     }
 
     private ItemStack createBackButton() {
