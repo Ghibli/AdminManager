@@ -61,25 +61,34 @@ public class ToolCustomizationGui extends BaseGui {
     }
 
     private void setupGuiItems() {
-        // Section headers
-        setItem(0, createSectionHeader("&6&lCUSTOMIZATION", Material.NAME_TAG));
-        setItem(9, createSectionHeader("&e&lENCHANTMENTS", Material.ENCHANTING_TABLE));
-        setItem(18, createSectionHeader("&9&lPREVIEW", Material.SPYGLASS));
+        // Top row: Headers and info
+        setItem(1, createSectionHeader("&6&lPROPRIETÀ", Material.NAME_TAG));
+        setItem(4, createSectionHeader("&9&lANTEPRIMA", Material.SPYGLASS));
+        setItem(7, createSectionHeader("&5&lINCATESIMI", Material.ENCHANTING_TABLE));
 
-        // Customization options (left side)
+        // Left column: Customization options
         setItem(10, createNameButton());
         setItem(19, createLoreButton());
         setItem(28, createDurabilityButton());
         setItem(37, createUnbreakableButton());
 
-        // Enchantment buttons (center) - tool-specific
+        // Center column: Preview and stats (MAIN FOCUS)
+        setItem(12, createBorderGlass(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "&9§l║"));
+        setItem(13, createPreviewSlot());
+        setItem(14, createBorderGlass(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "&9§l║"));
+
+        setItem(21, createBorderGlass(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "&9§l║"));
+        setItem(22, createToolStatsButton());
+        setItem(23, createBorderGlass(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "&9§l║"));
+
+        setItem(30, createBorderGlass(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "&9§l║"));
+        setItem(31, createToolInfoButton());
+        setItem(32, createBorderGlass(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "&9§l║"));
+
+        // Right side: Enchantments (using ENCHANTED_BOOK for all)
         setupEnchantmentButtons();
 
-        // Preview (right side)
-        setItem(13, createPreviewSlot());
-        setItem(22, createToolStatsButton());
-
-        // Control buttons (bottom)
+        // Bottom row: Control buttons
         setItem(45, createBackButton());
         setItem(46, createResetButton());
         setItem(48, createCopyHeldItemButton());
@@ -97,43 +106,67 @@ public class ToolCustomizationGui extends BaseGui {
         return item;
     }
 
+    private ItemStack createBorderGlass(Material material, String name) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+            item.setItemMeta(meta);
+        }
+        return item;
+    }
+
+    private ItemStack createToolInfoButton() {
+        String title = "&6&lInfo Strumento";
+        List<String> loreLines = new ArrayList<>();
+        loreLines.add("&7§m━━━━━━━━━━━━━━━━");
+        loreLines.add("&7Tipo: &e" + toolType.getDisplayName());
+        loreLines.add("&7Materiale: " + toolMaterial.getDisplayName());
+        loreLines.add("&7Giocatore: &e" + targetPlayer.getName());
+        loreLines.add("&7§m━━━━━━━━━━━━━━━━");
+
+        String lore = String.join("\n", loreLines);
+        return createItem(Material.BOOK, title, lore.split("\n"));
+    }
+
     private void setupEnchantmentButtons() {
-        // Enchantments vary by tool type
+        // Right column slots: 16, 17, 25, 26, 34, 35, 43, 44, 52
+        // All enchantments use ENCHANTED_BOOK with glow effect
         if (toolType == ToolType.SWORD) {
-            setItem(11, createEnchantButton("SHARPNESS", 5, Material.DIAMOND_SWORD));
-            setItem(12, createEnchantButton("SMITE", 5, Material.IRON_SWORD));
-            setItem(20, createEnchantButton("BANE_OF_ARTHROPODS", 5, Material.STONE_SWORD));
-            setItem(21, createEnchantButton("KNOCKBACK", 2, Material.STICK));
-            setItem(29, createEnchantButton("FIRE_ASPECT", 2, Material.BLAZE_ROD));
-            setItem(30, createEnchantButton("LOOTING", 3, Material.CHEST));
-            setItem(38, createEnchantButton("SWEEPING", 3, Material.IRON_SWORD));
-            setItem(39, createEnchantButton("UNBREAKING", 3, Material.OBSIDIAN));
-            setItem(47, createEnchantButton("MENDING", 1, Material.EXPERIENCE_BOTTLE));
+            setItem(16, createEnchantButton("SHARPNESS", 5));
+            setItem(17, createEnchantButton("SMITE", 5));
+            setItem(25, createEnchantButton("BANE_OF_ARTHROPODS", 5));
+            setItem(26, createEnchantButton("KNOCKBACK", 2));
+            setItem(34, createEnchantButton("FIRE_ASPECT", 2));
+            setItem(35, createEnchantButton("LOOTING", 3));
+            setItem(43, createEnchantButton("SWEEPING", 3));
+            setItem(44, createEnchantButton("UNBREAKING", 3));
+            setItem(52, createEnchantButton("MENDING", 1));
         } else if (toolType == ToolType.PICKAXE) {
-            setItem(11, createEnchantButton("EFFICIENCY", 5, Material.DIAMOND));
-            setItem(12, createEnchantButton("FORTUNE", 3, Material.EMERALD));
-            setItem(20, createEnchantButton("SILK_TOUCH", 1, Material.COBWEB));
-            setItem(21, createEnchantButton("UNBREAKING", 3, Material.OBSIDIAN));
-            setItem(29, createEnchantButton("MENDING", 1, Material.EXPERIENCE_BOTTLE));
+            setItem(16, createEnchantButton("EFFICIENCY", 5));
+            setItem(17, createEnchantButton("FORTUNE", 3));
+            setItem(25, createEnchantButton("SILK_TOUCH", 1));
+            setItem(26, createEnchantButton("UNBREAKING", 3));
+            setItem(34, createEnchantButton("MENDING", 1));
         } else if (toolType == ToolType.AXE) {
-            setItem(11, createEnchantButton("SHARPNESS", 5, Material.DIAMOND_SWORD));
-            setItem(12, createEnchantButton("EFFICIENCY", 5, Material.DIAMOND));
-            setItem(20, createEnchantButton("FORTUNE", 3, Material.EMERALD));
-            setItem(21, createEnchantButton("SILK_TOUCH", 1, Material.COBWEB));
-            setItem(29, createEnchantButton("UNBREAKING", 3, Material.OBSIDIAN));
-            setItem(30, createEnchantButton("MENDING", 1, Material.EXPERIENCE_BOTTLE));
+            setItem(16, createEnchantButton("SHARPNESS", 5));
+            setItem(17, createEnchantButton("EFFICIENCY", 5));
+            setItem(25, createEnchantButton("FORTUNE", 3));
+            setItem(26, createEnchantButton("SILK_TOUCH", 1));
+            setItem(34, createEnchantButton("UNBREAKING", 3));
+            setItem(35, createEnchantButton("MENDING", 1));
         } else if (toolType == ToolType.SHOVEL) {
-            setItem(11, createEnchantButton("EFFICIENCY", 5, Material.DIAMOND));
-            setItem(12, createEnchantButton("FORTUNE", 3, Material.EMERALD));
-            setItem(20, createEnchantButton("SILK_TOUCH", 1, Material.COBWEB));
-            setItem(21, createEnchantButton("UNBREAKING", 3, Material.OBSIDIAN));
-            setItem(29, createEnchantButton("MENDING", 1, Material.EXPERIENCE_BOTTLE));
+            setItem(16, createEnchantButton("EFFICIENCY", 5));
+            setItem(17, createEnchantButton("FORTUNE", 3));
+            setItem(25, createEnchantButton("SILK_TOUCH", 1));
+            setItem(26, createEnchantButton("UNBREAKING", 3));
+            setItem(34, createEnchantButton("MENDING", 1));
         } else if (toolType == ToolType.HOE) {
-            setItem(11, createEnchantButton("EFFICIENCY", 5, Material.DIAMOND));
-            setItem(12, createEnchantButton("FORTUNE", 3, Material.EMERALD));
-            setItem(20, createEnchantButton("SILK_TOUCH", 1, Material.COBWEB));
-            setItem(21, createEnchantButton("UNBREAKING", 3, Material.OBSIDIAN));
-            setItem(29, createEnchantButton("MENDING", 1, Material.EXPERIENCE_BOTTLE));
+            setItem(16, createEnchantButton("EFFICIENCY", 5));
+            setItem(17, createEnchantButton("FORTUNE", 3));
+            setItem(25, createEnchantButton("SILK_TOUCH", 1));
+            setItem(26, createEnchantButton("UNBREAKING", 3));
+            setItem(34, createEnchantButton("MENDING", 1));
         }
     }
 
@@ -179,22 +212,24 @@ public class ToolCustomizationGui extends BaseGui {
         return createItem(icon, title, lore.split("\n"));
     }
 
-    private ItemStack createEnchantButton(String enchantType, int maxLevel, Material icon) {
+    private ItemStack createEnchantButton(String enchantType, int maxLevel) {
         String displayName = getEnchantDisplayName(enchantType);
         int currentLevel = enchantments.getOrDefault(getEnchantmentByType(enchantType), 0);
 
-        String title = TranslationManager.translate("ToolCreator", "enchant_button_title",
-            "&9" + displayName);
+        // Use displayName directly for title (no translation needed)
+        String title = "&9" + displayName;
 
         String lore = TranslationManager.translate("ToolCreator", "enchant_button_lore",
             "&7Max: &f{max}\n&7Attuale: &e{current}\n\n&e&lLEFT: &7Liv 1  &b&lRIGHT: &7Liv 2\n&6&lSHIFT+LEFT: &7Liv 3  &c&lSHIFT+RIGHT: &7Liv {max}")
             .replace("{max}", String.valueOf(maxLevel))
             .replace("{current}", currentLevel > 0 ? "Livello " + currentLevel : "Nessuno");
 
-        ItemStack item = createItem(icon, title, lore.split("\n"));
+        // Always use ENCHANTED_BOOK for all enchantments
+        ItemStack item = createItem(Material.ENCHANTED_BOOK, title, lore.split("\n"));
 
+        // Add glow effect when enchantment is active
         if (currentLevel > 0) {
-            item.addUnsafeEnchantment(Enchantment.DURABILITY, 1); // Visual indicator
+            item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
         }
 
         return item;
@@ -345,9 +380,9 @@ public class ToolCustomizationGui extends BaseGui {
         else if (slot == 28) handleDurabilityClick(clickType);
         else if (slot == 37) handleUnbreakableClick();
 
-        // Enchantment buttons - varies by tool type
-        else if (slot == 11 || slot == 12 || slot == 20 || slot == 21 ||
-                 slot == 29 || slot == 30 || slot == 38 || slot == 39 || slot == 47) {
+        // Enchantment buttons - right column
+        else if (slot == 16 || slot == 17 || slot == 25 || slot == 26 ||
+                 slot == 34 || slot == 35 || slot == 43 || slot == 44 || slot == 52) {
             handleEnchantmentSlotClick(slot, clickType);
         }
 
@@ -442,28 +477,36 @@ public class ToolCustomizationGui extends BaseGui {
     }
 
     private String getEnchantTypeBySlot(int slot) {
-        // This mapping depends on tool type - simplified version
+        // Right column slots: 16, 17, 25, 26, 34, 35, 43, 44, 52
         if (toolType == ToolType.SWORD) {
             switch (slot) {
-                case 11: return "SHARPNESS";
-                case 12: return "SMITE";
-                case 20: return "BANE_OF_ARTHROPODS";
-                case 21: return "KNOCKBACK";
-                case 29: return "FIRE_ASPECT";
-                case 30: return "LOOTING";
-                case 38: return "SWEEPING";
-                case 39: return "UNBREAKING";
-                case 47: return "MENDING";
+                case 16: return "SHARPNESS";
+                case 17: return "SMITE";
+                case 25: return "BANE_OF_ARTHROPODS";
+                case 26: return "KNOCKBACK";
+                case 34: return "FIRE_ASPECT";
+                case 35: return "LOOTING";
+                case 43: return "SWEEPING";
+                case 44: return "UNBREAKING";
+                case 52: return "MENDING";
+            }
+        } else if (toolType == ToolType.AXE) {
+            switch (slot) {
+                case 16: return "SHARPNESS";
+                case 17: return "EFFICIENCY";
+                case 25: return "FORTUNE";
+                case 26: return "SILK_TOUCH";
+                case 34: return "UNBREAKING";
+                case 35: return "MENDING";
             }
         } else {
-            // For pickaxe, shovel, hoe, axe
+            // For pickaxe, shovel, hoe
             switch (slot) {
-                case 11: return toolType == ToolType.AXE ? "SHARPNESS" : "EFFICIENCY";
-                case 12: return toolType == ToolType.AXE ? "EFFICIENCY" : "FORTUNE";
-                case 20: return toolType == ToolType.AXE ? "FORTUNE" : "SILK_TOUCH";
-                case 21: return toolType == ToolType.AXE ? "SILK_TOUCH" : "UNBREAKING";
-                case 29: return toolType == ToolType.AXE ? "UNBREAKING" : "MENDING";
-                case 30: return "MENDING";
+                case 16: return "EFFICIENCY";
+                case 17: return "FORTUNE";
+                case 25: return "SILK_TOUCH";
+                case 26: return "UNBREAKING";
+                case 34: return "MENDING";
             }
         }
         return null;

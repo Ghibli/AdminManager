@@ -65,7 +65,8 @@ public class ToolMaterialSelectorGui extends BaseGui {
         Material toolMaterial = toolType.getMaterial(material);
 
         String title = TranslationManager.translate("ToolCreator", "material_" + material.name().toLowerCase() + "_title",
-            material.getDisplayName() + " " + toolType.getDisplayName());
+            material.getDisplayName() + " " + toolType.getDisplayName())
+            .replace("{tool}", toolType.getDisplayName());
 
         String durability = String.valueOf(material.getBaseDurability(toolType));
         String lore = TranslationManager.translate("ToolCreator", "material_lore",
