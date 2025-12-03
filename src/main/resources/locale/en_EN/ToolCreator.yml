@@ -1,0 +1,74 @@
+# ToolCreator GUI Translations (English)
+
+# Main hub
+title: "&6&lTool Creator"
+target_player_title: "&6&lTarget Player"
+target_player_lore: "&7Created tools will be\n&7given to: &e{player}"
+back_button_title: "&cBack"
+back_button_lore: "&7Return to Player Manage"
+back_to_tools_lore: "&7Return to tool selection"
+back_to_material_lore: "&7Return to material selection"
+
+# Tool types
+tool_sword_title: "&e&lSword"
+tool_sword_lore: "&7Create a custom\n&7sword\n\n&e&lCLICK: &7Select material"
+
+tool_pickaxe_title: "&e&lPickaxe"
+tool_pickaxe_lore: "&7Create a custom\n&7pickaxe\n\n&e&lCLICK: &7Select material"
+
+tool_shovel_title: "&e&lShovel"
+tool_shovel_lore: "&7Create a custom\n&7shovel\n\n&e&lCLICK: &7Select material"
+
+tool_hoe_title: "&e&lHoe"
+tool_hoe_lore: "&7Create a custom\n&7hoe\n\n&e&lCLICK: &7Select material"
+
+tool_axe_title: "&e&lAxe"
+tool_axe_lore: "&7Create a custom\n&7axe\n\n&e&lCLICK: &7Select material"
+
+# Material selector
+material_selector_title: "&6&lMaterial - {tool}"
+material_lore: "&7Durability: &e{durability}\n\n&e&lCLICK: &7Customize tool"
+
+material_wood_title: "&6Wood {tool}"
+material_stone_title: "&7Stone {tool}"
+material_iron_title: "&fIron {tool}"
+material_gold_title: "&eGold {tool}"
+material_diamond_title: "&bDiamond {tool}"
+material_netherite_title: "&8Netherite {tool}"
+
+tool_type_info_title: "&e&lTool Type"
+tool_type_info_lore: "&7Creating: &e{tool}\n&7Select the material"
+
+# Customization GUI
+customization_title: "&6&lCustomize - {material} {tool}"
+
+name_button_title: "&e&lCustom Name"
+name_button_lore: "&7Current: {name}\n\n&e&lCLICK: &7Set name (via chat)"
+name_prompt: "&6Type the name for the tool in chat\n&7Type &ccancel &7to cancel"
+
+lore_button_title: "&e&lCustom Lore"
+lore_button_lore: "&7Lines: &e{lines}\n\n&e&lLEFT: &7Add line\n&c&lRIGHT: &7Remove last line"
+lore_prompt: "&6Type a lore line in chat\n&7Type &ccancel &7to cancel"
+
+durability_button_title: "&e&lDurability"
+durability_button_lore: "&7Current: &e{current}&7/&e{max}\n\n&e&lLEFT: &7+10 durability\n&c&lRIGHT: &7-10 durability\n&6&lSHIFT+LEFT: &7Max durability"
+
+unbreakable_button_title: "&e&lUnbreakable"
+unbreakable_button_lore: "&7Status: {status}\n\n&e&lCLICK: &7Toggle"
+
+enchant_button_title: "&9{enchant}"
+enchant_button_lore: "&7Max: &f{max}\n&7Current: &e{current}\n\n&e&lLEFT: &7Lvl 1  &b&lRIGHT: &7Lvl 2\n&6&lSHIFT+LEFT: &7Lvl 3  &c&lSHIFT+RIGHT: &7Lvl {max}"
+
+stats_button_title: "&6&lTool Stats"
+
+reset_button_title: "&c&lReset"
+reset_button_lore: "&7Remove all customizations"
+
+copy_held_title: "&b&lCopy Held Tool"
+copy_held_lore: "&7Copy the tool you're\n&7holding to the composition"
+
+give_button_title: "&a&lGive Tool"
+give_button_lore: "&7Give the tool to:\n&e{player}"
+
+quick_give_title: "&2&lGive Base Tool"
+quick_give_lore: "&7Give a base tool without\n&7customizations to:\n&e{player}"

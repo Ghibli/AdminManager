@@ -50,6 +50,10 @@ economy_lore: "&7Manage {player}'s money"
 armor_creator_title: "&dArmor Creator"
 armor_creator_lore: "&7Create and give armor to {player}"
 
+#Tool Creator
+tool_creator_title: "&6Tool Creator"
+tool_creator_lore: "&7Create and give tools to {player}"
+
 #Heal & Feed
 heal_title: "&cHeal"
 heal_lore: "&7Restore health and food for {player}"

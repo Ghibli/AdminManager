@@ -74,6 +74,7 @@ public class PlayerManage extends BaseGui {
         setItem(40, createGiveItemButton());
         setItem(41, createGetSkullButton());
         setItem(34, createArmorCreatorButton());
+        setItem(35, createToolCreatorButton());
         setItem(43, createEconomyButton());
 
         // Row 6: Exit (moved to slot 45 to prevent cursor auto-positioning)
@@ -159,6 +160,13 @@ public class PlayerManage extends BaseGui {
         String lore = TranslationManager.translate("PlayerManage", "armor_creator_lore", "&7Create and give armor to {player}")
                 .replace("{player}", targetPlayer.getName());
         return createItem(Material.DIAMOND_CHESTPLATE, title, lore);
+    }
+
+    private ItemStack createToolCreatorButton() {
+        String title = TranslationManager.translate("PlayerManage", "tool_creator_title", "&6Tool Creator");
+        String lore = TranslationManager.translate("PlayerManage", "tool_creator_lore", "&7Create and give tools to {player}")
+                .replace("{player}", targetPlayer.getName());
+        return createItem(Material.DIAMOND_PICKAXE, title, lore);
     }
 
     // ========== PLAYER STATE BUTTONS ==========
@@ -324,6 +332,7 @@ public class PlayerManage extends BaseGui {
             case 40: handleGiveItemClick(event); break;
             case 41: handleGetSkullClick(event); break;
             case 34: handleArmorCreatorClick(event); break;
+            case 35: handleToolCreatorClick(event); break;
             case 43: handleEconomyClick(event); break;
 
             // Row 6: Exit (slot 45)
@@ -452,6 +461,15 @@ public class PlayerManage extends BaseGui {
         Bukkit.getScheduler().runTask(
                 Bukkit.getPluginManager().getPlugin("AdminManager"),
                 () -> new ArmorCreatorGui(sender, targetPlayer).open()
+        );
+    }
+
+    private void handleToolCreatorClick(InventoryClickEvent event) {
+        Player sender = (Player) event.getWhoClicked();
+        // Don't close inventory - open new GUI directly to preserve cursor position
+        Bukkit.getScheduler().runTask(
+                Bukkit.getPluginManager().getPlugin("AdminManager"),
+                () -> new ToolCreatorGui(sender, targetPlayer).open()
         );
     }
 

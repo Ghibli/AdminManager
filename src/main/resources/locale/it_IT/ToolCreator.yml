@@ -1,0 +1,74 @@
+# ToolCreator GUI Translations (Italian)
+
+# Main hub
+title: "&6&lTool Creator"
+target_player_title: "&6&lGiocatore Target"
+target_player_lore: "&7Gli strumenti creati verranno\n&7dati a: &e{player}"
+back_button_title: "&cIndietro"
+back_button_lore: "&7Torna a Player Manage"
+back_to_tools_lore: "&7Torna alla selezione strumento"
+back_to_material_lore: "&7Torna alla selezione materiale"
+
+# Tool types
+tool_sword_title: "&e&lSpada"
+tool_sword_lore: "&7Crea una spada\n&7personalizzata\n\n&e&lCLICK: &7Seleziona materiale"
+
+tool_pickaxe_title: "&e&lPiccone"
+tool_pickaxe_lore: "&7Crea un piccone\n&7personalizzato\n\n&e&lCLICK: &7Seleziona materiale"
+
+tool_shovel_title: "&e&lPala"
+tool_shovel_lore: "&7Crea una pala\n&7personalizzata\n\n&e&lCLICK: &7Seleziona materiale"
+
+tool_hoe_title: "&e&lZappa"
+tool_hoe_lore: "&7Crea una zappa\n&7personalizzata\n\n&e&lCLICK: &7Seleziona materiale"
+
+tool_axe_title: "&e&lAscia"
+tool_axe_lore: "&7Crea un'ascia\n&7personalizzata\n\n&e&lCLICK: &7Seleziona materiale"
+
+# Material selector
+material_selector_title: "&6&lMateriale - {tool}"
+material_lore: "&7Durabilità: &e{durability}\n\n&e&lCLICK: &7Personalizza strumento"
+
+material_wood_title: "&6Legno {tool}"
+material_stone_title: "&7Pietra {tool}"
+material_iron_title: "&fFerro {tool}"
+material_gold_title: "&eOro {tool}"
+material_diamond_title: "&bDiamante {tool}"
+material_netherite_title: "&8Netherite {tool}"
+
+tool_type_info_title: "&e&lTipo Strumento"
+tool_type_info_lore: "&7Stai creando: &e{tool}\n&7Seleziona il materiale"
+
+# Customization GUI
+customization_title: "&6&lPersonalizza - {material} {tool}"
+
+name_button_title: "&e&lNome Custom"
+name_button_lore: "&7Attuale: {name}\n\n&e&lCLICK: &7Imposta nome (via chat)"
+name_prompt: "&6Scrivi il nome per lo strumento in chat\n&7Scrivi &ccancel &7per annullare"
+
+lore_button_title: "&e&lLore Custom"
+lore_button_lore: "&7Righe: &e{lines}\n\n&e&lLEFT: &7Aggiungi riga\n&c&lRIGHT: &7Rimuovi ultima riga"
+lore_prompt: "&6Scrivi una riga di lore in chat\n&7Scrivi &ccancel &7per annullare"
+
+durability_button_title: "&e&lDurabilità"
+durability_button_lore: "&7Attuale: &e{current}&7/&e{max}\n\n&e&lLEFT: &7+10 durabilità\n&c&lRIGHT: &7-10 durabilità\n&6&lSHIFT+LEFT: &7Max durabilità"
+
+unbreakable_button_title: "&e&lIndistruttibile"
+unbreakable_button_lore: "&7Stato: {status}\n\n&e&lCLICK: &7Toggle"
+
+enchant_button_title: "&9{enchant}"
+enchant_button_lore: "&7Max: &f{max}\n&7Attuale: &e{current}\n\n&e&lLEFT: &7Liv 1  &b&lRIGHT: &7Liv 2\n&6&lSHIFT+LEFT: &7Liv 3  &c&lSHIFT+RIGHT: &7Liv {max}"
+
+stats_button_title: "&6&lStatistiche Strumento"
+
+reset_button_title: "&c&lReset"
+reset_button_lore: "&7Rimuovi tutte le personalizzazioni"
+
+copy_held_title: "&b&lCopia Strumento in Mano"
+copy_held_lore: "&7Copia lo strumento che tieni\n&7in mano nella composizione"
+
+give_button_title: "&a&lDai Strumento"
+give_button_lore: "&7Dai lo strumento a:\n&e{player}"
+
+quick_give_title: "&2&lDai Set Base"
+quick_give_lore: "&7Dai un set base senza\n&7personalizzazioni a:\n&e{player}"

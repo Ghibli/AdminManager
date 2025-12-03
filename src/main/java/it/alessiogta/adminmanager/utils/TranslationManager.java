@@ -50,6 +50,7 @@ public class TranslationManager {
                 "SpeedControl.yml",
                 "EconomyManager.yml",
                 "ArmorCreator.yml",
+                "ToolCreator.yml",
                 "CommandRegistration.yml",
                 "CommandCategory.yml",
                 "ConfigManager.yml",
