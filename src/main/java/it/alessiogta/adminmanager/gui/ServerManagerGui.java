@@ -44,7 +44,6 @@ public class ServerManagerGui extends BaseGui {
         setItem(25, createClearEntitiesButton());
 
         // Row 4: Additional tools
-        setItem(30, createToolsYmlButton());
         setItem(31, createCommandRegistrationButton());
         setItem(32, createConfigManagerButton());
 
@@ -93,13 +92,6 @@ public class ServerManagerGui extends BaseGui {
 
         Material material = vaultEnabled ? Material.EMERALD : Material.COAL;
         return createItem(material, title, lore.split("\n"));
-    }
-
-    private ItemStack createToolsYmlButton() {
-        String title = TranslationManager.translate("ServerManager", "tools_yml_title", "&eTools.yml");
-        String lore = TranslationManager.translate("ServerManager", "tools_yml_lore",
-            "&e&lLEFT: &7Ricarica config\n&c&lSHIFT+RIGHT: &7Ripristina defaults");
-        return createItem(Material.DIAMOND_PICKAXE, title, lore);
     }
 
     private ItemStack createConfigManagerButton() {
@@ -192,7 +184,6 @@ public class ServerManagerGui extends BaseGui {
             case 20: handleSaveWorld(clicker); break;
             case 24: handleEconomyProviderToggle(clicker); break;
             case 25: handleClearEntities(clicker); break;
-            case 30: handleToolsYml(event, clicker); break;
             case 31: handleCommandRegistration(clicker); break;
             case 32: handleConfigManager(clicker); break;
             case 49: handleBack(clicker); break;
@@ -269,29 +260,6 @@ public class ServerManagerGui extends BaseGui {
 
         // Refresh button at new position (slot 24)
         refreshSlot(24, createEconomyProviderButton());
-    }
-
-    private void handleToolsYml(InventoryClickEvent event, Player clicker) {
-        Plugin plugin = Bukkit.getPluginManager().getPlugin("AdminManager");
-
-        if (event.isShiftClick() && event.isRightClick()) {
-            // Restore defaults - copy default tools.yml from resources
-            File toolsFile = new File(plugin.getDataFolder(), "tools.yml");
-            if (toolsFile.exists()) {
-                toolsFile.delete();
-            }
-
-            // Save default file
-            plugin.saveResource("tools.yml", true);
-
-            clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                TranslationManager.translate("ServerManager", "tools_yml_restore", "&cTools.yml ripristinato ai valori predefiniti!")));
-        } else {
-            // Reload tools.yml
-            // Reload the file from disk
-            clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                TranslationManager.translate("ServerManager", "tools_yml_reload", "&aTools.yml ricaricato!")));
-        }
     }
 
     private void handleConfigManager(Player clicker) {

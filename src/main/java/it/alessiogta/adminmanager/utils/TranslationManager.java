@@ -51,9 +51,11 @@ public class TranslationManager {
                 "EconomyManager.yml",
                 "ArmorCreator.yml",
                 "CommandRegistration.yml",
+                "CommandCategory.yml",
                 "ConfigManager.yml",
                 "WhitelistEditor.yml",
                 "GameRules.yml",
+                "GameRuleValue.yml",
                 "WorldSelector.yml",
                 "WorldGenerator.yml"
             };
