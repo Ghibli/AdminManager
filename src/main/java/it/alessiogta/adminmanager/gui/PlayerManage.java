@@ -138,7 +138,19 @@ public class PlayerManage extends BaseGui {
         String title = TranslationManager.translate("PlayerManage", "get_skull_title", "&6Get Skull");
         String lore = TranslationManager.translate("PlayerManage", "get_skull_lore", "&7Get {player}'s skull")
                 .replace("{player}", targetPlayer.getName());
-        return createItem(Material.PLAYER_HEAD, title, lore);
+
+        // Use actual player head texture
+        ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
+        org.bukkit.inventory.meta.SkullMeta meta = (org.bukkit.inventory.meta.SkullMeta) playerHead.getItemMeta();
+
+        if (meta != null) {
+            meta.setOwningPlayer(targetPlayer);  // Set actual player texture
+            meta.setDisplayName(org.bukkit.ChatColor.translateAlternateColorCodes('&', title));
+            meta.setLore(java.util.Arrays.asList(org.bukkit.ChatColor.translateAlternateColorCodes('&', lore)));
+            playerHead.setItemMeta(meta);
+        }
+
+        return playerHead;
     }
 
     private ItemStack createSpawnTeleportButton() {
