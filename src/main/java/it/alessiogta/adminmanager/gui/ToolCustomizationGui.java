@@ -61,10 +61,16 @@ public class ToolCustomizationGui extends BaseGui {
     }
 
     private void setupGuiItems() {
-        // Top row: Headers and info
-        setItem(1, createSectionHeader("&6&lPROPRIETÀ", Material.NAME_TAG));
-        setItem(4, createSectionHeader("&9&lANTEPRIMA", Material.SPYGLASS));
-        setItem(7, createSectionHeader("&5&lINCATESIMI", Material.ENCHANTING_TABLE));
+        // Top row: Headers with translations
+        setItem(1, createSectionHeader(
+            TranslationManager.translate("ToolCreator", "properties_header", "&6&lPROPRIETÀ"),
+            Material.NAME_TAG));
+        setItem(4, createSectionHeader(
+            TranslationManager.translate("ToolCreator", "preview_header", "&9&lANTEPRIMA"),
+            Material.SPYGLASS));
+        setItem(7, createSectionHeader(
+            TranslationManager.translate("ToolCreator", "enchants_header", "&5&lINCATESIMI"),
+            Material.ENCHANTING_TABLE));
 
         // Left column: Customization options
         setItem(10, createNameButton());

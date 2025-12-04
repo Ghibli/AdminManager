@@ -42,6 +42,10 @@ tool_type_info_lore: "&7Stai creando: &e{tool}\n&7Seleziona il materiale"
 # Customization GUI
 customization_title: "&6&lPersonalizza - {material} {tool}"
 
+properties_header: "&6&lPROPRIETÀ"
+preview_header: "&9&lANTEPRIMA"
+enchants_header: "&5&lINCATESIMI"
+
 name_button_title: "&e&lNome Custom"
 name_button_lore: "&7Attuale: {name}\n\n&e&lCLICK: &7Imposta nome (via chat)"
 name_prompt: "&6Scrivi il nome per lo strumento in chat\n&7Scrivi &ccancel &7per annullare"
