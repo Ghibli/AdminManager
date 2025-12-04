@@ -45,7 +45,7 @@ public class ServerManagerGui extends BaseGui {
 
         // Row 4: Additional tools
         setItem(31, createCommandRegistrationButton());
-        setItem(32, createConfigManagerButton());
+        setItem(40, createConfigManagerButton());
 
         // Back button (slot 49)
         setItem(49, createBackButton());
@@ -185,7 +185,7 @@ public class ServerManagerGui extends BaseGui {
             case 24: handleEconomyProviderToggle(clicker); break;
             case 25: handleClearEntities(clicker); break;
             case 31: handleCommandRegistration(clicker); break;
-            case 32: handleConfigManager(clicker); break;
+            case 40: handleConfigManager(clicker); break;
             case 49: handleBack(clicker); break;
         }
     }
