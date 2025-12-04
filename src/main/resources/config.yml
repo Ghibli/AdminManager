@@ -1,22 +1,106 @@
-# Configurazione principale di AdminManager
+# ╔═══════════════════════════════════════════════════════════════════════════╗
+# ║                           AdminManager v1.0                               ║
+# ║                    Main Configuration File / File di Configurazione       ║
+# ╚═══════════════════════════════════════════════════════════════════════════╝
+#
+# [EN] This is the main configuration file for AdminManager.
+#      Customize these settings to match your server's needs.
+#      For support, visit: https://github.com/Ghibli/AdminManager
+#
+# [IT] Questo è il file di configurazione principale per AdminManager.
+#      Personalizza queste impostazioni per adattarle alle esigenze del tuo server.
+#      Per supporto, visita: https://github.com/Ghibli/AdminManager
+#
+# ═══════════════════════════════════════════════════════════════════════════
 
-language: it_IT # Imposta la lingua predefinita (ad esempio, it_IT o en_EN)
+# ┌─────────────────────────────────────────────────────────────────────────┐
+# │ LANGUAGE / LINGUA                                                       │
+# └─────────────────────────────────────────────────────────────────────────┘
+# [EN] Set the default language for the plugin
+#      Available: it_IT (Italian), en_EN (English)
+# [IT] Imposta la lingua predefinita per il plugin
+#      Disponibili: it_IT (Italiano), en_EN (Inglese)
 
-fill_empty_slots: false
+language: it_IT
+
+# ┌─────────────────────────────────────────────────────────────────────────┐
+# │ GUI APPEARANCE / ASPETTO GUI                                            │
+# └─────────────────────────────────────────────────────────────────────────┘
+# [EN] Customize the appearance of GUI inventory menus
+# [IT] Personalizza l'aspetto dei menu GUI dell'inventario
+
+# [EN] Fill empty slots with decorative glass panes
+# [IT] Riempi gli slot vuoti con pannelli di vetro decorativi
+fill_empty_slots: true
+
+# [EN] Fill only the last row of the GUI (overrides fill_empty_slots if true)
+# [IT] Riempi solo l'ultima riga della GUI (sovrascrive fill_empty_slots se true)
 fill_last_row_only: true
-panel_color: BLACK
+
+# [EN] Color of decorative glass panes in GUI slots
+# [IT] Colore dei pannelli di vetro decorativi negli slot della GUI
+#
+# AVAILABLE COLORS / COLORI DISPONIBILI:
+# RED, ORANGE, YELLOW, LIME, GREEN, LIGHT_BLUE, CYAN, BLUE,
+# PURPLE, MAGENTA, PINK, BROWN, BLACK, GRAY, LIGHT_GRAY, WHITE
+#
+# For more info: https://minecraftitemids.com/
+panel_color: LIGHT_BLUE
+
+# [EN] Color of decorative glass panes in the last row
+# [IT] Colore dei pannelli di vetro decorativi nell'ultima riga
 panel_color_last_row: WHITE
 
+# ┌─────────────────────────────────────────────────────────────────────────┐
+# │ LOGGING / REGISTRAZIONE                                                 │
+# └─────────────────────────────────────────────────────────────────────────┘
+# [EN] Timezone for log timestamps (Java timezone format)
+# [IT] Fuso orario per i timestamp dei log (formato timezone Java)
+#
+# Examples / Esempi:
+#   Europe/Rome, America/New_York, Asia/Tokyo, UTC
 log_timezone: "Europe/Rome"
 
-# Comando spawn personalizzato (lascia vuoto per usare la spawn del mondo)
-# Esempi: "spawn", "hub", "lobby"
+# ┌─────────────────────────────────────────────────────────────────────────┐
+# │ SPAWN CONFIGURATION / CONFIGURAZIONE SPAWN                              │
+# └─────────────────────────────────────────────────────────────────────────┘
+# [EN] Custom spawn command (leave empty to use world spawn)
+#      When set, AdminManager will execute this command instead of teleporting to world spawn
+# [IT] Comando spawn personalizzato (lascia vuoto per usare la spawn del mondo)
+#      Quando impostato, AdminManager eseguirà questo comando invece di teletrasportare alla spawn del mondo
+#
+# Examples / Esempi: "spawn", "hub", "lobby"
 spawn_command: ""
 
+# ┌─────────────────────────────────────────────────────────────────────────┐
+# │ PERMISSIONS / PERMESSI                                                  │
+# └─────────────────────────────────────────────────────────────────────────┘
+# [EN] Define permission nodes for AdminManager commands
+# [IT] Definisci i nodi di permesso per i comandi di AdminManager
+
 permissions:
+  # [EN] Permission to use AdminManager main command and GUI
+  # [IT] Permesso per usare il comando principale e la GUI di AdminManager
   use: adminmanager.use
+
+  # [EN] Permission to reload AdminManager configuration
+  # [IT] Permesso per ricaricare la configurazione di AdminManager
   reload: adminmanager.reload
 
-# Lista dei mondi custom creati tramite WorldGenerator
-# Questi mondi verranno caricati automaticamente all'avvio del server
+# ┌─────────────────────────────────────────────────────────────────────────┐
+# │ CUSTOM WORLDS / MONDI PERSONALIZZATI                                    │
+# └─────────────────────────────────────────────────────────────────────────┘
+# [EN] List of custom worlds created via WorldGenerator
+#      These worlds will be automatically loaded on server startup
+# [IT] Lista dei mondi custom creati tramite WorldGenerator
+#      Questi mondi verranno caricati automaticamente all'avvio del server
+#
+# Format / Formato:
+#   - world_name_1
+#   - world_name_2
 custom-worlds: []
+
+# ═══════════════════════════════════════════════════════════════════════════
+# [EN] End of configuration file
+# [IT] Fine del file di configurazione
+# ═══════════════════════════════════════════════════════════════════════════
