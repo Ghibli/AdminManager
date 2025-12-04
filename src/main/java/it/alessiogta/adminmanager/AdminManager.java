@@ -21,9 +21,6 @@ public class AdminManager extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        // Messaggio di avvio
-        getLogger().info("AdminManager è stato abilitato!");
-
         // Caricamento configurazione
         saveDefaultConfig();
         FileConfiguration config = getConfig();
@@ -33,11 +30,10 @@ public class AdminManager extends JavaPlugin {
         TranslationManager.loadTranslations(language);
 
         // Inizializzazione Vault Economy
-        if (EconomyManager.setupEconomy()) {
-            getLogger().info("Vault economy integration enabled!");
-        } else {
-            getLogger().warning("Vault not found! Economy features will be disabled.");
-        }
+        boolean vaultEnabled = EconomyManager.setupEconomy();
+
+        // Banner di avvio
+        printStartupBanner(vaultEnabled);
 
         // Inizializzazione bStats con grafici personalizzati
         setupMetrics();
@@ -79,8 +75,6 @@ public class AdminManager extends JavaPlugin {
     }
 
     private void loadCustomWorlds() {
-        getLogger().info("Scansione e caricamento mondi custom...");
-
         // Get world container directory
         java.io.File worldContainer = getServer().getWorldContainer();
         java.io.File[] folders = worldContainer.listFiles();
@@ -133,7 +127,6 @@ public class AdminManager extends JavaPlugin {
 
             // Check if already loaded
             if (getServer().getWorld(worldName) != null) {
-                getLogger().info("Mondo '" + worldName + "' già caricato.");
                 skippedCount++;
                 continue;
             }
@@ -165,12 +158,8 @@ public class AdminManager extends JavaPlugin {
             if (!sortedWorlds.equals(configWorlds)) {
                 getConfig().set("custom-worlds", sortedWorlds);
                 saveConfig();
-                getLogger().info("Config aggiornato con " + sortedWorlds.size() + " mondi trovati.");
             }
         }
-
-        getLogger().info("Scansione completata: " + loadedCount + " mondi caricati, " +
-                        skippedCount + " già presenti, " + discoveredWorlds.size() + " totali trovati.");
     }
 
     private void setupMetrics() {
@@ -279,8 +268,24 @@ public class AdminManager extends JavaPlugin {
             osMap.put(osName, 1);
             return osMap;
         }));
+    }
 
-        getLogger().info("bStats metrics enabled with 8 custom charts!");
+    private void printStartupBanner(boolean vaultEnabled) {
+        String version = getDescription().getVersion();
+        String vaultStatus = vaultEnabled
+            ? "§aVault Hook ✓"
+            : "§cVault Hook ✗";
+
+        Bukkit.getConsoleSender().sendMessage("§6=============================================");
+        Bukkit.getConsoleSender().sendMessage(" ");
+        Bukkit.getConsoleSender().sendMessage("   §6§lAdmin Manager §7(v" + version + ")");
+        Bukkit.getConsoleSender().sendMessage("   §7Developed with §c♥ §7by §fAlessioGTA");
+        Bukkit.getConsoleSender().sendMessage(" ");
+        Bukkit.getConsoleSender().sendMessage("   §aThe plugin that helps you manage your server!");
+        Bukkit.getConsoleSender().sendMessage(" ");
+        Bukkit.getConsoleSender().sendMessage("   " + vaultStatus);
+        Bukkit.getConsoleSender().sendMessage(" ");
+        Bukkit.getConsoleSender().sendMessage("§6=============================================");
     }
 
     public static AdminManager getInstance() {
