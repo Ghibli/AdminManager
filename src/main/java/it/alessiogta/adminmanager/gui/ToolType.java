@@ -10,7 +10,12 @@ public enum ToolType {
     PICKAXE("Pickaxe", Material.DIAMOND_PICKAXE),
     SHOVEL("Shovel", Material.DIAMOND_SHOVEL),
     HOE("Hoe", Material.DIAMOND_HOE),
-    AXE("Axe", Material.DIAMOND_AXE);
+    AXE("Axe", Material.DIAMOND_AXE),
+    BOW("Bow", Material.BOW),
+    CROSSBOW("Crossbow", Material.CROSSBOW),
+    FISHING_ROD("Fishing Rod", Material.FISHING_ROD),
+    TRIDENT("Trident", Material.TRIDENT),
+    SHEARS("Shears", Material.SHEARS);
 
     private final String displayName;
     private final Material icon;
@@ -85,9 +90,37 @@ public enum ToolType {
                     case NETHERITE: return Material.NETHERITE_AXE;
                 }
                 break;
+
+            // Special tools without material variants
+            case BOW:
+                return Material.BOW;
+            case CROSSBOW:
+                return Material.CROSSBOW;
+            case FISHING_ROD:
+                return Material.FISHING_ROD;
+            case TRIDENT:
+                return Material.TRIDENT;
+            case SHEARS:
+                return Material.SHEARS;
         }
 
         // Fallback (shouldn't happen)
         return Material.STICK;
+    }
+
+    /**
+     * Check if this tool type has material variants
+     */
+    public boolean hasMaterialVariants() {
+        switch (this) {
+            case BOW:
+            case CROSSBOW:
+            case FISHING_ROD:
+            case TRIDENT:
+            case SHEARS:
+                return false;
+            default:
+                return true;
+        }
     }
 }

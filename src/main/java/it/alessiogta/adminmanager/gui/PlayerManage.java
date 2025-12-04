@@ -61,10 +61,11 @@ public class PlayerManage extends BaseGui {
         setItem(23, createClearEffectsButton());
         setItem(20, createKillButton());
 
-        // Row 3: Speed & Gamemode
+        // Row 3: Speed & Gamemode & Economy
         setItem(0, createWalkSpeedButton());
         setItem(8, createFlySpeedButton());
         setItem(25, createGamemodeToggleButton());
+        setItem(26, createEconomyButton());
 
         // Row 4: Inventory Management
         setItem(37, createInventoryButton());
@@ -75,7 +76,6 @@ public class PlayerManage extends BaseGui {
         setItem(41, createGetSkullButton());
         setItem(34, createArmorCreatorButton());
         setItem(35, createToolCreatorButton());
-        setItem(43, createEconomyButton());
 
         // Row 6: Exit (moved to slot 45 to prevent cursor auto-positioning)
         setItem(45, createExitButton());
@@ -319,10 +319,11 @@ public class PlayerManage extends BaseGui {
             case 23: handleClearEffectsClick(event); break;
             case 20: handleKillClick(event); break;
 
-            // Row 3: Speed & Gamemode
+            // Row 3: Speed & Gamemode & Economy
             case 0: handleWalkSpeedClick(event); break;
             case 8: handleFlySpeedClick(event); break;
             case 25: handleGamemodeToggleClick(event); break;
+            case 26: handleEconomyClick(event); break;
 
             // Row 4: Inventory Management
             case 37: handleInventoryClick(event); break;
@@ -333,7 +334,6 @@ public class PlayerManage extends BaseGui {
             case 41: handleGetSkullClick(event); break;
             case 34: handleArmorCreatorClick(event); break;
             case 35: handleToolCreatorClick(event); break;
-            case 43: handleEconomyClick(event); break;
 
             // Row 6: Exit (slot 45)
             case 45: handleExitClick(event); break;

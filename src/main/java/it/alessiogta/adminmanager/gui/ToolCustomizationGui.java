@@ -173,6 +173,35 @@ public class ToolCustomizationGui extends BaseGui {
             setItem(25, createEnchantButton("SILK_TOUCH", 1));
             setItem(26, createEnchantButton("UNBREAKING", 3));
             setItem(34, createEnchantButton("MENDING", 1));
+        } else if (toolType == ToolType.BOW) {
+            setItem(16, createEnchantButton("POWER", 5));
+            setItem(17, createEnchantButton("PUNCH", 2));
+            setItem(25, createEnchantButton("FLAME", 1));
+            setItem(26, createEnchantButton("INFINITY", 1));
+            setItem(34, createEnchantButton("UNBREAKING", 3));
+            setItem(35, createEnchantButton("MENDING", 1));
+        } else if (toolType == ToolType.CROSSBOW) {
+            setItem(16, createEnchantButton("QUICK_CHARGE", 3));
+            setItem(17, createEnchantButton("PIERCING", 4));
+            setItem(25, createEnchantButton("MULTISHOT", 1));
+            setItem(26, createEnchantButton("UNBREAKING", 3));
+            setItem(34, createEnchantButton("MENDING", 1));
+        } else if (toolType == ToolType.FISHING_ROD) {
+            setItem(16, createEnchantButton("LUCK_OF_THE_SEA", 3));
+            setItem(17, createEnchantButton("LURE", 3));
+            setItem(25, createEnchantButton("UNBREAKING", 3));
+            setItem(26, createEnchantButton("MENDING", 1));
+        } else if (toolType == ToolType.TRIDENT) {
+            setItem(16, createEnchantButton("LOYALTY", 3));
+            setItem(17, createEnchantButton("CHANNELING", 1));
+            setItem(25, createEnchantButton("RIPTIDE", 3));
+            setItem(26, createEnchantButton("IMPALING", 5));
+            setItem(34, createEnchantButton("UNBREAKING", 3));
+            setItem(35, createEnchantButton("MENDING", 1));
+        } else if (toolType == ToolType.SHEARS) {
+            setItem(16, createEnchantButton("EFFICIENCY", 5));
+            setItem(25, createEnchantButton("UNBREAKING", 3));
+            setItem(26, createEnchantButton("MENDING", 1));
         }
     }
 
@@ -243,6 +272,7 @@ public class ToolCustomizationGui extends BaseGui {
 
     private String getEnchantDisplayName(String type) {
         switch (type) {
+            // Sword enchantments
             case "SHARPNESS": return "Affilatura";
             case "SMITE": return "Rovina";
             case "BANE_OF_ARTHROPODS": return "Flagello degli Artropodi";
@@ -250,17 +280,37 @@ public class ToolCustomizationGui extends BaseGui {
             case "FIRE_ASPECT": return "Aspetto Igneo";
             case "LOOTING": return "Saccheggio";
             case "SWEEPING": return "Spazzata";
+            // Tool enchantments
             case "EFFICIENCY": return "Efficienza";
             case "FORTUNE": return "Fortuna";
             case "SILK_TOUCH": return "Tocco di Velluto";
+            // Universal enchantments
             case "UNBREAKING": return "Indistruttibilità";
             case "MENDING": return "Rammendo";
+            // Bow enchantments
+            case "POWER": return "Potenza";
+            case "PUNCH": return "Spinta";
+            case "FLAME": return "Fiamma";
+            case "INFINITY": return "Infinità";
+            // Crossbow enchantments
+            case "QUICK_CHARGE": return "Carica Rapida";
+            case "PIERCING": return "Perforazione";
+            case "MULTISHOT": return "Multicolpo";
+            // Fishing Rod enchantments
+            case "LUCK_OF_THE_SEA": return "Fortuna del Mare";
+            case "LURE": return "Richiamo";
+            // Trident enchantments
+            case "LOYALTY": return "Lealtà";
+            case "CHANNELING": return "Incanalamento";
+            case "RIPTIDE": return "Correntemarittima";
+            case "IMPALING": return "Impalamento";
             default: return type;
         }
     }
 
     private Enchantment getEnchantmentByType(String type) {
         switch (type) {
+            // Sword enchantments
             case "SHARPNESS": return Enchantment.DAMAGE_ALL;
             case "SMITE": return Enchantment.DAMAGE_UNDEAD;
             case "BANE_OF_ARTHROPODS": return Enchantment.DAMAGE_ARTHROPODS;
@@ -268,11 +318,30 @@ public class ToolCustomizationGui extends BaseGui {
             case "FIRE_ASPECT": return Enchantment.FIRE_ASPECT;
             case "LOOTING": return Enchantment.LOOT_BONUS_MOBS;
             case "SWEEPING": return Enchantment.SWEEPING_EDGE;
+            // Tool enchantments
             case "EFFICIENCY": return Enchantment.DIG_SPEED;
             case "FORTUNE": return Enchantment.LOOT_BONUS_BLOCKS;
             case "SILK_TOUCH": return Enchantment.SILK_TOUCH;
+            // Universal enchantments
             case "UNBREAKING": return Enchantment.DURABILITY;
             case "MENDING": return Enchantment.MENDING;
+            // Bow enchantments
+            case "POWER": return Enchantment.ARROW_DAMAGE;
+            case "PUNCH": return Enchantment.ARROW_KNOCKBACK;
+            case "FLAME": return Enchantment.ARROW_FIRE;
+            case "INFINITY": return Enchantment.ARROW_INFINITE;
+            // Crossbow enchantments
+            case "QUICK_CHARGE": return Enchantment.QUICK_CHARGE;
+            case "PIERCING": return Enchantment.PIERCING;
+            case "MULTISHOT": return Enchantment.MULTISHOT;
+            // Fishing Rod enchantments
+            case "LUCK_OF_THE_SEA": return Enchantment.LUCK;
+            case "LURE": return Enchantment.LURE;
+            // Trident enchantments
+            case "LOYALTY": return Enchantment.LOYALTY;
+            case "CHANNELING": return Enchantment.CHANNELING;
+            case "RIPTIDE": return Enchantment.RIPTIDE;
+            case "IMPALING": return Enchantment.IMPALING;
             default: return null;
         }
     }
@@ -505,6 +574,45 @@ public class ToolCustomizationGui extends BaseGui {
                 case 34: return "UNBREAKING";
                 case 35: return "MENDING";
             }
+        } else if (toolType == ToolType.BOW) {
+            switch (slot) {
+                case 16: return "POWER";
+                case 17: return "PUNCH";
+                case 25: return "FLAME";
+                case 26: return "INFINITY";
+                case 34: return "UNBREAKING";
+                case 35: return "MENDING";
+            }
+        } else if (toolType == ToolType.CROSSBOW) {
+            switch (slot) {
+                case 16: return "QUICK_CHARGE";
+                case 17: return "PIERCING";
+                case 25: return "MULTISHOT";
+                case 26: return "UNBREAKING";
+                case 34: return "MENDING";
+            }
+        } else if (toolType == ToolType.FISHING_ROD) {
+            switch (slot) {
+                case 16: return "LUCK_OF_THE_SEA";
+                case 17: return "LURE";
+                case 25: return "UNBREAKING";
+                case 26: return "MENDING";
+            }
+        } else if (toolType == ToolType.TRIDENT) {
+            switch (slot) {
+                case 16: return "LOYALTY";
+                case 17: return "CHANNELING";
+                case 25: return "RIPTIDE";
+                case 26: return "IMPALING";
+                case 34: return "UNBREAKING";
+                case 35: return "MENDING";
+            }
+        } else if (toolType == ToolType.SHEARS) {
+            switch (slot) {
+                case 16: return "EFFICIENCY";
+                case 25: return "UNBREAKING";
+                case 26: return "MENDING";
+            }
         } else {
             // For pickaxe, shovel, hoe
             switch (slot) {
@@ -520,21 +628,40 @@ public class ToolCustomizationGui extends BaseGui {
 
     private int getMaxLevelForEnchant(String enchantType) {
         switch (enchantType) {
+            // Level 5 enchantments
             case "SHARPNESS":
             case "SMITE":
             case "BANE_OF_ARTHROPODS":
             case "EFFICIENCY":
+            case "POWER":
+            case "IMPALING":
                 return 5;
+            // Level 4 enchantments
+            case "PIERCING":
+                return 4;
+            // Level 3 enchantments
             case "FORTUNE":
             case "LOOTING":
             case "SWEEPING":
             case "UNBREAKING":
+            case "QUICK_CHARGE":
+            case "LUCK_OF_THE_SEA":
+            case "LURE":
+            case "LOYALTY":
+            case "RIPTIDE":
                 return 3;
+            // Level 2 enchantments
             case "KNOCKBACK":
             case "FIRE_ASPECT":
+            case "PUNCH":
                 return 2;
+            // Level 1 enchantments
             case "SILK_TOUCH":
             case "MENDING":
+            case "FLAME":
+            case "INFINITY":
+            case "MULTISHOT":
+            case "CHANNELING":
                 return 1;
             default:
                 return 1;

@@ -11,16 +11,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Main hub GUI for selecting which tool type to create
+ * GUI for selecting special tools (Bow, Crossbow, Fishing Rod, Trident, Shears)
+ * These tools don't have material variants, so they skip the material selector
  */
-public class ToolCreatorGui extends BaseGui {
+public class SpecialToolsGui extends BaseGui {
 
     private final Player admin;
     private final Player targetPlayer;
     private final Map<Integer, ToolType> slotToTool = new HashMap<>();
 
-    public ToolCreatorGui(Player admin, Player targetPlayer) {
-        super(admin, TranslationManager.translate("ToolCreator", "title", "&6&lTool Creator"), 1);
+    public SpecialToolsGui(Player admin, Player targetPlayer) {
+        super(admin, TranslationManager.translate("ToolCreator", "special_tools_title", "&6&lSpecial Tools"), 1);
         this.admin = admin;
         this.targetPlayer = targetPlayer;
         setupGuiItems();
@@ -32,15 +33,20 @@ public class ToolCreatorGui extends BaseGui {
     }
 
     private void setupGuiItems() {
-        // Layout: Tools arranged in a row
-        // Row 2: Sword, Pickaxe, Shovel, Hoe, Axe
-        // Bottom: Back button
+        // Layout: Special tools arranged in a row
+        // Bow, Crossbow, Fishing Rod, Trident, Shears
 
-        int[] slots = {10, 12, 14, 16, 19}; // Centered layout
-        ToolType[] tools = ToolType.values();
+        int[] slots = {11, 13, 15, 20, 24}; // Centered layout
+        ToolType[] specialTools = {
+            ToolType.BOW,
+            ToolType.CROSSBOW,
+            ToolType.FISHING_ROD,
+            ToolType.TRIDENT,
+            ToolType.SHEARS
+        };
 
-        for (int i = 0; i < tools.length && i < slots.length; i++) {
-            ToolType tool = tools[i];
+        for (int i = 0; i < specialTools.length && i < slots.length; i++) {
+            ToolType tool = specialTools[i];
             int slot = slots[i];
             slotToTool.put(slot, tool);
             setItem(slot, createToolButton(tool));
@@ -48,9 +54,6 @@ public class ToolCreatorGui extends BaseGui {
 
         // Target player info
         setItem(4, createTargetPlayerInfo());
-
-        // Special tools button (slot 44)
-        setItem(44, createSpecialToolsButton());
 
         // Back button (slot 49)
         setItem(49, createBackButton());
@@ -61,7 +64,7 @@ public class ToolCreatorGui extends BaseGui {
             "&e&l" + tool.getDisplayName());
 
         String lore = TranslationManager.translate("ToolCreator", "tool_" + tool.name().toLowerCase() + "_lore",
-            "&7Crea una " + tool.getDisplayName().toLowerCase() + "\n&7personalizzata\n\n&e&lCLICK: &7Seleziona materiale");
+            "&7Crea un/a " + tool.getDisplayName().toLowerCase() + "\n&7personalizzato/a\n\n&e&lCLICK: &7Personalizza");
 
         return createItem(tool.getIcon(), title, lore.split("\n"));
     }
@@ -93,16 +96,9 @@ public class ToolCreatorGui extends BaseGui {
         return playerHead;
     }
 
-    private ItemStack createSpecialToolsButton() {
-        String title = TranslationManager.translate("ToolCreator", "special_tools_button_title", "&d&lSpecial Tools");
-        String lore = TranslationManager.translate("ToolCreator", "special_tools_button_lore",
-            "&7Bow, Crossbow, Fishing Rod,\n&7Trident, Shears\n\n&e&lCLICK: &7Apri menu");
-        return createItem(Material.TRIDENT, title, lore.split("\n"));
-    }
-
     private ItemStack createBackButton() {
         String title = TranslationManager.translate("ToolCreator", "back_button_title", "&cIndietro");
-        String lore = TranslationManager.translate("ToolCreator", "back_button_lore", "&7Torna a Player Manage");
+        String lore = TranslationManager.translate("ToolCreator", "back_to_tools_lore", "&7Torna alla selezione strumento");
         return createItem(Material.DARK_OAK_DOOR, title, lore);
     }
 
@@ -112,14 +108,8 @@ public class ToolCreatorGui extends BaseGui {
         Player clicker = (Player) event.getWhoClicked();
 
         if (slot == 49) {
-            // Back button
+            // Back button - return to main tool creator
             handleBack(clicker);
-            return;
-        }
-
-        if (slot == 44) {
-            // Special tools button
-            handleSpecialToolsClick(clicker);
             return;
         }
 
@@ -131,29 +121,21 @@ public class ToolCreatorGui extends BaseGui {
     }
 
     private void handleToolClick(ToolType tool, Player clicker) {
-        // Deregister listener (inventory closes automatically)
+        // Special tools don't have material variants, go directly to customization
+        // Use a dummy material (WOOD) since it will be ignored
         org.bukkit.event.HandlerList.unregisterAll(this);
         Bukkit.getScheduler().runTask(
             Bukkit.getPluginManager().getPlugin("AdminManager"),
-            () -> new ToolMaterialSelectorGui(clicker, targetPlayer, tool).open()
-        );
-    }
-
-    private void handleSpecialToolsClick(Player clicker) {
-        // Open special tools GUI
-        org.bukkit.event.HandlerList.unregisterAll(this);
-        Bukkit.getScheduler().runTask(
-            Bukkit.getPluginManager().getPlugin("AdminManager"),
-            () -> new SpecialToolsGui(clicker, targetPlayer).open()
+            () -> new ToolCustomizationGui(clicker, targetPlayer, tool, ToolMaterial.WOOD).open()
         );
     }
 
     private void handleBack(Player clicker) {
-        // Deregister listener (inventory closes automatically)
+        // Return to main Tool Creator GUI
         org.bukkit.event.HandlerList.unregisterAll(this);
         Bukkit.getScheduler().runTask(
             Bukkit.getPluginManager().getPlugin("AdminManager"),
-            () -> new PlayerManage(clicker, targetPlayer).open()
+            () -> new ToolCreatorGui(clicker, targetPlayer).open()
         );
     }
 

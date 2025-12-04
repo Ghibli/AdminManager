@@ -25,6 +25,26 @@ tool_hoe_lore: "&7Crea una zappa\n&7personalizzata\n\n&e&lCLICK: &7Seleziona mat
 tool_axe_title: "&e&lAscia"
 tool_axe_lore: "&7Crea un'ascia\n&7personalizzata\n\n&e&lCLICK: &7Seleziona materiale"
 
+# Special Tools
+special_tools_title: "&6&lSpecial Tools"
+special_tools_button_title: "&d&lSpecial Tools"
+special_tools_button_lore: "&7Arco, Balestra, Canna da Pesca,\n&7Tridente, Cesoie\n\n&e&lCLICK: &7Apri menu"
+
+tool_bow_title: "&e&lArco"
+tool_bow_lore: "&7Crea un arco\n&7personalizzato\n\n&e&lCLICK: &7Personalizza"
+
+tool_crossbow_title: "&e&lBalestra"
+tool_crossbow_lore: "&7Crea una balestra\n&7personalizzata\n\n&e&lCLICK: &7Personalizza"
+
+tool_fishing_rod_title: "&e&lCanna da Pesca"
+tool_fishing_rod_lore: "&7Crea una canna da pesca\n&7personalizzata\n\n&e&lCLICK: &7Personalizza"
+
+tool_trident_title: "&e&lTridente"
+tool_trident_lore: "&7Crea un tridente\n&7personalizzato\n\n&e&lCLICK: &7Personalizza"
+
+tool_shears_title: "&e&lCesoie"
+tool_shears_lore: "&7Crea delle cesoie\n&7personalizzate\n\n&e&lCLICK: &7Personalizza"
+
 # Material selector
 material_selector_title: "&6&lMateriale - {tool}"
 material_lore: "&7Durabilità: &e{durability}\n\n&e&lCLICK: &7Personalizza strumento"

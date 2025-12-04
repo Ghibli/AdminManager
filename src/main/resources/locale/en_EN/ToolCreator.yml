@@ -25,6 +25,26 @@ tool_hoe_lore: "&7Create a custom\n&7hoe\n\n&e&lCLICK: &7Select material"
 tool_axe_title: "&e&lAxe"
 tool_axe_lore: "&7Create a custom\n&7axe\n\n&e&lCLICK: &7Select material"
 
+# Special Tools
+special_tools_title: "&6&lSpecial Tools"
+special_tools_button_title: "&d&lSpecial Tools"
+special_tools_button_lore: "&7Bow, Crossbow, Fishing Rod,\n&7Trident, Shears\n\n&e&lCLICK: &7Open menu"
+
+tool_bow_title: "&e&lBow"
+tool_bow_lore: "&7Create a custom\n&7bow\n\n&e&lCLICK: &7Customize"
+
+tool_crossbow_title: "&e&lCrossbow"
+tool_crossbow_lore: "&7Create a custom\n&7crossbow\n\n&e&lCLICK: &7Customize"
+
+tool_fishing_rod_title: "&e&lFishing Rod"
+tool_fishing_rod_lore: "&7Create a custom\n&7fishing rod\n\n&e&lCLICK: &7Customize"
+
+tool_trident_title: "&e&lTrident"
+tool_trident_lore: "&7Create a custom\n&7trident\n\n&e&lCLICK: &7Customize"
+
+tool_shears_title: "&e&lShears"
+tool_shears_lore: "&7Create custom\n&7shears\n\n&e&lCLICK: &7Customize"
+
 # Material selector
 material_selector_title: "&6&lMaterial - {tool}"
 material_lore: "&7Durability: &e{durability}\n\n&e&lCLICK: &7Customize tool"
