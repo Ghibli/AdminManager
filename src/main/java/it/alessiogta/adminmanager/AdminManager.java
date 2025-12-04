@@ -39,9 +39,8 @@ public class AdminManager extends JavaPlugin {
             getLogger().warning("Vault not found! Economy features will be disabled.");
         }
 
-        // Inizializzazione bStats
-        new it.alessiogta.adminmanager.metrics.Metrics(this, 28217);
-        getLogger().info("bStats metrics enabled!");
+        // Inizializzazione bStats con grafici personalizzati
+        setupMetrics();
 
         // Registrazione dei comandi
         registerCommands();
@@ -172,6 +171,116 @@ public class AdminManager extends JavaPlugin {
 
         getLogger().info("Scansione completata: " + loadedCount + " mondi caricati, " +
                         skippedCount + " già presenti, " + discoveredWorlds.size() + " totali trovati.");
+    }
+
+    private void setupMetrics() {
+        it.alessiogta.adminmanager.metrics.Metrics metrics = new it.alessiogta.adminmanager.metrics.Metrics(this, 28217);
+
+        // 1. SimplePie: Lingua del plugin
+        metrics.addCustomChart(new it.alessiogta.adminmanager.metrics.Metrics.SimplePie("plugin_language", () -> {
+            return getConfig().getString("language", "it_IT");
+        }));
+
+        // 2. SimplePie: Server software (Bukkit/Spigot/Paper/Purpur)
+        metrics.addCustomChart(new it.alessiogta.adminmanager.metrics.Metrics.SimplePie("server_software", () -> {
+            String version = getServer().getVersion().toLowerCase();
+            if (version.contains("paper")) return "Paper";
+            if (version.contains("purpur")) return "Purpur";
+            if (version.contains("spigot")) return "Spigot";
+            return "Bukkit";
+        }));
+
+        // 3. SimplePie: Versione Minecraft
+        metrics.addCustomChart(new it.alessiogta.adminmanager.metrics.Metrics.SimplePie("minecraft_version", () -> {
+            String version = getServer().getBukkitVersion();
+            // Estrae solo la versione principale (es: 1.21.3 da 1.21.3-R0.1-SNAPSHOT)
+            return version.split("-")[0];
+        }));
+
+        // 4. SimplePie: Economy provider
+        metrics.addCustomChart(new it.alessiogta.adminmanager.metrics.Metrics.SimplePie("economy_provider", () -> {
+            if (!EconomyManager.isEnabled()) {
+                return "None (No Vault)";
+            }
+            String provider = EconomyManager.getEconomyProvider();
+            return provider != null ? provider : "Unknown";
+        }));
+
+        // 5. SimplePie: Versione Java
+        metrics.addCustomChart(new it.alessiogta.adminmanager.metrics.Metrics.SimplePie("java_version", () -> {
+            String version = System.getProperty("java.version");
+            // Semplifica versione (es: 17.0.1 -> Java 17)
+            String majorVersion = version.split("\\.")[0];
+            if (version.startsWith("1.8")) {
+                return "Java 8";
+            }
+            return "Java " + majorVersion;
+        }));
+
+        // 6. AdvancedPie: Numero di mondi custom (raggruppati)
+        metrics.addCustomChart(new it.alessiogta.adminmanager.metrics.Metrics.AdvancedPie("custom_worlds_range", () -> {
+            java.util.Map<String, Integer> worldsMap = new java.util.HashMap<>();
+            int customWorldCount = 0;
+
+            // Conta mondi custom (escludi world, world_nether, world_the_end)
+            for (org.bukkit.World world : getServer().getWorlds()) {
+                String name = world.getName();
+                if (!name.equals("world") && !name.equals("world_nether") && !name.equals("world_the_end")) {
+                    customWorldCount++;
+                }
+            }
+
+            // Raggruppa in range
+            String range;
+            if (customWorldCount == 0) {
+                range = "0 worlds";
+            } else if (customWorldCount <= 3) {
+                range = "1-3 worlds";
+            } else if (customWorldCount <= 6) {
+                range = "4-6 worlds";
+            } else if (customWorldCount <= 10) {
+                range = "7-10 worlds";
+            } else {
+                range = "10+ worlds";
+            }
+
+            worldsMap.put(range, 1);
+            return worldsMap;
+        }));
+
+        // 7. SingleLineChart: Numero totale di mondi custom
+        metrics.addCustomChart(new it.alessiogta.adminmanager.metrics.Metrics.SingleLineChart("total_custom_worlds", () -> {
+            int customWorldCount = 0;
+            for (org.bukkit.World world : getServer().getWorlds()) {
+                String name = world.getName();
+                if (!name.equals("world") && !name.equals("world_nether") && !name.equals("world_the_end")) {
+                    customWorldCount++;
+                }
+            }
+            return customWorldCount;
+        }));
+
+        // 8. AdvancedPie: Sistema operativo
+        metrics.addCustomChart(new it.alessiogta.adminmanager.metrics.Metrics.AdvancedPie("operating_system", () -> {
+            java.util.Map<String, Integer> osMap = new java.util.HashMap<>();
+            String os = System.getProperty("os.name").toLowerCase();
+
+            String osName;
+            if (os.contains("win")) {
+                osName = "Windows";
+            } else if (os.contains("mac")) {
+                osName = "macOS";
+            } else if (os.contains("nux") || os.contains("nix")) {
+                osName = "Linux";
+            } else {
+                osName = "Other";
+            }
+
+            osMap.put(osName, 1);
+            return osMap;
+        }));
+
+        getLogger().info("bStats metrics enabled with 8 custom charts!");
     }
 
     public static AdminManager getInstance() {

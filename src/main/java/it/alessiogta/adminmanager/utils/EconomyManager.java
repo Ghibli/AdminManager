@@ -49,4 +49,9 @@ public class EconomyManager {
         if (economy == null) return "Money";
         return economy.currencyNamePlural();
     }
+
+    public static String getEconomyProvider() {
+        if (economy == null) return null;
+        return economy.getName();
+    }
 }
