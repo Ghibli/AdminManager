@@ -1,6 +1,39 @@
 # Economy Manager GUI Translations (Italian)
 
-# Buttons
+# Admin View Titles
+admin_title: "&6&lEconomy Manager"
+provider_info_title: "&6&lProvider: &e{provider}"
+provider_info_lore: "&7Valuta: &f{currency}\n&7Priorità: &f{priority}"
+provider_error_title: "&cNessun provider"
+provider_error_lore: "&7Errore di configurazione"
+
+total_money_title: "&6&lTotale in Circolazione"
+total_money_lore: "&7Server: &e{total}\n&7Player totali: &e{count}"
+
+average_balance_title: "&6&lMedia Balance"
+average_balance_lore: "&7Media: &e{average}\n&7Player totali: &e{count}"
+
+median_balance_title: "&6&lMediana Balance"
+median_balance_lore: "&7Mediana: &e{median}\n&7Valore centrale più rappresentativo"
+
+range_balance_title: "&6&lRange Balance"
+range_balance_lore: "&7Min: &c{min}\n&7Max: &a{max}"
+
+top_player_title: "&6&l👑 {player}"
+top_player_lore: "&7Balance: &a{balance}\n\n&ePlayer più ricco del server"
+top_player_empty_title: "&6&lPlayer più Ricco"
+top_player_empty_lore: "&7Nessun player sul server"
+
+bottom_player_title: "&7{player}"
+bottom_player_lore: "&7Balance: &c{balance}\n\n&ePlayer più povero del server"
+bottom_player_empty_title: "&6&lPlayer più Povero"
+bottom_player_empty_lore: "&7Nessun player sul server"
+
+wealth_distribution_title: "&6&lDistribuzione Ricchezza"
+wealth_distribution_lore: "&a▲ Ricchi (>10k): &e{rich}\n&e■ Medi (1k-10k): &e{middle}\n&c▼ Poveri (<1k): &e{poor}"
+wealth_distribution_negative: "&4✖ Negativi: &e{negative}"
+
+# Player Management Buttons
 add_money_title: "&a+ {amount}"
 add_money_lore: "&7Dai {amount} a {player}"
 

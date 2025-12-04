@@ -131,12 +131,18 @@ public class EconomyManagerGui extends BaseGui {
         if (rsp != null && rsp.getProvider() != null) {
             String providerName = rsp.getPlugin().getName();
             String currencyName = rsp.getProvider().currencyNamePlural();
+            String priority = rsp.getPriority().name();
 
-            String title = "&6&lProvider: &e" + providerName;
-            String lore = "&7Valuta: &f" + currencyName + "\n&7Priorità: &f" + rsp.getPriority().name();
+            String title = TranslationManager.translate("EconomyManager", "provider_info_title", "&6&lProvider: &e{provider}")
+                .replace("{provider}", providerName);
+            String lore = TranslationManager.translate("EconomyManager", "provider_info_lore", "&7Valuta: &f{currency}\n&7Priorità: &f{priority}")
+                .replace("{currency}", currencyName)
+                .replace("{priority}", priority);
             return createItem(Material.EMERALD_BLOCK, title, lore.split("\n"));
         } else {
-            return createItem(Material.BARRIER, "&cNessun provider", "&7Errore di configurazione");
+            String title = TranslationManager.translate("EconomyManager", "provider_error_title", "&cNessun provider");
+            String lore = TranslationManager.translate("EconomyManager", "provider_error_lore", "&7Errore di configurazione");
+            return createItem(Material.BARRIER, title, lore);
         }
     }
 
@@ -151,8 +157,10 @@ public class EconomyManagerGui extends BaseGui {
             }
         }
 
-        String title = "&6&lTotale in Circolazione";
-        String lore = "&7Server: &e" + EconomyManager.format(total) + "\n&7Player totali: &e" + playerCount;
+        String title = TranslationManager.translate("EconomyManager", "total_money_title", "&6&lTotale in Circolazione");
+        String lore = TranslationManager.translate("EconomyManager", "total_money_lore", "&7Server: &e{total}\n&7Player totali: &e{count}")
+            .replace("{total}", EconomyManager.format(total))
+            .replace("{count}", String.valueOf(playerCount));
         return createItem(Material.GOLD_BLOCK, title, lore.split("\n"));
     }
 
@@ -169,8 +177,10 @@ public class EconomyManagerGui extends BaseGui {
 
         double average = count > 0 ? total / count : 0;
 
-        String title = "&6&lMedia Balance";
-        String lore = "&7Media: &e" + EconomyManager.format(average) + "\n&7Player totali: &e" + count;
+        String title = TranslationManager.translate("EconomyManager", "average_balance_title", "&6&lMedia Balance");
+        String lore = TranslationManager.translate("EconomyManager", "average_balance_lore", "&7Media: &e{average}\n&7Player totali: &e{count}")
+            .replace("{average}", EconomyManager.format(average))
+            .replace("{count}", String.valueOf(count));
         return createItem(Material.DIAMOND, title, lore.split("\n"));
     }
 
@@ -194,8 +204,9 @@ public class EconomyManagerGui extends BaseGui {
             }
         }
 
-        String title = "&6&lMediana Balance";
-        String lore = "&7Mediana: &e" + EconomyManager.format(median) + "\n&7Valore centrale più rappresentativo";
+        String title = TranslationManager.translate("EconomyManager", "median_balance_title", "&6&lMediana Balance");
+        String lore = TranslationManager.translate("EconomyManager", "median_balance_lore", "&7Mediana: &e{median}\n&7Valore centrale più rappresentativo")
+            .replace("{median}", EconomyManager.format(median));
         return createItem(Material.EMERALD, title, lore.split("\n"));
     }
 
@@ -218,8 +229,10 @@ public class EconomyManagerGui extends BaseGui {
             max = 0;
         }
 
-        String title = "&6&lRange Balance";
-        String lore = "&7Min: &c" + EconomyManager.format(min) + "\n&7Max: &a" + EconomyManager.format(max);
+        String title = TranslationManager.translate("EconomyManager", "range_balance_title", "&6&lRange Balance");
+        String lore = TranslationManager.translate("EconomyManager", "range_balance_lore", "&7Min: &c{min}\n&7Max: &a{max}")
+            .replace("{min}", EconomyManager.format(min))
+            .replace("{max}", EconomyManager.format(max));
         return createItem(Material.COMPASS, title, lore.split("\n"));
     }
 
@@ -238,8 +251,8 @@ public class EconomyManagerGui extends BaseGui {
         }
 
         if (topPlayer == null) {
-            String title = "&6&lPlayer più Ricco";
-            String lore = "&7Nessun player sul server";
+            String title = TranslationManager.translate("EconomyManager", "top_player_empty_title", "&6&lPlayer più Ricco");
+            String lore = TranslationManager.translate("EconomyManager", "top_player_empty_lore", "&7Nessun player sul server");
             return createItem(Material.GOLD_INGOT, title, lore);
         }
 
@@ -249,15 +262,18 @@ public class EconomyManagerGui extends BaseGui {
 
         if (meta != null) {
             meta.setOwningPlayer(topPlayer);
-            meta.setDisplayName(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                "&6&l👑 " + topPlayer.getName()));
+
+            String title = TranslationManager.translate("EconomyManager", "top_player_title", "&6&l👑 {player}")
+                .replace("{player}", topPlayer.getName());
+            meta.setDisplayName(org.bukkit.ChatColor.translateAlternateColorCodes('&', title));
+
+            String lore = TranslationManager.translate("EconomyManager", "top_player_lore", "&7Balance: &a{balance}\n\n&ePlayer più ricco del server")
+                .replace("{balance}", EconomyManager.format(topBalance));
 
             java.util.List<String> loreList = new java.util.ArrayList<>();
-            loreList.add(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                "&7Balance: &a" + EconomyManager.format(topBalance)));
-            loreList.add("");
-            loreList.add(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                "&ePlayer più ricco del server"));
+            for (String line : lore.split("\n")) {
+                loreList.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', line));
+            }
             meta.setLore(loreList);
 
             playerHead.setItemMeta(meta);
@@ -281,8 +297,8 @@ public class EconomyManagerGui extends BaseGui {
         }
 
         if (bottomPlayer == null) {
-            String title = "&6&lPlayer più Povero";
-            String lore = "&7Nessun player sul server";
+            String title = TranslationManager.translate("EconomyManager", "bottom_player_empty_title", "&6&lPlayer più Povero");
+            String lore = TranslationManager.translate("EconomyManager", "bottom_player_empty_lore", "&7Nessun player sul server");
             return createItem(Material.IRON_NUGGET, title, lore);
         }
 
@@ -292,15 +308,18 @@ public class EconomyManagerGui extends BaseGui {
 
         if (meta != null) {
             meta.setOwningPlayer(bottomPlayer);
-            meta.setDisplayName(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                "&7" + bottomPlayer.getName()));
+
+            String title = TranslationManager.translate("EconomyManager", "bottom_player_title", "&7{player}")
+                .replace("{player}", bottomPlayer.getName());
+            meta.setDisplayName(org.bukkit.ChatColor.translateAlternateColorCodes('&', title));
+
+            String lore = TranslationManager.translate("EconomyManager", "bottom_player_lore", "&7Balance: &c{balance}\n\n&ePlayer più povero del server")
+                .replace("{balance}", EconomyManager.format(bottomBalance));
 
             java.util.List<String> loreList = new java.util.ArrayList<>();
-            loreList.add(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                "&7Balance: &c" + EconomyManager.format(bottomBalance)));
-            loreList.add("");
-            loreList.add(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                "&ePlayer più povero del server"));
+            for (String line : lore.split("\n")) {
+                loreList.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', line));
+            }
             meta.setLore(loreList);
 
             playerHead.setItemMeta(meta);
@@ -330,16 +349,19 @@ public class EconomyManagerGui extends BaseGui {
             }
         }
 
-        String title = "&6&lDistribuzione Ricchezza";
-        java.util.List<String> loreLines = new java.util.ArrayList<>();
-        loreLines.add("&a▲ Ricchi (>10k): &e" + rich);
-        loreLines.add("&e■ Medi (1k-10k): &e" + middle);
-        loreLines.add("&c▼ Poveri (<1k): &e" + poor);
+        String title = TranslationManager.translate("EconomyManager", "wealth_distribution_title", "&6&lDistribuzione Ricchezza");
+        String baseLore = TranslationManager.translate("EconomyManager", "wealth_distribution_lore", "&a▲ Ricchi (>10k): &e{rich}\n&e■ Medi (1k-10k): &e{middle}\n&c▼ Poveri (<1k): &e{poor}")
+            .replace("{rich}", String.valueOf(rich))
+            .replace("{middle}", String.valueOf(middle))
+            .replace("{poor}", String.valueOf(poor));
+
+        String lore = baseLore;
         if (negative > 0) {
-            loreLines.add("&4✖ Negativi: &e" + negative);
+            String negativeLine = TranslationManager.translate("EconomyManager", "wealth_distribution_negative", "&4✖ Negativi: &e{negative}")
+                .replace("{negative}", String.valueOf(negative));
+            lore = baseLore + "\n" + negativeLine;
         }
 
-        String lore = String.join("\n", loreLines);
         return createItem(Material.BOOK, title, lore.split("\n"));
     }
 

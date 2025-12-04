@@ -22,8 +22,10 @@ clear_entities_lore: "&7Remove all entities (mobs, items, etc.)"
 clear_entities_message: "&aRemoved &e{count} &aentities from the server"
 
 # Economy Provider
-economy_provider_title: "&6Economy Provider: {status}"
-economy_provider_lore: "&7Use this plugin as the main\n&7economy provider with Vault\n&e&lClick: &7{action}"
+economy_provider_title: "&6Economy Provider"
+economy_provider_active_lore: "&a✓ Active Provider:\n  &e{provider}\n\n&7Currency: &f{currency}\n&7Priority: &f{priority}\n\n&e&lCLICK: &7Manage economy"
+economy_provider_inactive_lore: "&c✗ No active provider\n\n&7Install an economy plugin:\n  &7• Essentials\n  &7• CMI\n  &7• EconomyAPI\n\n&e&lCLICK: &7More info"
+economy_no_vault_lore: "&c✗ Vault not installed\n&7Install Vault to manage\n&7server economy\n\n&e&lCLICK: &7Info"
 economy_provider_toggled: "&6Economy Provider {status}&6. Restart server to apply."
 
 # Language

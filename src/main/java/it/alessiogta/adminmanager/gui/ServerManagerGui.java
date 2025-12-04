@@ -78,13 +78,12 @@ public class ServerManagerGui extends BaseGui {
     }
 
     private ItemStack createEconomyProviderButton() {
-        Plugin plugin = Bukkit.getPluginManager().getPlugin("AdminManager");
-
         // Check if Vault is installed
         boolean vaultInstalled = Bukkit.getPluginManager().getPlugin("Vault") != null;
 
+        String title = TranslationManager.translate("ServerManager", "economy_provider_title", "&6Economy Provider");
+
         if (!vaultInstalled) {
-            String title = TranslationManager.translate("ServerManager", "economy_provider_title", "&6Economy Provider");
             String lore = TranslationManager.translate("ServerManager", "economy_no_vault_lore",
                 "&c✗ Vault non installato\n&7Installa Vault per gestire\n&7l'economia del server\n\n&e&lCLICK: &7Info");
             return createItem(Material.BARRIER, title, lore.split("\n"));
@@ -94,34 +93,26 @@ public class ServerManagerGui extends BaseGui {
         org.bukkit.plugin.RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> rsp =
             Bukkit.getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
 
-        String title = TranslationManager.translate("ServerManager", "economy_provider_title", "&6Economy Manager");
-        java.util.List<String> loreLines = new java.util.ArrayList<>();
-
         if (rsp != null && rsp.getProvider() != null) {
+            // Active provider
             String providerName = rsp.getPlugin().getName();
             String currencyName = rsp.getProvider().currencyNamePlural();
+            String priority = rsp.getPriority().name();
 
-            loreLines.add("&a✓ Provider Attivo:");
-            loreLines.add("  &e" + providerName);
-            loreLines.add("");
-            loreLines.add("&7Valuta: &f" + currencyName);
-            loreLines.add("&7Priorità: &f" + rsp.getPriority().name());
-            loreLines.add("");
-            loreLines.add("&e&lCLICK: &7Gestisci economia");
+            String lore = TranslationManager.translate("ServerManager", "economy_provider_active_lore",
+                "&a✓ Provider Attivo:\n  &e{provider}\n\n&7Valuta: &f{currency}\n&7Priorità: &f{priority}\n\n&e&lCLICK: &7Gestisci economia")
+                .replace("{provider}", providerName)
+                .replace("{currency}", currencyName)
+                .replace("{priority}", priority);
+
+            return createItem(Material.EMERALD, title, lore.split("\n"));
         } else {
-            loreLines.add("&c✗ Nessun provider attivo");
-            loreLines.add("");
-            loreLines.add("&7Installa un plugin economico:");
-            loreLines.add("  &7• Essentials");
-            loreLines.add("  &7• CMI");
-            loreLines.add("  &7• EconomyAPI");
-            loreLines.add("");
-            loreLines.add("&e&lCLICK: &7Maggiori info");
-        }
+            // No active provider
+            String lore = TranslationManager.translate("ServerManager", "economy_provider_inactive_lore",
+                "&c✗ Nessun provider attivo\n\n&7Installa un plugin economico:\n  &7• Essentials\n  &7• CMI\n  &7• EconomyAPI\n\n&e&lCLICK: &7Maggiori info");
 
-        Material material = (rsp != null && rsp.getProvider() != null) ? Material.EMERALD : Material.COAL;
-        String lore = String.join("\n", loreLines);
-        return createItem(material, title, lore.split("\n"));
+            return createItem(Material.COAL, title, lore.split("\n"));
+        }
     }
 
     private ItemStack createConfigManagerButton() {
