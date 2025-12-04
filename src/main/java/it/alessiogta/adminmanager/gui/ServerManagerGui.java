@@ -55,8 +55,8 @@ public class ServerManagerGui extends BaseGui {
 
     private ItemStack createReloadServerButton() {
         String title = TranslationManager.translate("ServerManager", "reload_server_title", "&aRELOAD SERVER");
-        String lore = TranslationManager.translate("ServerManager", "reload_server_lore", "&7Ricarica tutti i plugin del server");
-        return createItem(Material.LIME_DYE, title, lore);
+        String lore = TranslationManager.translate("ServerManager", "reload_server_lore", "&7Ricarica tutti i plugin del server\n\n&c⚠ ATTENZIONE: Con molti plugin e poca\n&cRAM il server potrebbe riavviarsi");
+        return createItem(Material.LIME_DYE, title, lore.split("\n"));
     }
 
     private ItemStack createRestartServerButton() {
@@ -139,8 +139,8 @@ public class ServerManagerGui extends BaseGui {
     private ItemStack createSaveWorldButton() {
         String title = TranslationManager.translate("ServerManager", "save_world_title", "&eSAVE WORLD");
         String lore = TranslationManager.translate("ServerManager", "save_world_lore",
-            "&e&lLEFT: &7Salva tutti i mondi");
-        return createItem(Material.GRASS_BLOCK, title, lore);
+            "&e&lLEFT: &7Salva tutti i mondi\n\n&c⚠ ATTENZIONE: Con molti plugin e poca\n&cRAM il server potrebbe riavviarsi");
+        return createItem(Material.GRASS_BLOCK, title, lore.split("\n"));
     }
 
     private ItemStack createWhitelistButton() {

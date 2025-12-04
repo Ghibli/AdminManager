@@ -6,7 +6,7 @@ back_button_lore: "&7Return to player list"
 
 # Server Control
 reload_server_title: "&aRELOAD SERVER"
-reload_server_lore: "&7Reload all server plugins"
+reload_server_lore: "&7Reload all server plugins\n\n&c⚠ WARNING: With many plugins and low\n&cRAM the server may restart"
 reload_server_message: "&aReloading server..."
 
 restart_server_title: "&eRESTART SERVER"
@@ -60,7 +60,7 @@ game_rules_lore: "&7Manage server rules\n&e&lLEFT: &7Open game rules GUI"
 
 # Save World
 save_world_title: "&eSAVE WORLD"
-save_world_lore: "&e&lLEFT: &7Save all worlds"
+save_world_lore: "&e&lLEFT: &7Save all worlds\n\n&c⚠ WARNING: With many plugins and low\n&cRAM the server may restart"
 save_world_message: "&eSaving worlds..."
 save_world_complete: "&aAll worlds have been saved!"
 
