@@ -143,35 +143,44 @@ public class EconomyManagerGui extends BaseGui {
 
     private ItemStack createTotalMoneyButton() {
         double total = 0;
-        for (Player player : org.bukkit.Bukkit.getOnlinePlayers()) {
-            total += EconomyManager.getBalance(player);
+        int playerCount = 0;
+        for (org.bukkit.OfflinePlayer player : org.bukkit.Bukkit.getOfflinePlayers()) {
+            if (player.hasPlayedBefore() || player.isOnline()) {
+                total += EconomyManager.getBalance(player);
+                playerCount++;
+            }
         }
 
         String title = "&6&lTotale in Circolazione";
-        String lore = "&7Online: &e" + EconomyManager.format(total) + "\n&7Player: &e" + org.bukkit.Bukkit.getOnlinePlayers().size();
+        String lore = "&7Server: &e" + EconomyManager.format(total) + "\n&7Player totali: &e" + playerCount;
         return createItem(Material.GOLD_BLOCK, title, lore.split("\n"));
     }
 
     private ItemStack createAverageBalanceButton() {
         double total = 0;
-        int count = org.bukkit.Bukkit.getOnlinePlayers().size();
+        int count = 0;
 
-        for (Player player : org.bukkit.Bukkit.getOnlinePlayers()) {
-            total += EconomyManager.getBalance(player);
+        for (org.bukkit.OfflinePlayer player : org.bukkit.Bukkit.getOfflinePlayers()) {
+            if (player.hasPlayedBefore() || player.isOnline()) {
+                total += EconomyManager.getBalance(player);
+                count++;
+            }
         }
 
         double average = count > 0 ? total / count : 0;
 
         String title = "&6&lMedia Balance";
-        String lore = "&7Media: &e" + EconomyManager.format(average) + "\n&7Player online: &e" + count;
+        String lore = "&7Media: &e" + EconomyManager.format(average) + "\n&7Player totali: &e" + count;
         return createItem(Material.DIAMOND, title, lore.split("\n"));
     }
 
     private ItemStack createMedianBalanceButton() {
         java.util.List<Double> balances = new java.util.ArrayList<>();
 
-        for (Player player : org.bukkit.Bukkit.getOnlinePlayers()) {
-            balances.add(EconomyManager.getBalance(player));
+        for (org.bukkit.OfflinePlayer player : org.bukkit.Bukkit.getOfflinePlayers()) {
+            if (player.hasPlayedBefore() || player.isOnline()) {
+                balances.add(EconomyManager.getBalance(player));
+            }
         }
 
         double median = 0;
@@ -195,11 +204,13 @@ public class EconomyManagerGui extends BaseGui {
         double max = Double.MIN_VALUE;
         int count = 0;
 
-        for (Player player : org.bukkit.Bukkit.getOnlinePlayers()) {
-            double balance = EconomyManager.getBalance(player);
-            if (balance < min) min = balance;
-            if (balance > max) max = balance;
-            count++;
+        for (org.bukkit.OfflinePlayer player : org.bukkit.Bukkit.getOfflinePlayers()) {
+            if (player.hasPlayedBefore() || player.isOnline()) {
+                double balance = EconomyManager.getBalance(player);
+                if (balance < min) min = balance;
+                if (balance > max) max = balance;
+                count++;
+            }
         }
 
         if (count == 0) {
@@ -213,20 +224,22 @@ public class EconomyManagerGui extends BaseGui {
     }
 
     private ItemStack createTopPlayerButton() {
-        Player topPlayer = null;
+        org.bukkit.OfflinePlayer topPlayer = null;
         double topBalance = Double.MIN_VALUE;
 
-        for (Player player : org.bukkit.Bukkit.getOnlinePlayers()) {
-            double balance = EconomyManager.getBalance(player);
-            if (balance > topBalance) {
-                topBalance = balance;
-                topPlayer = player;
+        for (org.bukkit.OfflinePlayer player : org.bukkit.Bukkit.getOfflinePlayers()) {
+            if (player.hasPlayedBefore() || player.isOnline()) {
+                double balance = EconomyManager.getBalance(player);
+                if (balance > topBalance) {
+                    topBalance = balance;
+                    topPlayer = player;
+                }
             }
         }
 
         if (topPlayer == null) {
             String title = "&6&lPlayer più Ricco";
-            String lore = "&7Nessun player online";
+            String lore = "&7Nessun player sul server";
             return createItem(Material.GOLD_INGOT, title, lore);
         }
 
@@ -254,20 +267,22 @@ public class EconomyManagerGui extends BaseGui {
     }
 
     private ItemStack createBottomPlayerButton() {
-        Player bottomPlayer = null;
+        org.bukkit.OfflinePlayer bottomPlayer = null;
         double bottomBalance = Double.MAX_VALUE;
 
-        for (Player player : org.bukkit.Bukkit.getOnlinePlayers()) {
-            double balance = EconomyManager.getBalance(player);
-            if (balance < bottomBalance) {
-                bottomBalance = balance;
-                bottomPlayer = player;
+        for (org.bukkit.OfflinePlayer player : org.bukkit.Bukkit.getOfflinePlayers()) {
+            if (player.hasPlayedBefore() || player.isOnline()) {
+                double balance = EconomyManager.getBalance(player);
+                if (balance < bottomBalance) {
+                    bottomBalance = balance;
+                    bottomPlayer = player;
+                }
             }
         }
 
         if (bottomPlayer == null) {
             String title = "&6&lPlayer più Povero";
-            String lore = "&7Nessun player online";
+            String lore = "&7Nessun player sul server";
             return createItem(Material.IRON_NUGGET, title, lore);
         }
 
@@ -300,16 +315,18 @@ public class EconomyManagerGui extends BaseGui {
         int poor = 0;      // < 1000
         int negative = 0;  // < 0
 
-        for (Player player : org.bukkit.Bukkit.getOnlinePlayers()) {
-            double balance = EconomyManager.getBalance(player);
-            if (balance < 0) {
-                negative++;
-            } else if (balance < 1000) {
-                poor++;
-            } else if (balance < 10000) {
-                middle++;
-            } else {
-                rich++;
+        for (org.bukkit.OfflinePlayer player : org.bukkit.Bukkit.getOfflinePlayers()) {
+            if (player.hasPlayedBefore() || player.isOnline()) {
+                double balance = EconomyManager.getBalance(player);
+                if (balance < 0) {
+                    negative++;
+                } else if (balance < 1000) {
+                    poor++;
+                } else if (balance < 10000) {
+                    middle++;
+                } else {
+                    rich++;
+                }
             }
         }
 
