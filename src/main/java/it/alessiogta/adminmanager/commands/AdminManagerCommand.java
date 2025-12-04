@@ -57,7 +57,21 @@ public class AdminManagerCommand implements CommandExecutor {
             return true;
         }
 
-        sender.sendMessage("§cArgomento non riconosciuto. Usa: /adminm reload");
+        if (args[0].equalsIgnoreCase("info")) {
+            AdminManager plugin = (AdminManager) Bukkit.getPluginManager().getPlugin("AdminManager");
+            String version = plugin != null ? plugin.getDescription().getVersion() : "Unknown";
+
+            sender.sendMessage("§8§m------------------------------------");
+            sender.sendMessage("");
+            sender.sendMessage(" §6§lAdmin Manager §7v" + version);
+            sender.sendMessage(" §7Made with §c❤ §7by §fAlessioGTA");
+            sender.sendMessage("");
+            sender.sendMessage("§8§m------------------------------------");
+
+            return true;
+        }
+
+        sender.sendMessage("§cArgomento non riconosciuto. Usa: /adminm [reload|info]");
         return false;
     }
 }

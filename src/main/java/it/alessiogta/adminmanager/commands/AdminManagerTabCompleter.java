@@ -15,6 +15,7 @@ public class AdminManagerTabCompleter implements TabCompleter {
 
         if (args.length == 1) {
             completions.add("reload");
+            completions.add("info");
         }
 
         return completions;
