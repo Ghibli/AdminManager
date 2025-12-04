@@ -78,21 +78,21 @@ public class EconomyManagerGui extends BaseGui {
     }
 
     private void setupAdminView() {
-        // Provider info
+        // Provider info (center top)
         setItem(4, createProviderInfoButton());
 
-        // Online players with balances
-        java.util.List<Player> onlinePlayers = new java.util.ArrayList<>(org.bukkit.Bukkit.getOnlinePlayers());
-        int[] playerSlots = {19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34};
+        // Row 2: Main statistics
+        setItem(10, createTotalMoneyButton());        // Total money in circulation
+        setItem(12, createAverageBalanceButton());     // Average balance
+        setItem(14, createMedianBalanceButton());      // Median balance
+        setItem(16, createRangeButton());              // Min → Max range
 
-        for (int i = 0; i < Math.min(onlinePlayers.size(), playerSlots.length); i++) {
-            Player player = onlinePlayers.get(i);
-            setItem(playerSlots[i], createPlayerBalanceButton(player));
-        }
+        // Row 3: Player extremes
+        setItem(20, createTopPlayerButton());          // Richest player
+        setItem(24, createBottomPlayerButton());       // Poorest player
 
-        // Statistics
-        setItem(10, createTotalMoneyButton());
-        setItem(16, createAverageBalanceButton());
+        // Row 4: Distribution analysis
+        setItem(31, createWealthDistributionButton()); // Rich/Middle/Poor counts
     }
 
     private void setupPlayerManagement() {
@@ -140,31 +140,6 @@ public class EconomyManagerGui extends BaseGui {
         }
     }
 
-    private ItemStack createPlayerBalanceButton(Player player) {
-        double balance = EconomyManager.getBalance(player);
-
-        // Use player head texture
-        ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
-        org.bukkit.inventory.meta.SkullMeta meta = (org.bukkit.inventory.meta.SkullMeta) playerHead.getItemMeta();
-
-        if (meta != null) {
-            meta.setOwningPlayer(player);
-            meta.setDisplayName(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                "&e" + player.getName()));
-
-            java.util.List<String> loreList = new java.util.ArrayList<>();
-            loreList.add(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                "&7Balance: &a" + EconomyManager.format(balance)));
-            loreList.add("");
-            loreList.add(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                "&e&lCLICK: &7Gestisci economia"));
-            meta.setLore(loreList);
-
-            playerHead.setItemMeta(meta);
-        }
-
-        return playerHead;
-    }
 
     private ItemStack createTotalMoneyButton() {
         double total = 0;
@@ -190,6 +165,165 @@ public class EconomyManagerGui extends BaseGui {
         String title = "&6&lMedia Balance";
         String lore = "&7Media: &e" + EconomyManager.format(average) + "\n&7Player online: &e" + count;
         return createItem(Material.DIAMOND, title, lore.split("\n"));
+    }
+
+    private ItemStack createMedianBalanceButton() {
+        java.util.List<Double> balances = new java.util.ArrayList<>();
+
+        for (Player player : org.bukkit.Bukkit.getOnlinePlayers()) {
+            balances.add(EconomyManager.getBalance(player));
+        }
+
+        double median = 0;
+        if (!balances.isEmpty()) {
+            java.util.Collections.sort(balances);
+            int size = balances.size();
+            if (size % 2 == 0) {
+                median = (balances.get(size / 2 - 1) + balances.get(size / 2)) / 2;
+            } else {
+                median = balances.get(size / 2);
+            }
+        }
+
+        String title = "&6&lMediana Balance";
+        String lore = "&7Mediana: &e" + EconomyManager.format(median) + "\n&7Valore centrale più rappresentativo";
+        return createItem(Material.EMERALD, title, lore.split("\n"));
+    }
+
+    private ItemStack createRangeButton() {
+        double min = Double.MAX_VALUE;
+        double max = Double.MIN_VALUE;
+        int count = 0;
+
+        for (Player player : org.bukkit.Bukkit.getOnlinePlayers()) {
+            double balance = EconomyManager.getBalance(player);
+            if (balance < min) min = balance;
+            if (balance > max) max = balance;
+            count++;
+        }
+
+        if (count == 0) {
+            min = 0;
+            max = 0;
+        }
+
+        String title = "&6&lRange Balance";
+        String lore = "&7Min: &c" + EconomyManager.format(min) + "\n&7Max: &a" + EconomyManager.format(max);
+        return createItem(Material.COMPASS, title, lore.split("\n"));
+    }
+
+    private ItemStack createTopPlayerButton() {
+        Player topPlayer = null;
+        double topBalance = Double.MIN_VALUE;
+
+        for (Player player : org.bukkit.Bukkit.getOnlinePlayers()) {
+            double balance = EconomyManager.getBalance(player);
+            if (balance > topBalance) {
+                topBalance = balance;
+                topPlayer = player;
+            }
+        }
+
+        if (topPlayer == null) {
+            String title = "&6&lPlayer più Ricco";
+            String lore = "&7Nessun player online";
+            return createItem(Material.GOLD_INGOT, title, lore);
+        }
+
+        // Use player head with real texture
+        ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
+        org.bukkit.inventory.meta.SkullMeta meta = (org.bukkit.inventory.meta.SkullMeta) playerHead.getItemMeta();
+
+        if (meta != null) {
+            meta.setOwningPlayer(topPlayer);
+            meta.setDisplayName(org.bukkit.ChatColor.translateAlternateColorCodes('&',
+                "&6&l👑 " + topPlayer.getName()));
+
+            java.util.List<String> loreList = new java.util.ArrayList<>();
+            loreList.add(org.bukkit.ChatColor.translateAlternateColorCodes('&',
+                "&7Balance: &a" + EconomyManager.format(topBalance)));
+            loreList.add("");
+            loreList.add(org.bukkit.ChatColor.translateAlternateColorCodes('&',
+                "&ePlayer più ricco del server"));
+            meta.setLore(loreList);
+
+            playerHead.setItemMeta(meta);
+        }
+
+        return playerHead;
+    }
+
+    private ItemStack createBottomPlayerButton() {
+        Player bottomPlayer = null;
+        double bottomBalance = Double.MAX_VALUE;
+
+        for (Player player : org.bukkit.Bukkit.getOnlinePlayers()) {
+            double balance = EconomyManager.getBalance(player);
+            if (balance < bottomBalance) {
+                bottomBalance = balance;
+                bottomPlayer = player;
+            }
+        }
+
+        if (bottomPlayer == null) {
+            String title = "&6&lPlayer più Povero";
+            String lore = "&7Nessun player online";
+            return createItem(Material.IRON_NUGGET, title, lore);
+        }
+
+        // Use player head with real texture
+        ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
+        org.bukkit.inventory.meta.SkullMeta meta = (org.bukkit.inventory.meta.SkullMeta) playerHead.getItemMeta();
+
+        if (meta != null) {
+            meta.setOwningPlayer(bottomPlayer);
+            meta.setDisplayName(org.bukkit.ChatColor.translateAlternateColorCodes('&',
+                "&7" + bottomPlayer.getName()));
+
+            java.util.List<String> loreList = new java.util.ArrayList<>();
+            loreList.add(org.bukkit.ChatColor.translateAlternateColorCodes('&',
+                "&7Balance: &c" + EconomyManager.format(bottomBalance)));
+            loreList.add("");
+            loreList.add(org.bukkit.ChatColor.translateAlternateColorCodes('&',
+                "&ePlayer più povero del server"));
+            meta.setLore(loreList);
+
+            playerHead.setItemMeta(meta);
+        }
+
+        return playerHead;
+    }
+
+    private ItemStack createWealthDistributionButton() {
+        int rich = 0;      // > 10000
+        int middle = 0;    // 1000 - 10000
+        int poor = 0;      // < 1000
+        int negative = 0;  // < 0
+
+        for (Player player : org.bukkit.Bukkit.getOnlinePlayers()) {
+            double balance = EconomyManager.getBalance(player);
+            if (balance < 0) {
+                negative++;
+            } else if (balance < 1000) {
+                poor++;
+            } else if (balance < 10000) {
+                middle++;
+            } else {
+                rich++;
+            }
+        }
+
+        String title = "&6&lDistribuzione Ricchezza";
+        java.util.List<String> loreLines = new java.util.ArrayList<>();
+        loreLines.add("&a▲ Ricchi (>10k): &e" + rich);
+        loreLines.add("&e■ Medi (1k-10k): &e" + middle);
+        loreLines.add("&c▼ Poveri (<1k): &e" + poor);
+        if (negative > 0) {
+            loreLines.add("&4✖ Negativi: &e" + negative);
+        }
+
+        String lore = String.join("\n", loreLines);
+        return createItem(Material.BOOK, title, lore.split("\n"));
     }
 
     // ========== PLAYER MANAGEMENT BUTTONS ==========
@@ -247,16 +381,7 @@ public class EconomyManagerGui extends BaseGui {
         }
 
         if (adminMode) {
-            // Admin mode: handle player head clicks to open their economy management
-            int[] playerSlots = {19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34};
-            for (int playerSlot : playerSlots) {
-                if (slot == playerSlot) {
-                    handlePlayerClick(event, slot);
-                    return;
-                }
-            }
-
-            // Other slots are non-interactive in admin mode
+            // Admin mode: all statistics are non-interactive (display only)
             if (slot == 45) {
                 handleExitClick(event);
             } else {
@@ -288,25 +413,6 @@ public class EconomyManagerGui extends BaseGui {
         }
     }
 
-    private void handlePlayerClick(InventoryClickEvent event, int slot) {
-        // Find which player was clicked based on slot
-        java.util.List<Player> onlinePlayers = new java.util.ArrayList<>(org.bukkit.Bukkit.getOnlinePlayers());
-        int[] playerSlots = {19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34};
-
-        for (int i = 0; i < playerSlots.length; i++) {
-            if (playerSlots[i] == slot && i < onlinePlayers.size()) {
-                Player targetPlayer = onlinePlayers.get(i);
-                Player clicker = (Player) event.getWhoClicked();
-
-                // Open player-specific economy management GUI
-                org.bukkit.Bukkit.getScheduler().runTask(
-                    org.bukkit.Bukkit.getPluginManager().getPlugin("AdminManager"),
-                    () -> new EconomyManagerGui(clicker, targetPlayer).open()
-                );
-                return;
-            }
-        }
-    }
 
     private void handleMoneyClick(InventoryClickEvent event, double amount, boolean add) {
         Player sender = (Player) event.getWhoClicked();
