@@ -74,11 +74,10 @@ public class PlayerDataDetailGui extends BaseGui {
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
 
         if (meta != null) {
-            // Only set owning player if name is valid (not "Dinamico" placeholder)
-            String resolvedName = targetPlayer.getName();
-            if (resolvedName != null && !resolvedName.equals("Dinamico") && !resolvedName.equals("Dynamic")) {
-                meta.setOwningPlayer(targetPlayer);
-            }
+            // TEST: Commentato setOwningPlayer per verificare se "Dinamico" viene da Paper
+            // Se "Dinamico" sparisce = Paper lo aggiunge automaticamente con setOwningPlayer
+            // Se "Dinamico" persiste = problema altrove
+            // meta.setOwningPlayer(targetPlayer);
 
             String displayName = targetPlayer.getName() != null ? targetPlayer.getName() : "Unknown";
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&e&l" + displayName));
