@@ -672,7 +672,16 @@ public class ToolCustomizationGui extends BaseGui {
         org.bukkit.event.HandlerList.unregisterAll(this);
         Bukkit.getScheduler().runTask(
             Bukkit.getPluginManager().getPlugin("AdminManager"),
-            () -> new ToolMaterialSelectorGui(clicker, targetPlayer, toolType).open()
+            () -> {
+                // Check if tool has material variants
+                if (toolType.hasMaterialVariants()) {
+                    // Tools with material variants (sword, pickaxe, etc.) go back to material selector
+                    new ToolMaterialSelectorGui(clicker, targetPlayer, toolType).open();
+                } else {
+                    // Special tools (bow, crossbow, fishing rod, trident, shears) go back to special tools GUI
+                    new SpecialToolsGui(clicker, targetPlayer).open();
+                }
+            }
         );
     }
 
