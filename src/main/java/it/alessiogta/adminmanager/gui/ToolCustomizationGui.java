@@ -660,6 +660,10 @@ public class ToolCustomizationGui extends BaseGui {
         // Unregister old listener
         org.bukkit.event.HandlerList.unregisterAll(this);
 
+        // Re-register listener (important!)
+        org.bukkit.Bukkit.getPluginManager().registerEvents(this,
+            org.bukkit.Bukkit.getPluginManager().getPlugin("AdminManager"));
+
         // Rebuild and reopen
         setupGuiItems();
         inventory = build();
