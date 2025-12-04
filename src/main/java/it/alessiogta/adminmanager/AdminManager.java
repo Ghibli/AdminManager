@@ -39,6 +39,10 @@ public class AdminManager extends JavaPlugin {
             getLogger().warning("Vault not found! Economy features will be disabled.");
         }
 
+        // Inizializzazione bStats
+        new it.alessiogta.adminmanager.metrics.Metrics(this, 28217);
+        getLogger().info("bStats metrics enabled!");
+
         // Registrazione dei comandi
         registerCommands();
 
