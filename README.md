@@ -1,6 +1,6 @@
 # AdminManager
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-1.5.0-blue)
 ![Minecraft](https://img.shields.io/badge/minecraft-1.18--1.21-green)
 ![Java](https://img.shields.io/badge/java-8+-orange)
 ![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-red)
@@ -177,7 +177,7 @@ All'avvio del plugin viene mostrato un banner professionale nella console:
 ```
 =============================================
 
-   Admin Manager (v1.0.0)
+   Admin Manager (v1.5.0)
    Developed with ♥ by AlessioGTA
 
    The plugin that helps you manage your server!
@@ -279,7 +279,7 @@ cd AdminManager
 mvn clean package
 ```
 
-Il file `.jar` compilato sarà disponibile in `target/AdminManager-1.0.0.jar`
+Il file `.jar` compilato sarà disponibile in `target/AdminManager-1.5.0.jar`
 
 ### Dipendenze
 - Spigot API 1.18-R0.1-SNAPSHOT
@@ -438,7 +438,7 @@ Questo plugin è distribuito come freeware per uso privato su server Minecraft. 
 
 ## 📈 Changelog
 
-### Versione 1.0.0 (Release Iniziale)
+### Versione 1.5.0 (Current Release)
 
 **✨ Funzionalità Principali:**
 - ✅ Server Manager completo con 10+ funzionalità

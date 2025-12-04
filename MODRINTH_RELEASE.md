@@ -1,19 +1,19 @@
-# AdminManager - Guida Pubblicazione Modrinth
+# AdminManager - Modrinth Release Guide
 
-## Informazioni Base Progetto
+## Project Basic Information
 
-### Titolo
+### Title
 **AdminManager**
 
 ### Slug
 `adminmanager`
 
-### Descrizione Breve (max 256 caratteri)
+### Short Description (max 256 characters)
 ```
-Plugin all-in-one per gestione server Minecraft con GUI moderne: giocatori, economia Vault, configurazioni, mondi, game rules, whitelist e statistiche. Supporto IT/EN completo.
+All-in-one server management plugin with modern GUIs: players, Vault economy, configs, worlds, game rules, whitelist & stats. Full IT/EN support.
 ```
 
-### Categorie/Tags Suggerite
+### Suggested Categories/Tags
 - `management`
 - `administration`
 - `economy`
@@ -23,11 +23,11 @@ Plugin all-in-one per gestione server Minecraft con GUI moderne: giocatori, econ
 - `vault`
 - `moderation`
 
-### Loaders Supportati
+### Supported Loaders
 - ✅ **Spigot** (1.18 - 1.21+)
 - ✅ **Paper** (1.18 - 1.21+)
 
-### Versioni Minecraft Supportate
+### Supported Minecraft Versions
 ```
 1.18, 1.18.1, 1.18.2
 1.19, 1.19.1, 1.19.2, 1.19.3, 1.19.4
@@ -35,115 +35,115 @@ Plugin all-in-one per gestione server Minecraft con GUI moderne: giocatori, econ
 1.21, 1.21.1
 ```
 
-### Licenza
+### License
 **All Rights Reserved**
 
 ---
 
-## Descrizione Completa per Modrinth
+## Full Description for Modrinth
 
 ```markdown
 # AdminManager
 
-Plugin professionale all-in-one per la gestione completa del tuo server Minecraft! 🎮✨
+Professional all-in-one plugin for complete Minecraft server management! 🎮✨
 
-## 🌟 Caratteristiche Principali
+## 🌟 Main Features
 
-**AdminManager** fornisce una suite completa di strumenti amministrativi tramite interfacce grafiche moderne e intuitive. Tutto ciò di cui hai bisogno per gestire il tuo server in un unico plugin!
+**AdminManager** provides a complete suite of administrative tools through modern and intuitive graphical interfaces. Everything you need to manage your server in one plugin!
 
-### 🎮 Server Manager - Centro di Controllo
-Hub centrale con accesso a tutte le funzionalità amministrative:
-- 🔄 **Reload/Restart/Stop Server** - Controllo completo del server
-- 💎 **Economy Provider** - Integrazione Vault con statistiche globali
-- 🗑️ **Clear Entities** - Pulizia entità in tutti i mondi
-- 💾 **Save Worlds** - Salvataggio sicuro di tutti i mondi
-- 📋 **Player Data** - Database completo di tutti i giocatori
-- 📝 **Whitelist Manager** - Editor whitelist integrato
-- ⚙️ **Game Rules** - Gestione regole per ogni mondo
-- 📜 **Command Registration** - Sistema comandi personalizzati
-- 📁 **Config Manager** - Gestione configurazioni centralizzata
+### 🎮 Server Manager - Control Center
+Central hub with access to all administrative features:
+- 🔄 **Reload/Restart/Stop Server** - Complete server control
+- 💎 **Economy Provider** - Vault integration with global statistics
+- 🗑️ **Clear Entities** - Entity cleanup in all worlds
+- 💾 **Save Worlds** - Safe saving of all worlds
+- 📋 **Player Data** - Complete database of all players
+- 📝 **Whitelist Manager** - Integrated whitelist editor
+- ⚙️ **Game Rules** - Rule management for each world
+- 📜 **Command Registration** - Custom commands system
+- 📁 **Config Manager** - Centralized configuration management
 
-⚠️ **Sicurezza**: Avvisi automatici per operazioni critiche (reload/save) con molti plugin e poca RAM
+⚠️ **Safety**: Automatic warnings for critical operations (reload/save) with many plugins and low RAM
 
 ### 💰 Economy Manager (Vault)
-Sistema economia professionale con:
-- 📊 **Statistiche Globali** - Totale in circolazione, media, top/bottom giocatori
-- 👥 **Vista Admin Completa** - Tutti i giocatori (online + offline)
-- 💵 **Gestione Bilanci** - Aggiungi, rimuovi, imposta, azzera denaro
-- 🔄 **Supporto Vault** - Compatibile con Essentials, CMI, EconomyAPI, ecc.
+Professional economy system with:
+- 📊 **Global Statistics** - Total in circulation, average, top/bottom players
+- 👥 **Complete Admin View** - All players (online + offline)
+- 💵 **Balance Management** - Add, remove, set, reset money
+- 🔄 **Vault Support** - Compatible with Essentials, CMI, EconomyAPI, etc.
 
-### 👥 Gestione Giocatori Avanzata
-- **Lista Dinamica** - Visualizzazione con teste giocatori e paginazione
-- **Player Data Manager** - Database persistente di tutti i giocatori
-- **Dettagli Completi** - UUID, ping, mondo, IP, coordinate, statistiche
-- **Azioni Admin** - Teleport, kick, ban, mute con logging automatico
+### 👥 Advanced Player Management
+- **Dynamic List** - Display with player heads and pagination
+- **Player Data Manager** - Persistent database of all players
+- **Complete Details** - UUID, ping, world, IP, coordinates, statistics
+- **Admin Actions** - Teleport, kick, ban, mute with automatic logging
 
-### 🛠️ Azioni di Moderazione
-- 🌀 **Teletrasporto Bidirezionale** - Admin → Giocatore e viceversa
-- 👢 **Kick** - Espulsione con log automatico
-- 🔨 **Ban** - Ban permanente nativo Minecraft
-- 🔇 **Mute/Unmute** - Sistema persistente thread-safe con notifiche staff
+### 🛠️ Moderation Actions
+- 🌀 **Bidirectional Teleport** - Admin → Player and vice versa
+- 👢 **Kick** - Expulsion with automatic log
+- 🔨 **Ban** - Native Minecraft permanent ban
+- 🔇 **Mute/Unmute** - Thread-safe persistent system with staff notifications
 
-### ⚙️ Configurazione Avanzata
-- **Config Manager** - Ricarica e ripristino config.yml / tools.yml
-- **Game Rules Manager** - Modifica game rules per ogni mondo
-- **Whitelist Editor** - Toggle e gestione completa whitelist
-- **Command Registration** - Sistema di comandi personalizzati per categorie
+### ⚙️ Advanced Configuration
+- **Config Manager** - Reload and restore config.yml / tools.yml
+- **Game Rules Manager** - Modify game rules for each world
+- **Whitelist Editor** - Toggle and complete whitelist management
+- **Command Registration** - Custom commands system by categories
 
-### 🌍 Sistema Multilingua 100%
-- 🇮🇹 **Italiano** (it_IT) - Completo
-- 🇬🇧 **Inglese** (en_EN) - Completo
-- ✅ **Tutte le GUI tradotte** - 11 file di traduzione completi
-- 🔄 **Cambio lingua istantaneo** - Senza riavvio server
+### 🌍 100% Multilingual System
+- 🇮🇹 **Italian** (it_IT) - Complete
+- 🇬🇧 **English** (en_EN) - Complete
+- ✅ **All GUIs translated** - 11 complete translation files
+- 🔄 **Instant language change** - Without server restart
 
-### 📊 Statistiche bStats
-8 grafici personalizzati integrati:
-- Lingua plugin, server software, versione Minecraft
-- Provider economia, versione Java
-- Numero mondi personalizzati
-- Sistema operativo server
+### 📊 bStats Statistics
+8 integrated custom charts:
+- Plugin language, server software, Minecraft version
+- Economy provider, Java version
+- Number of custom worlds
+- Server operating system
 
-### 📝 Logging Professionale
-- **Log Automatici** - Kick, ban, mute con timestamp configurabile
-- **Formato Personalizzabile** - Placeholder dinamici (timestamp, admin, azione, giocatore)
-- **Timezone Support** - Configurazione timezone per log accurati
-- **Persistenza** - File YAML per mute e configurazioni
+### 📝 Professional Logging
+- **Automatic Logs** - Kick, ban, mute with configurable timestamp
+- **Customizable Format** - Dynamic placeholders (timestamp, admin, action, player)
+- **Timezone Support** - Timezone configuration for accurate logs
+- **Persistence** - YAML files for mute and configurations
 
-### 🎨 Esperienza Professionale
-- **Banner Startup** - Banner console professionale con status Vault
-- **Comando Info** - `/adminm info` per informazioni plugin
-- **Sistema Permessi** - Controlli completi con doppia verifica per operazioni sensibili
-- **GUI Moderne** - Interfacce intuitive con icone significative
+### 🎨 Professional Experience
+- **Startup Banner** - Professional console banner with Vault status
+- **Info Command** - `/adminm info` for plugin information
+- **Permission System** - Complete controls with double verification for sensitive operations
+- **Modern GUIs** - Intuitive interfaces with meaningful icons
 
-## 📦 Requisiti
+## 📦 Requirements
 
-- **Server**: Spigot o Paper 1.18-1.21+
-- **Java**: 8 o superiore
-- **Vault** (opzionale): Per funzionalità economia
+- **Server**: Spigot or Paper 1.18-1.21+
+- **Java**: 8 or higher
+- **Vault** (optional): For economy features
 
 ## 🚀 Quick Start
 
-1. Scarica il file `.jar`
-2. Copia in `plugins/`
-3. (Opzionale) Installa Vault + plugin economia
-4. Riavvia il server
-5. Usa `/adminm` per aprire il Server Manager!
+1. Download the `.jar` file
+2. Copy to `plugins/`
+3. (Optional) Install Vault + economy plugin
+4. Restart the server
+5. Use `/adminm` to open Server Manager!
 
-## 🔐 Permessi
+## 🔐 Permissions
 
-- `adminmanager.use` - Accesso base al plugin
-- `adminmanager.reload` - Ricarica configurazione
-- `adminmanager.notify.mute` - Notifiche mute
+- `adminmanager.use` - Base access to plugin
+- `adminmanager.reload` - Reload configuration
+- `adminmanager.notify.mute` - Mute notifications
 
-## 📚 Documentazione Completa
+## 📚 Complete Documentation
 
-Consulta il [README su GitHub](https://github.com/yourusername/AdminManager) per:
-- Guida dettagliata di tutte le funzionalità
-- Esempi di configurazione
-- Struttura file e API
-- Guida rapida per ogni feature
+Check the [README on GitHub](https://github.com/yourusername/AdminManager) for:
+- Detailed guide of all features
+- Configuration examples
+- File structure and API
+- Quick guide for each feature
 
-## 🤝 Supporto
+## 🤝 Support
 
 - 🐛 **Bug Reports**: [GitHub Issues](https://github.com/yourusername/AdminManager/issues)
 - 💡 **Feature Requests**: [GitHub Discussions](https://github.com/yourusername/AdminManager/discussions)
@@ -151,109 +151,113 @@ Consulta il [README su GitHub](https://github.com/yourusername/AdminManager) per
 
 ## 📊 Privacy
 
-Il plugin raccoglie statistiche anonime tramite bStats per migliorare lo sviluppo. Puoi disabilitarle in `plugins/bStats/config.yml`.
+The plugin collects anonymous statistics via bStats to improve development. You can disable them in `plugins/bStats/config.yml`.
 
 ---
 
-**AdminManager** - La soluzione completa per amministratori professionali! 🎮✨
+**AdminManager** - The complete solution for professional administrators! 🎮✨
 
-Sviluppato con ❤️ da **AlessioGTA**
+Developed with ❤️ by **AlessioGTA**
 ```
 
 ---
 
-## Changelog Versione 1.0.0
+## Changelog Version 1.5.0
 
 ```markdown
-# AdminManager v1.0.0 - Release Iniziale
+# AdminManager v1.5.0 - Current Release
 
-Prima release pubblica di AdminManager! 🎉
+Public release of AdminManager! 🎉
 
-## ✨ Funzionalità Principali
+## ✨ Main Features
 
 ### 🎮 Server Manager
-- Centro di controllo completo del server
-- Reload, restart, stop server con conferme
-- Clear entities per tutti i mondi
-- Save worlds con avvisi di sicurezza
-- Accesso rapido a tutte le funzionalità admin
+- Complete server control center
+- Reload, restart, stop server with confirmations
+- Clear entities for all worlds
+- Save worlds with safety warnings
+- Quick access to all admin features
 
 ### 💰 Economy Manager (Vault Integration)
-- Statistiche globali economia (totale, media, top/bottom)
-- Vista admin con tutti i giocatori (online + offline)
-- Gestione bilanci: aggiungi, rimuovi, imposta, azzera
-- Supporto completo Vault API
-- Compatibile con Essentials, CMI, EconomyAPI
+- Global economy statistics (total, average, top/bottom)
+- Admin view with all players (online + offline)
+- Balance management: add, remove, set, reset
+- Full Vault API support
+- Compatible with Essentials, CMI, EconomyAPI
 
 ### 👥 Player Management
-- Lista giocatori dinamica con teste e paginazione
-- Player Data Manager con database completo
-- Dettagli giocatore: UUID, ping, mondo, IP, coordinate
-- Azioni admin: teleport, kick, ban, mute
-- Sistema mute persistente thread-safe
+- Dynamic player list with heads and pagination
+- Player Data Manager with complete database
+- Player details: UUID, ping, world, IP, coordinates
+- Admin actions: teleport, kick, ban, mute
+- Thread-safe persistent mute system
 
 ### ⚙️ Configuration & Tools
-- Config Manager per config.yml e tools.yml
-- Game Rules Manager per tutti i mondi
-- Whitelist Editor integrato
+- Config Manager for config.yml and tools.yml
+- Game Rules Manager for all worlds
+- Integrated Whitelist Editor
 - Command Registration system
-- Ricarica configurazioni in tempo reale
+- Real-time configuration reload
 
-### 🌍 Localizzazione
-- Sistema multilingua completo (IT/EN)
-- 100% GUI tradotte (11 file di traduzione)
-- Cambio lingua istantaneo
-- Supporto placeholder dinamici
+### 🌍 Localization
+- Complete multilingual system (IT/EN)
+- 100% translated GUIs (11 translation files)
+- Instant language change
+- Dynamic placeholder support
 
 ### 📊 Analytics & Logging
-- Integrazione bStats con 8 grafici personalizzati
-- Sistema logging professionale (kick, ban, mute)
-- Timestamp configurabili con timezone
-- Persistenza dati su file YAML
+- bStats integration with 8 custom charts
+- Professional logging system (kick, ban, mute)
+- Configurable timestamps with timezone
+- Data persistence on YAML files
 
 ### 🎨 User Experience
-- Banner startup professionale con Vault status
-- Comando `/adminm info` per info plugin
-- GUI moderne e intuitive
-- Avvisi di sicurezza per operazioni critiche
+- Professional startup banner with Vault status
+- `/adminm info` command for plugin information
+- Modern and intuitive GUIs
+- Safety warnings for critical operations
 
-## 🔒 Sicurezza
-- Sistema permessi completo
-- Doppio controllo per operazioni sensibili
-- Avvisi automatici per operazioni rischiose (reload/save con molti plugin)
+## 🔒 Security
+- Complete permission system
+- Double check for sensitive operations
+- Automatic warnings for risky operations (reload/save with many plugins)
 - Thread-safe operations
 
-## 🔧 Miglioramenti Tecnici
-- Architettura modulare e manutenibile
+## 🔧 Technical Improvements
+- Modular and maintainable architecture
 - Thread-safe MuteManager
-- Gestione memoria ottimizzata
-- Supporto Paper 1.18-1.21+
+- Optimized memory management
+- Paper 1.18-1.21+ support
 
-## 📦 Requisiti
+## 📦 Requirements
 - Minecraft Server: Spigot/Paper 1.18-1.21+
 - Java: 8+
-- Vault (opzionale): Per funzionalità economia
+- Vault (optional): For economy features
 
-## 🚀 Installazione
-1. Scarica il JAR
-2. Copia in `plugins/`
-3. Opzionale: Installa Vault + economia plugin
-4. Riavvia server
-5. Usa `/adminm` in-game!
+## 🚀 Installation
+1. Download the JAR
+2. Copy to `plugins/`
+3. Optional: Install Vault + economy plugin
+4. Restart server
+5. Use `/adminm` in-game!
 
 ## 🐛 Bug Fixes
-Nessuno - Prima release!
+- Fixed all hardcoded strings with translation system
+- Fixed Economy Provider placeholder display
+- Fixed player data translation issues
+- Fixed permission checks on all commands
+- Added security warnings for critical operations
 
-## 📝 Note
-- Testato su Spigot/Paper 1.18-1.21
-- Supporto completo Vault opzionale
-- Tutte le funzionalità non-economy disponibili senza Vault
+## 📝 Notes
+- Tested on Spigot/Paper 1.18-1.21
+- Full Vault support (optional)
+- All non-economy features available without Vault
 
 ---
 
-**Grazie per aver scelto AdminManager!** 🎮✨
+**Thank you for choosing AdminManager!** 🎮✨
 
-Per supporto, documentazione completa e aggiornamenti:
+For support, complete documentation and updates:
 - 📚 README: https://github.com/yourusername/AdminManager
 - 🐛 Issues: https://github.com/yourusername/AdminManager/issues
 - 🌐 Website: https://www.mclegacy.it
@@ -261,71 +265,71 @@ Per supporto, documentazione completa e aggiornamenti:
 
 ---
 
-## Immagini/Screenshot Suggeriti
+## Suggested Images/Screenshots
 
-Per una pubblicazione professionale su Modrinth, si consiglia di includere screenshot di:
+For a professional publication on Modrinth, it is recommended to include screenshots of:
 
-1. **Server Manager GUI** - Schermata principale
-2. **Economy Manager** - Vista statistiche globali
-3. **Economy Manager** - Vista admin con lista giocatori
-4. **Player Data Manager** - Lista completa giocatori
-5. **Player Management** - Dettagli singolo giocatore con azioni
-6. **Whitelist Editor** - Gestione whitelist
-7. **Game Rules Manager** - Gestione regole di gioco
-8. **Config Manager** - Gestione configurazioni
-9. **Multilingual Support** - Confronto IT/EN della stessa GUI
-10. **Startup Banner** - Console con banner professionale
-
----
-
-## Checklist Pre-Pubblicazione
-
-### File da Preparare
-- [ ] `AdminManager-1.0.0.jar` - File plugin compilato
-- [ ] Screenshot (almeno 3-5 immagini)
-- [ ] Banner/Logo (opzionale, dimensioni suggerite: 1280x640px)
-- [ ] Icon progetto (opzionale, dimensioni: 256x256px)
-
-### Informazioni da Completare
-- [ ] URL GitHub repository (se pubblico)
-- [ ] URL Issues tracker
-- [ ] Discord server (opzionale)
-- [ ] Link documentazione aggiuntiva
-
-### Configurazione Modrinth
-- [ ] Crea progetto su Modrinth
-- [ ] Imposta slug: `adminmanager`
-- [ ] Seleziona categorie appropriate
-- [ ] Configura loaders: Spigot, Paper
-- [ ] Seleziona versioni Minecraft supportate
-- [ ] Imposta licenza: All Rights Reserved
-- [ ] Carica descrizione completa
-- [ ] Carica screenshot
-- [ ] Carica banner/logo (se disponibili)
-
-### Upload Release
-- [ ] Carica file `AdminManager-1.0.0.jar`
-- [ ] Imposta version number: `1.0.0`
-- [ ] Imposta version name: `v1.0.0 - Release Iniziale`
-- [ ] Tipo release: `release`
-- [ ] Incolla changelog versione 1.0.0
-- [ ] Seleziona loaders compatibili
-- [ ] Seleziona tutte le versioni Minecraft supportate
-- [ ] Aggiungi dipendenze opzionali: Vault
-- [ ] Pubblica!
+1. **Server Manager GUI** - Main screen
+2. **Economy Manager** - Global statistics view
+3. **Economy Manager** - Admin view with player list
+4. **Player Data Manager** - Complete player list
+5. **Player Management** - Single player details with actions
+6. **Whitelist Editor** - Whitelist management
+7. **Game Rules Manager** - Game rules management
+8. **Config Manager** - Configuration management
+9. **Multilingual Support** - IT/EN comparison of same GUI
+10. **Startup Banner** - Console with professional banner
 
 ---
 
-## Note Aggiuntive
+## Pre-Publication Checklist
 
-### Dipendenze Opzionali
-Su Modrinth, assicurati di indicare **Vault** come dipendenza opzionale:
-- **Nome**: Vault
-- **Tipo**: Opzionale
-- **Descrizione**: "Richiesto solo per funzionalità economia. Senza Vault tutte le altre funzionalità rimangono disponibili."
+### Files to Prepare
+- [ ] `AdminManager-1.5.0.jar` - Compiled plugin file
+- [ ] Screenshots (at least 3-5 images)
+- [ ] Banner/Logo (optional, suggested size: 1280x640px)
+- [ ] Project icon (optional, size: 256x256px)
 
-### Tags Suggeriti per SEO
-Oltre alle categorie, nel corpo della descrizione usa keywords come:
+### Information to Complete
+- [ ] GitHub repository URL (if public)
+- [ ] Issues tracker URL
+- [ ] Discord server (optional)
+- [ ] Additional documentation links
+
+### Modrinth Configuration
+- [ ] Create project on Modrinth
+- [ ] Set slug: `adminmanager`
+- [ ] Select appropriate categories
+- [ ] Configure loaders: Spigot, Paper
+- [ ] Select supported Minecraft versions
+- [ ] Set license: All Rights Reserved
+- [ ] Upload complete description
+- [ ] Upload screenshots
+- [ ] Upload banner/logo (if available)
+
+### Release Upload
+- [ ] Upload file `AdminManager-1.5.0.jar`
+- [ ] Set version number: `1.5.0`
+- [ ] Set version name: `v1.5.0 - Current Release`
+- [ ] Release type: `release`
+- [ ] Paste version 1.5.0 changelog
+- [ ] Select compatible loaders
+- [ ] Select all supported Minecraft versions
+- [ ] Add optional dependencies: Vault
+- [ ] Publish!
+
+---
+
+## Additional Notes
+
+### Optional Dependencies
+On Modrinth, make sure to indicate **Vault** as an optional dependency:
+- **Name**: Vault
+- **Type**: Optional
+- **Description**: "Required only for economy features. Without Vault all other features remain available."
+
+### Suggested Tags for SEO
+Besides categories, use keywords in the description body like:
 - Server management
 - Player administration
 - Economy plugin
@@ -337,11 +341,11 @@ Oltre alle categorie, nel corpo della descrizione usa keywords come:
 - Moderation tools
 - Whitelist management
 
-### Link Utili Modrinth
+### Useful Modrinth Links
 - **Dashboard**: https://modrinth.com/dashboard/projects
-- **Docs Upload**: https://docs.modrinth.com/docs/tutorials/uploading/
+- **Upload Docs**: https://docs.modrinth.com/docs/tutorials/uploading/
 - **Formatting Guide**: https://docs.modrinth.com/docs/tutorials/markdown/
 
 ---
 
-**Buona pubblicazione!** 🚀
+**Happy publishing!** 🚀
