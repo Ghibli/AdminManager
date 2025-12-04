@@ -12,6 +12,8 @@ next_page: "&ePagina successiva"
 info_title: "&6Info"
 info_lore: "&7Totale giocatori: &e{count}\n&7Pagina: &e{page}&7/&e{maxPage}"
 
-# Player item
+# Player item lore
 player_lore: "&e&lLEFT: &7Visualizza dettagli"
+player_uuid: "&7UUID: &f{uuid}"
+player_last_seen: "&7Ultimo accesso: &f{date}"
 player_info_message: "&6Dati giocatore &e{player}&6:\n&7UUID: &f{uuid}\n&7File: &f{file}"

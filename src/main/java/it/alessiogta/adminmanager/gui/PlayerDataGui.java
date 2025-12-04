@@ -130,8 +130,16 @@ public class PlayerDataGui extends BaseGui {
             String lastSeen = dateFormat.format(new Date(info.lastModified));
 
             List<String> lore = new ArrayList<>();
-            lore.add(ChatColor.translateAlternateColorCodes('&', "&7UUID: &f" + info.uuid.toString()));
-            lore.add(ChatColor.translateAlternateColorCodes('&', "&7Ultimo accesso: &f" + lastSeen));
+            // UUID line - translated
+            String uuidLine = TranslationManager.translate("PlayerData", "player_uuid", "&7UUID: &f{uuid}")
+                .replace("{uuid}", info.uuid.toString());
+            lore.add(ChatColor.translateAlternateColorCodes('&', uuidLine));
+
+            // Last seen line - translated
+            String lastSeenLine = TranslationManager.translate("PlayerData", "player_last_seen", "&7Ultimo accesso: &f{date}")
+                .replace("{date}", lastSeen);
+            lore.add(ChatColor.translateAlternateColorCodes('&', lastSeenLine));
+
             lore.add("");
             lore.add(ChatColor.translateAlternateColorCodes('&',
                 TranslationManager.translate("PlayerData", "player_lore", "&e&lLEFT: &7Visualizza dettagli")));
