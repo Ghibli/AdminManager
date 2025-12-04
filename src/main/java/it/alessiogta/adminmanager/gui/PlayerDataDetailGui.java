@@ -74,7 +74,12 @@ public class PlayerDataDetailGui extends BaseGui {
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
 
         if (meta != null) {
-            meta.setOwningPlayer(targetPlayer);
+            // Only set owning player if name is valid (not "Dinamico" placeholder)
+            String resolvedName = targetPlayer.getName();
+            if (resolvedName != null && !resolvedName.equals("Dinamico") && !resolvedName.equals("Dynamic")) {
+                meta.setOwningPlayer(targetPlayer);
+            }
+
             String displayName = targetPlayer.getName() != null ? targetPlayer.getName() : "Unknown";
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&e&l" + displayName));
             skull.setItemMeta(meta);
