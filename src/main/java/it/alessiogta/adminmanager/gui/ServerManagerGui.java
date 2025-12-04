@@ -79,18 +79,48 @@ public class ServerManagerGui extends BaseGui {
 
     private ItemStack createEconomyProviderButton() {
         Plugin plugin = Bukkit.getPluginManager().getPlugin("AdminManager");
-        boolean vaultEnabled = plugin.getConfig().getBoolean("economy.vault-provider", false);
 
-        String status = vaultEnabled ? "&aON" : "&cOFF";
-        String action = vaultEnabled ? "Disabilita" : "Abilita";
+        // Check if Vault is installed
+        boolean vaultInstalled = Bukkit.getPluginManager().getPlugin("Vault") != null;
 
-        String title = TranslationManager.translate("ServerManager", "economy_provider_title", "&6Economy Provider: {status}")
-            .replace("{status}", status);
-        String lore = TranslationManager.translate("ServerManager", "economy_provider_lore",
-            "&7Usa questo plugin come provider\n&7economico principale con Vault\n&e&lClick: &7{action}")
-            .replace("{action}", action);
+        if (!vaultInstalled) {
+            String title = TranslationManager.translate("ServerManager", "economy_provider_title", "&6Economy Provider");
+            String lore = TranslationManager.translate("ServerManager", "economy_no_vault_lore",
+                "&c✗ Vault non installato\n&7Installa Vault per gestire\n&7l'economia del server\n\n&e&lCLICK: &7Info");
+            return createItem(Material.BARRIER, title, lore.split("\n"));
+        }
 
-        Material material = vaultEnabled ? Material.EMERALD : Material.COAL;
+        // Check active economy provider
+        org.bukkit.plugin.RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> rsp =
+            Bukkit.getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+
+        String title = TranslationManager.translate("ServerManager", "economy_provider_title", "&6Economy Manager");
+        java.util.List<String> loreLines = new java.util.ArrayList<>();
+
+        if (rsp != null && rsp.getProvider() != null) {
+            String providerName = rsp.getPlugin().getName();
+            String currencyName = rsp.getProvider().currencyNamePlural();
+
+            loreLines.add("&a✓ Provider Attivo:");
+            loreLines.add("  &e" + providerName);
+            loreLines.add("");
+            loreLines.add("&7Valuta: &f" + currencyName);
+            loreLines.add("&7Priorità: &f" + rsp.getPriority().name());
+            loreLines.add("");
+            loreLines.add("&e&lCLICK: &7Gestisci economia");
+        } else {
+            loreLines.add("&c✗ Nessun provider attivo");
+            loreLines.add("");
+            loreLines.add("&7Installa un plugin economico:");
+            loreLines.add("  &7• Essentials");
+            loreLines.add("  &7• CMI");
+            loreLines.add("  &7• EconomyAPI");
+            loreLines.add("");
+            loreLines.add("&e&lCLICK: &7Maggiori info");
+        }
+
+        Material material = (rsp != null && rsp.getProvider() != null) ? Material.EMERALD : Material.COAL;
+        String lore = String.join("\n", loreLines);
         return createItem(material, title, lore.split("\n"));
     }
 
@@ -248,18 +278,19 @@ public class ServerManagerGui extends BaseGui {
     }
 
     private void handleEconomyProviderToggle(Player clicker) {
-        Plugin plugin = Bukkit.getPluginManager().getPlugin("AdminManager");
-        boolean currentValue = plugin.getConfig().getBoolean("economy.vault-provider", false);
-        plugin.getConfig().set("economy.vault-provider", !currentValue);
-        plugin.saveConfig();
-
-        String status = !currentValue ? "&aabilitato" : "&cdisabilitato";
-        String message = TranslationManager.translate("ServerManager", "economy_provider_toggled",
-            "&6Economy Provider " + status + "&6. Riavvia il server per applicare.");
-        clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
-
-        // Refresh button at new position (slot 24)
-        refreshSlot(24, createEconomyProviderButton());
+        // Open Economy Manager GUI if Vault and provider are available
+        if (it.alessiogta.adminmanager.utils.EconomyManager.isEnabled()) {
+            Bukkit.getScheduler().runTask(
+                Bukkit.getPluginManager().getPlugin("AdminManager"),
+                () -> new it.alessiogta.adminmanager.gui.EconomyManagerGui(clicker).open()
+            );
+        } else {
+            // Show info message if no economy provider is active
+            clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
+                "&c✗ &7Nessun provider economico attivo!"));
+            clicker.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
+                "&7Installa Vault + un plugin economico (Essentials, CMI, ecc.)"));
+        }
     }
 
     private void handleConfigManager(Player clicker) {
