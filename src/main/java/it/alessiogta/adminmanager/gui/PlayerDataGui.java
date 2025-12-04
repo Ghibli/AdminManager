@@ -120,14 +120,7 @@ public class PlayerDataGui extends BaseGui {
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
 
         if (meta != null) {
-            // Get offline player and check if name is valid
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(info.uuid);
-            String resolvedName = offlinePlayer.getName();
-
-            // Only set owning player if name is valid (not "Dinamico" placeholder)
-            if (resolvedName != null && !resolvedName.equals("Dinamico") && !resolvedName.equals("Dynamic")) {
-                meta.setOwningPlayer(offlinePlayer);
-            }
+            meta.setOwningPlayer(Bukkit.getOfflinePlayer(info.uuid));
 
             String displayName = info.playerName != null ? info.playerName : "Unknown";
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&e" + displayName));

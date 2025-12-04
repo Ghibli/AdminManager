@@ -261,11 +261,7 @@ public class EconomyManagerGui extends BaseGui {
         org.bukkit.inventory.meta.SkullMeta meta = (org.bukkit.inventory.meta.SkullMeta) playerHead.getItemMeta();
 
         if (meta != null) {
-            // Only set owning player if name is valid (not "Dinamico" placeholder)
-            String resolvedName = topPlayer.getName();
-            if (resolvedName != null && !resolvedName.equals("Dinamico") && !resolvedName.equals("Dynamic")) {
-                meta.setOwningPlayer(topPlayer);
-            }
+            meta.setOwningPlayer(topPlayer);
 
             String title = TranslationManager.translate("EconomyManager", "top_player_title", "&6&l👑 {player}")
                 .replace("{player}", topPlayer.getName());
@@ -311,11 +307,7 @@ public class EconomyManagerGui extends BaseGui {
         org.bukkit.inventory.meta.SkullMeta meta = (org.bukkit.inventory.meta.SkullMeta) playerHead.getItemMeta();
 
         if (meta != null) {
-            // Only set owning player if name is valid (not "Dinamico" placeholder)
-            String resolvedName = bottomPlayer.getName();
-            if (resolvedName != null && !resolvedName.equals("Dinamico") && !resolvedName.equals("Dynamic")) {
-                meta.setOwningPlayer(bottomPlayer);
-            }
+            meta.setOwningPlayer(bottomPlayer);
 
             String title = TranslationManager.translate("EconomyManager", "bottom_player_title", "&7{player}")
                 .replace("{player}", bottomPlayer.getName());
