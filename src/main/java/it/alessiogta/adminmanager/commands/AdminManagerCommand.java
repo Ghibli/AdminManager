@@ -20,6 +20,12 @@ public class AdminManagerCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        // Controllo permission base per tutti i comandi
+        if (!sender.hasPermission("adminmanager.use")) {
+            sender.sendMessage("§cNon hai il permesso per usare questo comando.");
+            return true;
+        }
+
         if (args.length == 0) {
             // Comando base /adminm (apre la GUI per i giocatori)
             if (sender instanceof Player) {
