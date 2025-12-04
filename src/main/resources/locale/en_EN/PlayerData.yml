@@ -1,6 +1,7 @@
 # PlayerData GUI Translations (English)
 
 title: "&6&lPlayer Data"
+unknown_player: "Unknown"
 
 # Navigation
 back_button_title: "&cBack"

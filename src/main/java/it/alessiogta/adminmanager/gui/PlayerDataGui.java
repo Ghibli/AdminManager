@@ -122,7 +122,9 @@ public class PlayerDataGui extends BaseGui {
         if (meta != null) {
             meta.setOwningPlayer(Bukkit.getOfflinePlayer(info.uuid));
 
-            String displayName = info.playerName != null ? info.playerName : "Unknown";
+            String displayName = info.playerName != null
+                ? info.playerName
+                : TranslationManager.translate("PlayerData", "unknown_player", "Unknown");
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&e" + displayName));
 
             // Format last modified date

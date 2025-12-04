@@ -1,8 +1,15 @@
 # PlayerDataDetail GUI Translations (Italian)
 
 title: "&6&lDati: {player}"
+unknown_player: "Sconosciuto"
 back_button_title: "&cIndietro"
 back_button_lore: "&7Torna alla lista player data"
+
+# Common values
+yes: "&aSì"
+no: "&cNo"
+online: "&aOnline"
+offline: "&cOffline"
 
 # Info Items
 info_title: "&6Informazioni"
@@ -16,6 +23,10 @@ time_title: "&6Tempo"
 first_played: "&7Primo accesso: &f{date}"
 last_played: "&7Ultimo accesso: &f{date}"
 time_since: "&7Tempo trascorso: &f{time}"
+time_days: "giorni"
+time_hours: "ore"
+time_minutes: "minuti"
+time_seconds: "secondi"
 
 # Action Buttons (Online)
 teleport_to_title: "&eTeleporta a giocatore"

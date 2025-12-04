@@ -28,7 +28,9 @@ public class PlayerDataDetailGui extends BaseGui {
     }
 
     private static String formatTitle(OfflinePlayer targetPlayer) {
-        String playerName = targetPlayer.getName() != null ? targetPlayer.getName() : "Unknown";
+        String playerName = targetPlayer.getName() != null
+            ? targetPlayer.getName()
+            : TranslationManager.translate("PlayerDataDetail", "unknown_player", "Unknown");
         String baseTitle = TranslationManager.translate("PlayerDataDetail", "title", "&6&lDati: {player}")
             .replace("{player}", playerName);
         return ChatColor.translateAlternateColorCodes('&', baseTitle);
@@ -75,7 +77,9 @@ public class PlayerDataDetailGui extends BaseGui {
 
         if (meta != null) {
             meta.setOwningPlayer(targetPlayer);
-            String displayName = targetPlayer.getName() != null ? targetPlayer.getName() : "Unknown";
+            String displayName = targetPlayer.getName() != null
+                ? targetPlayer.getName()
+                : TranslationManager.translate("PlayerDataDetail", "unknown_player", "Unknown");
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&e&l" + displayName));
             skull.setItemMeta(meta);
         }
@@ -87,7 +91,9 @@ public class PlayerDataDetailGui extends BaseGui {
         String title = TranslationManager.translate("PlayerDataDetail", "info_title", "&6Informazioni");
 
         String uuidStr = targetPlayer.getUniqueId().toString();
-        String hasPlayed = targetPlayer.hasPlayedBefore() ? "&aYes" : "&cNo";
+        String hasPlayed = targetPlayer.hasPlayedBefore()
+            ? TranslationManager.translate("PlayerDataDetail", "yes", "&aYes")
+            : TranslationManager.translate("PlayerDataDetail", "no", "&cNo");
 
         String lore = TranslationManager.translate("PlayerDataDetail", "info_lore",
             "&7UUID: &f{uuid}\n&7Ha giocato prima: {played}")
@@ -99,7 +105,9 @@ public class PlayerDataDetailGui extends BaseGui {
 
     private ItemStack createStatusItem(boolean isOnline) {
         Material material = isOnline ? Material.LIME_DYE : Material.GRAY_DYE;
-        String status = isOnline ? "&aOnline" : "&cOffline";
+        String status = isOnline
+            ? TranslationManager.translate("PlayerDataDetail", "online", "&aOnline")
+            : TranslationManager.translate("PlayerDataDetail", "offline", "&cOffline");
 
         String title = TranslationManager.translate("PlayerDataDetail", "status_title", "&6Stato: {status}")
             .replace("{status}", status);
@@ -159,10 +167,20 @@ public class PlayerDataDetailGui extends BaseGui {
         long hours = minutes / 60;
         long days = hours / 24;
 
-        if (days > 0) return days + " giorni";
-        if (hours > 0) return hours + " ore";
-        if (minutes > 0) return minutes + " minuti";
-        return seconds + " secondi";
+        if (days > 0) {
+            String unit = TranslationManager.translate("PlayerDataDetail", "time_days", "giorni");
+            return days + " " + unit;
+        }
+        if (hours > 0) {
+            String unit = TranslationManager.translate("PlayerDataDetail", "time_hours", "ore");
+            return hours + " " + unit;
+        }
+        if (minutes > 0) {
+            String unit = TranslationManager.translate("PlayerDataDetail", "time_minutes", "minuti");
+            return minutes + " " + unit;
+        }
+        String unit = TranslationManager.translate("PlayerDataDetail", "time_seconds", "secondi");
+        return seconds + " " + unit;
     }
 
     private ItemStack createTeleportToButton() {
