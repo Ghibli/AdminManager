@@ -9,6 +9,7 @@ import it.alessiogta.adminmanager.listeners.ToolCreatorChatListener;
 import it.alessiogta.adminmanager.listeners.WorldGeneratorChatListener;
 import it.alessiogta.adminmanager.utils.EconomyManager;
 import it.alessiogta.adminmanager.utils.TranslationManager;
+import it.alessiogta.adminmanager.utils.UpdateChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.HandlerList;
@@ -16,7 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class AdminManager extends JavaPlugin {
     private static AdminManager instance;
-
+    private UpdateChecker updateChecker;
 
     @Override
     public void onEnable() {
@@ -33,8 +34,14 @@ public class AdminManager extends JavaPlugin {
         // Inizializzazione Vault Economy
         boolean vaultEnabled = EconomyManager.setupEconomy();
 
-        // Banner di avvio
-        printStartupBanner(vaultEnabled);
+        // Controllo aggiornamenti (asincrono)
+        updateChecker = new UpdateChecker(this);
+        updateChecker.checkForUpdates().thenAccept(upToDate -> {
+            // Stampa banner con status aggiornamenti dopo che il controllo è completato
+            Bukkit.getScheduler().runTask(this, () -> {
+                printStartupBanner(vaultEnabled, updateChecker);
+            });
+        });
 
         // Inizializzazione bStats con grafici personalizzati
         setupMetrics();
@@ -55,6 +62,9 @@ public class AdminManager extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new GameRuleChatListener(), this);
         getServer().getPluginManager().registerEvents(new CommandBlockListener(), this);
         getServer().getPluginManager().registerEvents(new ToolCreatorChatListener(), this);
+
+        // Avvia scheduler per controllo aggiornamenti ogni 48 ore
+        startUpdateCheckScheduler();
     }
 
     @Override
@@ -271,7 +281,7 @@ public class AdminManager extends JavaPlugin {
         }));
     }
 
-    private void printStartupBanner(boolean vaultEnabled) {
+    private void printStartupBanner(boolean vaultEnabled, UpdateChecker updateChecker) {
         String version = getDescription().getVersion();
         String vaultStatus = vaultEnabled
             ? "§aVault Hook ✓"
@@ -285,8 +295,33 @@ public class AdminManager extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("   §aThe plugin that helps you manage your server!");
         Bukkit.getConsoleSender().sendMessage(" ");
         Bukkit.getConsoleSender().sendMessage("   " + vaultStatus);
+        Bukkit.getConsoleSender().sendMessage("   " + updateChecker.getStatusMessage());
+
+        // Se c'è un aggiornamento disponibile, mostra il link
+        String detailedMessage = updateChecker.getDetailedMessage();
+        if (!detailedMessage.isEmpty()) {
+            Bukkit.getConsoleSender().sendMessage("   " + detailedMessage);
+        }
+
         Bukkit.getConsoleSender().sendMessage(" ");
         Bukkit.getConsoleSender().sendMessage("§6=============================================");
+    }
+
+    /**
+     * Starts a repeating task that checks for updates every 48 hours
+     * and notifies online admins if an update is available
+     */
+    private void startUpdateCheckScheduler() {
+        // 48 hours = 48 * 60 * 60 * 20 ticks = 3,456,000 ticks
+        long delay = 3456000L;
+        long period = 3456000L;
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+            updateChecker.checkForUpdates().thenAccept(upToDate -> {
+                // Notify online admins if update is available
+                updateChecker.notifyOps();
+            });
+        }, delay, period);
     }
 
     public static AdminManager getInstance() {
