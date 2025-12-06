@@ -1,6 +1,6 @@
 # AdminManager
 
-![Version](https://img.shields.io/badge/version-1.5.0-blue)
+![Version](https://img.shields.io/badge/version-1.5.1-blue)
 ![Minecraft](https://img.shields.io/badge/minecraft-1.18--1.21-green)
 ![Java](https://img.shields.io/badge/java-8+-orange)
 ![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-red)
@@ -177,12 +177,13 @@ All'avvio del plugin viene mostrato un banner professionale nella console:
 ```
 =============================================
 
-   Admin Manager (v1.5.0)
+   Admin Manager (v1.5.1)
    Developed with ♥ by AlessioGTA
 
    The plugin that helps you manage your server!
 
    Vault Hook ✓ / ✗
+   ✓ Plugin is Up to Date / ✗ Update Available
 
 =============================================
 ```
@@ -279,7 +280,7 @@ cd AdminManager
 mvn clean package
 ```
 
-Il file `.jar` compilato sarà disponibile in `target/AdminManager-1.5.0.jar`
+Il file `.jar` compilato sarà disponibile in `target/AdminManager-1.5.1.jar`
 
 ### Dipendenze
 - Spigot API 1.18-R0.1-SNAPSHOT
@@ -438,7 +439,15 @@ Questo plugin è distribuito come freeware per uso privato su server Minecraft. 
 
 ## 📈 Changelog
 
-### Versione 1.5.0 (Current Release)
+### Versione 1.5.1 (Current Release)
+
+**🔄 Nuove Funzionalità:**
+- ✅ Sistema di controllo aggiornamenti con Modrinth API
+  - Controllo automatico all'avvio del server
+  - Controllo automatico ogni 48 ore
+  - Notifiche in console (banner) e chat agli admin
+  - Link diretto a Modrinth per download
+- ✅ Banner di startup aggiornato con status aggiornamenti
 
 **✨ Funzionalità Principali:**
 - ✅ Server Manager completo con 10+ funzionalità
@@ -452,7 +461,7 @@ Questo plugin è distribuito come freeware per uso privato su server Minecraft. 
 - ✅ Sistema multilingua completo (IT/EN) con 100% traduzioni
 - ✅ Sistema logging professionale
 - ✅ Integrazione bStats con 8 grafici personalizzati
-- ✅ Banner di startup professionale con Vault status
+- ✅ Banner di startup professionale con Vault status e update checker
 - ✅ Comando /adminm info per informazioni plugin
 
 **🔒 Sicurezza:**
@@ -471,6 +480,7 @@ Questo plugin è distribuito come freeware per uso privato su server Minecraft. 
 - ✅ Thread-safe operations per MuteManager
 - ✅ Gestione memoria ottimizzata
 - ✅ Supporto Paper 1.18-1.21+
+- ✅ Update checker asincrono con CompletableFuture
 
 ---
 

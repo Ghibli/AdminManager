@@ -162,12 +162,26 @@ Developed with ❤️ by **AlessioGTA**
 
 ---
 
-## Changelog Version 1.5.0
+## Changelog Version 1.5.1
 
 ```markdown
-# AdminManager v1.5.0 - Current Release
+# AdminManager v1.5.1 - Update Checker Release
 
-Public release of AdminManager! 🎉
+New release with automatic update checking! 🎉
+
+## 🔄 New Features (v1.5.1)
+
+### Update Checker System
+- **Automatic Update Check** - Checks for updates on server startup
+- **Scheduled Checks** - Automatic check every 48 hours
+- **Modrinth API Integration** - Uses official Modrinth API
+- **Console Notifications** - Update status in startup banner
+- **In-Game Notifications** - Alerts admins with `adminmanager.use` permission
+- **Direct Download Link** - Provides Modrinth download link when update available
+
+### Startup Banner Enhanced
+- Shows update status: `✓ Plugin is Up to Date` (green) or `✗ Update Available: v1.X.X` (red)
+- Direct link to Modrinth if update available
 
 ## ✨ Main Features
 
@@ -285,7 +299,7 @@ For a professional publication on Modrinth, it is recommended to include screens
 ## Pre-Publication Checklist
 
 ### Files to Prepare
-- [ ] `AdminManager-1.5.0.jar` - Compiled plugin file
+- [ ] `AdminManager-1.5.1.jar` - Compiled plugin file
 - [ ] Screenshots (at least 3-5 images)
 - [ ] Banner/Logo (optional, suggested size: 1280x640px)
 - [ ] Project icon (optional, size: 256x256px)
@@ -308,11 +322,11 @@ For a professional publication on Modrinth, it is recommended to include screens
 - [ ] Upload banner/logo (if available)
 
 ### Release Upload
-- [ ] Upload file `AdminManager-1.5.0.jar`
-- [ ] Set version number: `1.5.0`
-- [ ] Set version name: `v1.5.0 - Current Release`
+- [ ] Upload file `AdminManager-1.5.1.jar`
+- [ ] Set version number: `1.5.1`
+- [ ] Set version name: `v1.5.1 - Update Checker Release`
 - [ ] Release type: `release`
-- [ ] Paste version 1.5.0 changelog
+- [ ] Paste version 1.5.1 changelog
 - [ ] Select compatible loaders
 - [ ] Select all supported Minecraft versions
 - [ ] Add optional dependencies: Vault
